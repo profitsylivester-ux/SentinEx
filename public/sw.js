@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sentinex-v3';
+﻿const CACHE_NAME = 'sentinex-v4';
 const urlsToCache = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', event => {
@@ -23,9 +23,7 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  // Do not cache API calls, let them hit the live server
   if (event.request.url.includes('/api/')) return;
-
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
