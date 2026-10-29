@@ -1,15 +1,14 @@
-const CACHE_NAME = 'sentinex-v2';
+const CACHE_NAME = 'sentinex-v3';
 const urlsToCache = ['/', '/index.html', '/manifest.json'];
 
 self.addEventListener('install', event => {
-  self.skipWaiting(); // Forces the new service worker to take over immediately
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
 });
 
 self.addEventListener('activate', event => {
-  // Delete old caches
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
@@ -24,6 +23,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Do not cache API calls, let them hit the live server
+  if (event.request.url.includes('/api/')) return;
+
   event.respondWith(
     caches.match(event.request).then(response => response || fetch(event.request))
   );
