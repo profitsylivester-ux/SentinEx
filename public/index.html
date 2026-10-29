@@ -7,6 +7,7 @@
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
+    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#111111">
 
@@ -81,7 +82,7 @@
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
 
-        /* FAQ Section Fixes */
+        /* FAQ Section */
         .faq-section { padding: 80px 5%; background: var(--bg-color); border-top: 1px solid var(--border); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-container h2 { text-align: center; margin-bottom: 40px; font-size: 2.5rem; }
@@ -93,8 +94,8 @@
             align-items: center; 
             cursor: pointer; 
             font-weight: 500; 
-            font-size: 16px; /* Reduced size */
-            font-family: 'Inter', sans-serif; /* Force Inter font */
+            font-size: 16px; 
+            font-family: 'Inter', sans-serif; 
         }
         
         .faq-icon { 
@@ -109,13 +110,11 @@
             overflow: hidden; 
             transition: max-height 0.3s ease, padding 0.3s ease; 
             color: var(--text-muted); 
-            font-size: 14px; /* Reduced size */
+            font-size: 14px; 
             font-weight: 300;
         }
         
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
-        
-        /* Target ONLY the icon for the rotation */
         .faq-item.active .faq-icon { transform: rotate(45deg); }
 
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
@@ -212,16 +211,16 @@
                 <a href="#contact" data-en="Contact" data-sw="Mawasiliano">Contact</a>
             </div>
             <div class="nav-actions">
-                <button id="installBtn" onclick="installPWA()">?? Install App</button>
+                <button id="installBtn" onclick="installPWA()">⬇️ Install App</button>
                 
                 <div class="lang-dropdown">
-                    <button class="lang-btn" onclick="document.getElementById('lang-menu').classList.toggle('show')">?? <span id="current-lang">EN</span></button>
+                    <button class="lang-btn" onclick="document.getElementById('lang-menu').classList.toggle('show')">🌐 <span id="current-lang">EN</span></button>
                     <div class="lang-menu" id="lang-menu">
-                        <div onclick="setLanguage('en')">???? English</div>
-                        <div onclick="setLanguage('sw')">???? Kiswahili</div>
-                        <div onclick="setLanguage('fr')">???? Fran�ais</div>
-                        <div onclick="setLanguage('zh')">???? ??</div>
-                        <div onclick="setLanguage('ar')">???? ???????</div>
+                        <div onclick="setLanguage('en')">🇬🇧 English</div>
+                        <div onclick="setLanguage('sw')">🇹🇿 Kiswahili</div>
+                        <div onclick="setLanguage('fr')">🇫🇷 Français</div>
+                        <div onclick="setLanguage('zh')">🇨🇳 中文</div>
+                        <div onclick="setLanguage('ar')">🇸🇦 العربية</div>
                     </div>
                 </div>
                 <button class="btn-primary" onclick="openLogin()" data-en="Client Login &rarr;" data-sw="Ingia Mteja &rarr;">Client Login &rarr;</button>
@@ -358,21 +357,21 @@
                 <p data-en="Write to us about partnerships, deployment, or custom hardware requests for your institution." data-sw="Tuandikie kuhusu ubia, utekelezaji, au maombi maalum ya vifaa kwa taasisi yako.">Write to us about partnerships, deployment, or custom hardware requests for your institution.</p>
                 
                 <div class="info-item">
-                    <div class="info-icon">??</div>
+                    <div class="info-icon">📍</div>
                     <div class="info-text">
                         <h6 data-en="LOCATION" data-sw="MAHALI">LOCATION</h6>
                         <p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p>
                     </div>
                 </div>
                 <div class="info-item">
-                    <div class="info-icon">??</div>
+                    <div class="info-icon">📞</div>
                     <div class="info-text">
                         <h6 data-en="PHONE" data-sw="SIMU">PHONE</h6>
                         <p>0748743673</p>
                     </div>
                 </div>
                 <div class="info-item">
-                    <div class="info-icon">??</div>
+                    <div class="info-icon">✉️</div>
                     <div class="info-text">
                         <h6 data-en="EMAIL" data-sw="BARUA PEPE">EMAIL</h6>
                         <p>SentinExappliances@gmail.com</p>
@@ -426,9 +425,9 @@
                     <a href="mailto:SentinExappliances@gmail.com" class="email">SentinExappliances@gmail.com</a>
                     
                     <div class="footer-socials">
-                        <a href="#" title="GitHub">??</a>
-                        <a href="#" title="LinkedIn">??</a>
-                        <a href="#" title="Instagram">??</a>
+                        <a href="#" title="GitHub">💻</a>
+                        <a href="#" title="LinkedIn">💼</a>
+                        <a href="#" title="Instagram">📸</a>
                     </div>
                 </div>
 
@@ -461,7 +460,7 @@
 
             <div class="footer-bottom">
                 <div data-en="&copy; 2026 SentinEx Appliances. All rights reserved." data-sw="&copy; 2026 SentinEx Appliances. Haki zote zimehifadhiwa.">&copy; 2026 SentinEx Appliances. All rights reserved.</div>
-                <div class="privacy" data-en="Built with ?? in Dar es Salaam" data-sw="Imeundwa kwa ?? jijini Dar es Salaam">Built with ?? in Dar es Salaam</div>
+                <!-- The 'Built with' text has been removed here -->
             </div>
         </footer>
     </div>
@@ -481,7 +480,7 @@
             </div>
             <div class="form-group" style="text-align: left;">
                 <label data-en="PASSWORD" data-sw="NYWILA">PASSWORD</label>
-                <input type="password" id="password" placeholder="����" value="1234">
+                <input type="password" id="password" placeholder="••••" value="1234">
             </div>
             
             <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="login()" data-en="Secure Login" data-sw="Ingia kwa Usalama">Secure Login</button>
@@ -500,10 +499,10 @@
                     </div>
                 </div>
                 <div class="dash-nav">
-                    <a class="dash-link active" onclick="switchDashView('view-dashboard', this)" data-en="?? Dashboard" data-sw="?? Dashibodi">?? Dashboard</a>
-                    <a class="dash-link" onclick="switchDashView('view-members', this)" data-en="?? Members" data-sw="?? Wanachama">?? Members</a>
-                    <a class="dash-link" onclick="switchDashView('view-settings', this)" data-en="?? Settings" data-sw="?? Mipangilio">?? Settings</a>
-                    <a class="dash-link" onclick="logout()" style="margin-top: 50px; color: #dc2626;" data-en="?? Exit to Website" data-sw="?? Toka kwenye Wavuti">?? Exit to Website</a>
+                    <a class="dash-link active" onclick="switchDashView('view-dashboard', this)" data-en="📊 Dashboard" data-sw="📊 Dashibodi">📊 Dashboard</a>
+                    <a class="dash-link" onclick="switchDashView('view-members', this)" data-en="👥 Members" data-sw="👥 Wanachama">👥 Members</a>
+                    <a class="dash-link" onclick="switchDashView('view-settings', this)" data-en="⚙️ Settings" data-sw="⚙️ Mipangilio">⚙️ Settings</a>
+                    <a class="dash-link" onclick="logout()" style="margin-top: 50px; color: #dc2626;" data-en="🚪 Exit to Website" data-sw="🚪 Toka kwenye Wavuti">🚪 Exit to Website</a>
                 </div>
             </aside>
             
@@ -511,7 +510,7 @@
                 <div id="view-dashboard" class="dash-view active">
                     <div class="dash-topbar">
                         <h2 data-en="System Overview" data-sw="Muhtasari wa Mfumo">System Overview</h2>
-                        <div style="color: var(--success); font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;" data-en="?? Live Connection" data-sw="?? Muunganisho Hai">?? Live Connection</div>
+                        <div style="color: var(--success); font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;" data-en="🟢 Live Connection" data-sw="🟢 Muunganisho Hai">🟢 Live Connection</div>
                     </div>
 
                     <div class="dash-stats">
@@ -656,91 +655,91 @@
             'en': {},
             'sw': {},
             'fr': {
-                "About": "� Propos", "Services": "Services", "Work": "Travail", "FAQ": "FAQ", "Team": "�quipe", "Contact": "Contact",
-                "Client Login &rarr;": "Connexion Client &rarr;", "ABOUT SENTINEX": "� PROPOS DE SENTINEX",
-                "Secure attendance systems built for <em>local institutions</em>": "Syst�mes de pr�sence s�curis�s con�us pour les <em>institutions locales</em>",
-                "We design and deploy biometric hardware...": "Nous concevons et d�ployons du mat�riel biom�trique...",
+                "About": "À Propos", "Services": "Services", "Work": "Travail", "FAQ": "FAQ", "Team": "Équipe", "Contact": "Contact",
+                "Client Login &rarr;": "Connexion Client &rarr;", "ABOUT SENTINEX": "À PROPOS DE SENTINEX",
+                "Secure attendance systems built for <em>local institutions</em>": "Systèmes de présence sécurisés conçus pour les <em>institutions locales</em>",
+                "We design and deploy biometric hardware...": "Nous concevons et déployons du matériel biométrique...",
                 "Work with us &rarr;": "Travaillez avec nous &rarr;", "OUR SERVICES": "NOS SERVICES",
-                "What we <em>deliver</em>": "Ce que nous <em>livrons</em>", "Biometric Hardware": "Mat�riel Biom�trique",
-                "Cloud Dashboards": "Tableaux de bord Cloud", "System Integration": "Int�gration Syst�me",
-                "OUR WORK": "NOTRE TRAVAIL", "Recent <em>deployments</em>": "D�ploiements <em>r�cents</em>",
-                "Ohio University": "Universit� de l'Ohio", "TechHub Dar": "TechHub Dar",
-                "Frequently asked": "Questions fr�quentes",
+                "What we <em>deliver</em>": "Ce que nous <em>livrons</em>", "Biometric Hardware": "Matériel Biométrique",
+                "Cloud Dashboards": "Tableaux de bord Cloud", "System Integration": "Intégration Système",
+                "OUR WORK": "NOTRE TRAVAIL", "Recent <em>deployments</em>": "Déploiements <em>récents</em>",
+                "Ohio University": "Université de l'Ohio", "TechHub Dar": "TechHub Dar",
+                "Frequently asked": "Questions fréquentes",
                 "How does the offline mode work?": "Comment fonctionne le mode hors ligne ?",
-                "Can it integrate with our existing database?": "Peut-il s'int�grer � notre base de donn�es existante ?",
-                "Is the hardware included?": "Le mat�riel est-il inclus ?",
+                "Can it integrate with our existing database?": "Peut-il s'intégrer à notre base de données existante ?",
+                "Is the hardware included?": "Le matériel est-il inclus ?",
                 "How long does installation take?": "Combien de temps prend l'installation ?",
-                "How secure is the biometric data?": "Quelle est la s�curit� des donn�es biom�triques ?",
-                "THE TEAM": "L'�QUIPE", "The minds <em>behind it</em>": "Les esprits <em>derri�re</em>",
-                "Founder & Lead Engineer": "Fondateur & Ing�nieur en Chef", "Hardware Architect": "Architecte Mat�riel", "Software Developer": "D�veloppeur Logiciel",
-                "GET IN TOUCH": "CONTACTEZ-NOUS", "Back African <em>engineering</em>": "Soutenir l'<em>ing�nierie</em> africaine",
-                "Write to us about partnerships...": "�crivez-nous pour des partenariats...",
-                "LOCATION": "EMPLACEMENT", "PHONE": "T�L�PHONE", "EMAIL": "E-MAIL", "NAME": "NOM", "INTEREST": "INT�R�T", "MESSAGE": "MESSAGE", "Send message &rarr;": "Envoyer &rarr;",
-                "THE PLATFORM": "LA PLATEFORME", "SYSTEM": "SYST�ME", "SUPPORT": "SUPPORT", "Dashboard": "Tableau de bord", "Hardware": "Mat�riel", "FAQ": "FAQ",
-                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. Tous droits r�serv�s.",
-                "Built with ?? in Dar es Salaam": "Construit avec ?? � Dar es Salaam",
-                "?? Dashboard": "?? Tableau de bord", "?? Members": "?? Membres", "?? Settings": "?? Param�tres", "?? Exit to Website": "?? Quitter le site",
-                "System Overview": "Aper�u du syst�me", "?? Live Connection": "?? Connexion en direct", "Total Scans": "Total des scans", "Unique Members": "Membres uniques", "Security Alerts": "Alertes de s�curit�",
+                "How secure is the biometric data?": "Quelle est la sécurité des données biométriques ?",
+                "THE TEAM": "L'ÉQUIPE", "The minds <em>behind it</em>": "Les esprits <em>derrière</em>",
+                "Founder & Lead Engineer": "Fondateur & Ingénieur en Chef", "Hardware Architect": "Architecte Matériel", "Software Developer": "Développeur Logiciel",
+                "GET IN TOUCH": "CONTACTEZ-NOUS", "Back African <em>engineering</em>": "Soutenir l'<em>ingénierie</em> africaine",
+                "Write to us about partnerships...": "Écrivez-nous pour des partenariats...",
+                "LOCATION": "EMPLACEMENT", "PHONE": "TÉLÉPHONE", "EMAIL": "E-MAIL", "NAME": "NOM", "INTEREST": "INTÉRÊT", "MESSAGE": "MESSAGE", "Send message &rarr;": "Envoyer &rarr;",
+                "THE PLATFORM": "LA PLATEFORME", "SYSTEM": "SYSTÈME", "SUPPORT": "SUPPORT", "Dashboard": "Tableau de bord", "Hardware": "Matériel", "FAQ": "FAQ",
+                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. Tous droits réservés.",
+                "Built with ❤️ in Dar es Salaam": "Construit avec ❤️ à Dar es Salaam",
+                "📊 Dashboard": "📊 Tableau de bord", "👥 Members": "👥 Membres", "⚙️ Settings": "⚙️ Paramètres", "🚪 Exit to Website": "🚪 Quitter le site",
+                "System Overview": "Aperçu du système", "🟢 Live Connection": "🟢 Connexion en direct", "Total Scans": "Total des scans", "Unique Members": "Membres uniques", "Security Alerts": "Alertes de sécurité",
                 "Member Name": "Nom du membre", "ID": "ID", "Timestamp": "Horodatage", "Status": "Statut", "Registered Members": "Membres inscrits", "Fingerprint ID": "ID d'empreinte", "Total Scans Today": "Scans aujourd'hui",
-                "System Settings": "Param�tres du syst�me", "Change Admin Username": "Changer le nom d'admin", "Change Password": "Changer le mot de passe", "Hardware Sync Interval (Seconds)": "Intervalle de synchronisation (Secondes)", "Save Changes": "Enregistrer les modifications"
+                "System Settings": "Paramètres du système", "Change Admin Username": "Changer le nom d'admin", "Change Password": "Changer le mot de passe", "Hardware Sync Interval (Seconds)": "Intervalle de synchronisation (Secondes)", "Save Changes": "Enregistrer les modifications"
             },
             'zh': {
-                "About": "??", "Services": "??", "Work": "??", "FAQ": "????", "Team": "??", "Contact": "????",
-                "Client Login &rarr;": "???? &rarr;", "ABOUT SENTINEX": "?? SENTINEX",
-                "Secure attendance systems built for <em>local institutions</em>": "?<em>????</em>?????????",
-                "We design and deploy biometric hardware...": "?????????????...",
-                "Work with us &rarr;": "????? &rarr;", "OUR SERVICES": "?????",
-                "What we <em>deliver</em>": "??<em>??</em>??", "Biometric Hardware": "??????",
-                "Cloud Dashboards": "????", "System Integration": "????",
-                "OUR WORK": "?????", "Recent <em>deployments</em>": "???<em>??</em>",
-                "Ohio University": "?????", "TechHub Dar": "TechHub Dar",
-                "Frequently asked": "????",
-                "How does the offline mode work?": "?????????",
-                "Can it integrate with our existing database?": "????????????????",
-                "Is the hardware included?": "????????",
-                "How long does installation take?": "?????????",
-                "How secure is the biometric data?": "???????????",
-                "THE TEAM": "??", "The minds <em>behind it</em>": "???<em>??</em>",
-                "Founder & Lead Engineer": "?????????", "Hardware Architect": "?????", "Software Developer": "??????",
-                "GET IN TOUCH": "????", "Back African <em>engineering</em>": "????<em>??</em>",
-                "Write to us about partnerships...": "?????????...",
-                "LOCATION": "??", "PHONE": "??", "EMAIL": "????", "NAME": "??", "INTEREST": "??", "MESSAGE": "??", "Send message &rarr;": "???? &rarr;",
-                "THE PLATFORM": "??", "SYSTEM": "??", "SUPPORT": "??", "Dashboard": "???", "Hardware": "??", "FAQ": "????",
-                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. ?????",
-                "Built with ?? in Dar es Salaam": "? ?? ?????????",
-                "?? Dashboard": "?? ???", "?? Members": "?? ??", "?? Settings": "?? ??", "?? Exit to Website": "?? ????",
-                "System Overview": "????", "?? Live Connection": "?? ????", "Total Scans": "????", "Unique Members": "????", "Security Alerts": "????",
-                "Member Name": "????", "ID": "ID", "Timestamp": "???", "Status": "??", "Registered Members": "????", "Fingerprint ID": "?? ID", "Total Scans Today": "????",
-                "System Settings": "????", "Change Admin Username": "????????", "Change Password": "????", "Hardware Sync Interval (Seconds)": "??????(?)", "Save Changes": "????"
+                "About": "关于", "Services": "服务", "Work": "工作", "FAQ": "常见问题", "Team": "团队", "Contact": "联系我们",
+                "Client Login &rarr;": "客户登录 &rarr;", "ABOUT SENTINEX": "关于 SENTINEX",
+                "Secure attendance systems built for <em>local institutions</em>": "为<em>本地机构</em>构建的安全考勤系统",
+                "We design and deploy biometric hardware...": "我们设计并部署生物识别硬件...",
+                "Work with us &rarr;": "与我们合作 &rarr;", "OUR SERVICES": "我们的服务",
+                "What we <em>deliver</em>": "我们<em>提供</em>什么", "Biometric Hardware": "生物识别硬件",
+                "Cloud Dashboards": "云仪表板", "System Integration": "系统集成",
+                "OUR WORK": "我们的工作", "Recent <em>deployments</em>": "最近的<em>部署</em>",
+                "Ohio University": "俄亥俄大学", "TechHub Dar": "TechHub Dar",
+                "Frequently asked": "常见问题",
+                "How does the offline mode work?": "离线模式如何工作？",
+                "Can it integrate with our existing database?": "它可以与我们现有的数据库集成吗？",
+                "Is the hardware included?": "硬件包括在内吗？",
+                "How long does installation take?": "安装需要多长时间？",
+                "How secure is the biometric data?": "生物识别数据有多安全？",
+                "THE TEAM": "团队", "The minds <em>behind it</em>": "背后的<em>大脑</em>",
+                "Founder & Lead Engineer": "创始人兼首席工程师", "Hardware Architect": "硬件架构师", "Software Developer": "软件开发人员",
+                "GET IN TOUCH": "联系我们", "Back African <em>engineering</em>": "支持非洲<em>工程</em>",
+                "Write to us about partnerships...": "写信给我们关于合作...",
+                "LOCATION": "位置", "PHONE": "电话", "EMAIL": "电子邮件", "NAME": "姓名", "INTEREST": "兴趣", "MESSAGE": "留言", "Send message &rarr;": "发送消息 &rarr;",
+                "THE PLATFORM": "平台", "SYSTEM": "系统", "SUPPORT": "支持", "Dashboard": "仪表板", "Hardware": "硬件", "FAQ": "常见问题",
+                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. 版权所有。",
+                "Built with ❤️ in Dar es Salaam": "用 ❤️ 在达累斯萨拉姆制造",
+                "📊 Dashboard": "📊 仪表板", "👥 Members": "👥 成员", "⚙️ Settings": "⚙️ 设置", "🚪 Exit to Website": "🚪 退出网站",
+                "System Overview": "系统概览", "🟢 Live Connection": "🟢 实时连接", "Total Scans": "总扫描数", "Unique Members": "独立成员", "Security Alerts": "安全警报",
+                "Member Name": "成员姓名", "ID": "ID", "Timestamp": "时间戳", "Status": "状态", "Registered Members": "注册成员", "Fingerprint ID": "指纹 ID", "Total Scans Today": "今日扫描",
+                "System Settings": "系统设置", "Change Admin Username": "更改管理员用户名", "Change Password": "更改密码", "Hardware Sync Interval (Seconds)": "硬件同步间隔（秒）", "Save Changes": "保存更改"
             },
             'ar': {
-                "About": "?? ???", "Services": "???????", "Work": "???????", "FAQ": "??????? ???????", "Team": "??????", "Contact": "???? ???",
-                "Client Login &rarr;": "???? ??????? &rarr;", "ABOUT SENTINEX": "?? ????????",
-                "Secure attendance systems built for <em>local institutions</em>": "????? ???? ???? ????? ??<em>??????? ???????</em>",
-                "We design and deploy biometric hardware...": "??? ???? ????? ??????? ??????????...",
-                "Work with us &rarr;": "???? ???? &rarr;", "OUR SERVICES": "???????",
-                "What we <em>deliver</em>": "?? <em>?????</em>", "Biometric Hardware": "??????? ??????????",
-                "Cloud Dashboards": "????? ????????? ????????", "System Integration": "????? ??????",
-                "OUR WORK": "???????", "Recent <em>deployments</em>": "???????? <em>???????</em>",
-                "Ohio University": "????? ??????", "TechHub Dar": "?? ?? ???",
-                "Frequently asked": "??????? ???????",
-                "How does the offline mode work?": "??? ???? ????? ??? ??????",
-                "Can it integrate with our existing database?": "?? ???? ???? ?? ????? ???????? ????????",
-                "Is the hardware included?": "?? ??????? ???????",
-                "How long does installation take?": "?? ?????? ????????",
-                "How secure is the biometric data?": "?? ??? ???? ???????? ???????????",
-                "THE TEAM": "??????", "The minds <em>behind it</em>": "?????? <em>??????? ??????</em>",
-                "Founder & Lead Engineer": "?????? ????? ?????????", "Hardware Architect": "????? ???????", "Software Developer": "???? ???????",
-                "GET IN TOUCH": "????? ????", "Back African <em>engineering</em>": "??? <em>???????</em> ?????????",
-                "Write to us about partnerships...": "???? ????? ????? ????????...",
-                "LOCATION": "??????", "PHONE": "??????", "EMAIL": "?????? ??????????", "NAME": "?????", "INTEREST": "????????", "MESSAGE": "???????", "Send message &rarr;": "????? ??????? &rarr;",
-                "THE PLATFORM": "??????", "SYSTEM": "??????", "SUPPORT": "?????", "Dashboard": "???? ???????", "Hardware": "??????", "FAQ": "??????? ???????",
-                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. ???? ?????? ??????.",
-                "Built with ?? in Dar es Salaam": "???? ?? ?? ?? ??? ??????",
-                "?? Dashboard": "?? ???? ???????", "?? Members": "?? ???????", "?? Settings": "?? ?????????", "?? Exit to Website": "?? ?????? ??? ??????",
-                "System Overview": "???? ???? ??? ??????", "?? Live Connection": "?? ????? ?????", "Total Scans": "?????? ?????", "Unique Members": "????? ??????", "Security Alerts": "??????? ?????",
-                "Member Name": "??? ?????", "ID": "??????", "Timestamp": "?????", "Status": "??????", "Registered Members": "??????? ????????", "Fingerprint ID": "???? ??????", "Total Scans Today": "??? ?????",
-                "System Settings": "??????? ??????", "Change Admin Username": "????? ??? ???????", "Change Password": "????? ???? ??????", "Hardware Sync Interval (Seconds)": "???? ?????? ??????? (?????)", "Save Changes": "??? ?????????"
+                "About": "من نحن", "Services": "خدماتنا", "Work": "أعمالنا", "FAQ": "الأسئلة الشائعة", "Team": "فريقنا", "Contact": "اتصل بنا",
+                "Client Login &rarr;": "دخول العملاء &rarr;", "ABOUT SENTINEX": "عن سينتينكس",
+                "Secure attendance systems built for <em>local institutions</em>": "أنظمة حضور آمنة مبنية لـ<em>لمؤسسات المحلية</em>",
+                "We design and deploy biometric hardware...": "نحن نصمم وننشر الأجهزة البيومترية...",
+                "Work with us &rarr;": "اعمل معنا &rarr;", "OUR SERVICES": "خدماتنا",
+                "What we <em>deliver</em>": "ما <em>نقدمه</em>", "Biometric Hardware": "الأجهزة البيومترية",
+                "Cloud Dashboards": "لوحات المعلومات السحابية", "System Integration": "تكامل النظام",
+                "OUR WORK": "أعمالنا", "Recent <em>deployments</em>": "العمليات <em>الأخيرة</em>",
+                "Ohio University": "جامعة أوهايو", "TechHub Dar": "تك هب دار",
+                "Frequently asked": "الأسئلة الشائعة",
+                "How does the offline mode work?": "كيف يعمل الوضع دون اتصال؟",
+                "Can it integrate with our existing database?": "هل يمكن دمجه مع قاعدة البيانات الحالية؟",
+                "Is the hardware included?": "هل الأجهزة مشمولة؟",
+                "How long does installation take?": "كم يستغرق التثبيت؟",
+                "How secure is the biometric data?": "ما مدى أمان البيانات البيومترية؟",
+                "THE TEAM": "الفريق", "The minds <em>behind it</em>": "العقول <em>الكامنة وراءها</em>",
+                "Founder & Lead Engineer": "المؤسس وكبير المهندسين", "Hardware Architect": "مهندس الأجهزة", "Software Developer": "مطور برمجيات",
+                "GET IN TOUCH": "تواصل معنا", "Back African <em>engineering</em>": "دعم <em>الهندسة</em> الأفريقية",
+                "Write to us about partnerships...": "اكتب إلينا بخصوص الشراكات...",
+                "LOCATION": "الموقع", "PHONE": "الهاتف", "EMAIL": "البريد الإلكتروني", "NAME": "الاسم", "INTEREST": "الاهتمام", "MESSAGE": "الرسالة", "Send message &rarr;": "إرسال الرسالة &rarr;",
+                "THE PLATFORM": "المنصة", "SYSTEM": "النظام", "SUPPORT": "الدعم", "Dashboard": "لوحة القيادة", "Hardware": "العتاد", "FAQ": "الأسئلة الشائعة",
+                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. جميع الحقوق محفوظة.",
+                "Built with ❤️ in Dar es Salaam": "صُنع بـ ❤️ في دار السلام",
+                "📊 Dashboard": "📊 لوحة القيادة", "👥 Members": "👥 الأعضاء", "⚙️ Settings": "⚙️ الإعدادات", "🚪 Exit to Website": "🚪 الخروج إلى الموقع",
+                "System Overview": "نظرة عامة على النظام", "🟢 Live Connection": "🟢 اتصال مباشر", "Total Scans": "إجمالي المسح", "Unique Members": "أعضاء فريدون", "Security Alerts": "تنبيهات أمنية",
+                "Member Name": "اسم العضو", "ID": "المعرف", "Timestamp": "الوقت", "Status": "الحالة", "Registered Members": "الأعضاء المسجلون", "Fingerprint ID": "معرف البصمة", "Total Scans Today": "مسح اليوم",
+                "System Settings": "إعدادات النظام", "Change Admin Username": "تغيير اسم المسؤول", "Change Password": "تغيير كلمة المرور", "Hardware Sync Interval (Seconds)": "فترة مزامنة الأجهزة (ثانية)", "Save Changes": "حفظ التغييرات"
             }
         };
 
@@ -831,7 +830,7 @@
                     const dateStr = new Date(log.scanned_at).toLocaleDateString();
                     const isGranted = log.status === 'Granted';
                     const badgeClass = isGranted ? 'badge-granted' : 'badge-denied';
-                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:#d97706; cursor:help;">??</span>` : '';
+                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:#d97706; cursor:help;">⚠️</span>` : '';
 
                     return `
                         <tr>
