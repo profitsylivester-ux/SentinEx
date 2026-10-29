@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SentinEx | Security & Innovation</title>
+    <title>SentinEx | Biometric & IoT Systems</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -29,14 +29,24 @@
         #landing-page { display: block; }
 
         /* Navbar */
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: transparent; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
         .logo-container { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; }
         .logo-box { background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 700; }
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
         .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
         .nav-links a:hover { color: var(--text-main); }
+        
         .nav-actions { display: flex; gap: 16px; align-items: center; }
-        .lang-select { border: none; background: transparent; font-family: 'Inter'; font-size: 14px; font-weight: 500; cursor: pointer; outline: none; }
+        
+        /* Custom Language Dropdown */
+        .lang-dropdown { position: relative; display: inline-block; }
+        .lang-btn { background: transparent; border: 1px solid var(--border); padding: 8px 12px; border-radius: 20px; font-family: 'Inter'; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+        .lang-btn:hover { background: var(--card-bg); }
+        .lang-menu { display: none; position: absolute; top: 100%; right: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--shadow); min-width: 120px; z-index: 100; }
+        .lang-menu.show { display: block; }
+        .lang-menu div { padding: 10px 16px; cursor: pointer; font-size: 14px; }
+        .lang-menu div:hover { background: var(--bg-color); }
+
         .btn-primary { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; border: none; }
         .btn-primary:hover { transform: translateY(-2px); }
 
@@ -48,15 +58,22 @@
         .hero-images { position: relative; height: 500px; }
         .hero-img { position: absolute; border-radius: 12px; box-shadow: var(--shadow); object-fit: cover; transition: transform 0.3s; }
         .hero-img:hover { transform: scale(1.02) translateY(-5px); z-index: 10; }
-        .img-1 { width: 65%; top: 0; left: 0; height: 300px; object-fit: cover; }
-        .img-2 { width: 45%; top: 20px; right: 0; height: 220px; object-fit: cover; }
-        .img-3 { width: 40%; bottom: 0; right: 5%; height: 250px; object-fit: cover; }
-        .img-4 { width: 35%; bottom: 40px; left: 10%; height: 180px; object-fit: cover; filter: blur(2px); opacity: 0.8; }
+        .img-1 { width: 65%; top: 0; left: 0; height: 300px; }
+        .img-2 { width: 45%; top: 20px; right: 0; height: 220px; }
+        .img-3 { width: 40%; bottom: 0; right: 5%; height: 250px; }
+        .img-4 { width: 35%; bottom: 40px; left: 10%; height: 180px; filter: blur(2px); opacity: 0.8; }
+
+        /* Sections */
+        .section { padding: 80px 5%; border-top: 1px solid var(--border); }
+        .section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
+        .section h2 { font-size: 3rem; font-weight: 500; margin-bottom: 40px; letter-spacing: -1px; }
+        .section-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border); }
+        .card h3 { font-size: 20px; margin-bottom: 10px; }
+        .card p { color: var(--text-muted); font-size: 15px; }
 
         /* Contact Section */
-        .contact { background: #eae8e1; padding: 80px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; border-top: 1px solid var(--border); }
-        .contact-info h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
-        .contact-info h2 { font-size: 3.5rem; line-height: 1.1; font-weight: 500; letter-spacing: -1px; margin-bottom: 30px; }
+        .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
         .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
         .info-icon { background: white; padding: 12px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -70,20 +87,38 @@
         .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
         .form-group textarea { resize: vertical; height: 120px; }
         
-        /* Map Container */
         .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-container iframe { width: 100%; height: 100%; border: 0; }
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
 
-        /* --- DASHBOARD (Hidden by default) --- */
+        /* --- PREMIUM FOOTER --- */
+        footer { background: #0f0f0f; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
+        .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
+        .footer-brand p { color: #888; font-size: 15px; max-width: 300px; margin-bottom: 20px; }
+        .footer-brand .address { color: #888; font-size: 14px; margin-bottom: 20px; line-height: 1.8; }
+        .footer-brand .email { color: #fff; text-decoration: none; border-bottom: 1px solid #555; padding-bottom: 2px; font-size: 15px; }
+        .footer-socials { display: flex; gap: 12px; margin-top: 30px; }
+        .footer-socials a { display: flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #333; color: #888; text-decoration: none; transition: all 0.3s; }
+        .footer-socials a:hover { border-color: #fff; color: #fff; }
+        
+        .footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 24px; font-weight: 500; }
+        .footer-col ul { list-style: none; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a { color: #ddd; text-decoration: none; font-size: 15px; transition: color 0.2s; }
+        .footer-col ul li a:hover { color: #fff; }
+
+        .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
+        .footer-bottom .privacy { display: flex; align-items: center; gap: 8px; }
+
+        /* --- LOGIN MODAL (Premium Style) --- */
+        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.9); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
+        .login-card { background: var(--card-bg); padding: 50px; border-radius: 16px; width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border); text-align: center; }
+        .login-card h1 { font-size: 2.5rem; font-weight: 500; margin-bottom: 10px; letter-spacing: -1px; }
+        .login-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 30px; }
+        
+        /* --- DASHBOARD APP --- */
         #app-screen { display: none; height: 100vh; background: #f3f4f6; color: #111827; }
-        
-        /* Login Screen Overlay */
-        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; }
-        .login-card { background: white; padding: 40px; border-radius: 16px; width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; }
-        .login-card h1 { color: #000; font-size: 28px; margin-bottom: 10px; }
-        .login-card p { color: #555; font-size: 14px; margin-bottom: 30px; }
-        
         .dashboard-layout { display: flex; height: 100vh; }
         .dash-sidebar { width: 260px; background: #111827; color: white; display: flex; flex-direction: column; }
         .dash-sidebar .logo { padding: 24px; font-size: 24px; font-weight: 700; border-bottom: 1px solid #1f2937; color: white; }
@@ -93,14 +128,10 @@
         .dash-link:hover, .dash-link.active { background: #1f2937; color: white; }
         .dash-main { flex: 1; padding: 32px; overflow-y: auto; }
         .dash-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .dash-topbar h2 { font-size: 24px; font-weight: 600; }
-        .dash-btn { background: #dc2626; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
-
         .dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
         .dash-card { background: white; padding: 24px; border-radius: 12px; border: 1px solid #e5e7eb; }
         .dash-card .title { font-size: 13px; color: #6b7280; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
         .dash-card .value { font-size: 32px; font-weight: 700; }
-
         .dash-table-container { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
@@ -108,11 +139,6 @@
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge-granted { background: #ecfdf5; color: #059669; }
         .badge-denied { background: #fef2f2; color: #dc2626; }
-
-        @media (max-width: 900px) {
-            .hero, .contact { grid-template-columns: 1fr; }
-            .hero-images { display: none; }
-        }
     </style>
 </head>
 <body>
@@ -125,34 +151,36 @@
                 <div class="logo-box">SENTINEX</div>
             </div>
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#services">Services</a>
-                <a href="#work">Work</a>
-                <a href="#team">Team</a>
-                <a href="#contact">Contact</a>
+                <a href="#about" data-en="About" data-sw="Kuhusu">About</a>
+                <a href="#services" data-en="Services" data-sw="Huduma">Services</a>
+                <a href="#work" data-en="Work" data-sw="Kazi">Work</a>
+                <a href="#team" data-en="Team" data-sw="Timu">Team</a>
+                <a href="#contact" data-en="Contact" data-sw="Mawasiliano">Contact</a>
             </div>
             <div class="nav-actions">
-                <select class="lang-select" onchange="changeLanguage(this.value)">
-                    <option value="en">🇬🇧 EN</option>
-                    <option value="sw">🇹🇿 SW</option>
-                    <option value="fr">🇫🇷 FR</option>
-                    <option value="zh">🇨🇳 ZH</option>
-                    <option value="ar">🇸🇦 AR</option>
-                </select>
-                <button class="btn-primary" onclick="openLogin()">Client Login &rarr;</button>
+                <div class="lang-dropdown">
+                    <button class="lang-btn" onclick="document.getElementById('lang-menu').classList.toggle('show')">🌐 <span id="current-lang">EN</span></button>
+                    <div class="lang-menu" id="lang-menu">
+                        <div onclick="setLanguage('en')">🇬🇧 English</div>
+                        <div onclick="setLanguage('sw')">🇹🇿 Kiswahili</div>
+                        <div onclick="setLanguage('fr')">🇫🇷 Français</div>
+                        <div onclick="setLanguage('zh')">🇨🇳 中文</div>
+                        <div onclick="setLanguage('ar')">🇸🇦 العربية</div>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="openLogin()" data-en="Client Login &rarr;" data-sw="Ingia Mteja &rarr;">Client Login &rarr;</button>
             </div>
         </nav>
 
-        <!-- Hero Section -->
+        <!-- Hero Section (Now Explains SentinEx) -->
         <section class="hero" id="about">
             <div class="hero-text">
-                <h5>ABOUT SENTINEX</h5>
-                <h1>A security system that stays <em>close to the problem</em></h1>
-                <p>We engineer biometric and IoT solutions from Kigamboni, Kiswani, Dar es Salaam, building secure systems aimed at real-world institutional challenges.</p>
-                <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Work with us &rarr;</button>
+                <h5 data-en="ABOUT SENTINEX" data-sw="KUHUSU SENTINEX">ABOUT SENTINEX</h5>
+                <h1 data-en="Secure attendance systems built for <em>local institutions</em>" data-sw="Mifumo salama ya mahudhurio iliyoundwa kwa ajili ya <em>taasisi za ndani</em>">Secure attendance systems built for <em>local institutions</em></h1>
+                <p data-en="We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline." data-sw="Tunabuni na kutekeleza vifaa vya kibaiometriki na dashibodi za wingu kutoka Kigamboni, Kiswani. Mifumo yetu husaidia shule na ofisi kusimamia mahudhurio na udhibiti wa ufikiaji kwa uhakika, hata mtandao unapokatika.">We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline.</p>
+                <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" data-en="Work with us &rarr;" data-sw="Fanya kazi nasi &rarr;">Work with us &rarr;</button>
             </div>
             <div class="hero-images">
-                <!-- Placeholder images mimicking the screenshot layout -->
                 <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team working">
                 <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=600" class="hero-img img-2" alt="Presentation">
                 <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=600" class="hero-img img-3" alt="Meeting">
@@ -160,89 +188,211 @@
             </div>
         </section>
 
+        <!-- Services Section -->
+        <section class="section" id="services" style="background: #eae8e1;">
+            <h5 data-en="OUR SERVICES" data-sw="HUDUMA ZETU">OUR SERVICES</h5>
+            <h2 data-en="What we <em>deliver</em>" data-sw="Tunachotoa <em>huduma</em>">What we <em>deliver</em></h2>
+            <div class="section-grid">
+                <div class="card">
+                    <h3 data-en="Biometric Hardware" data-sw="Vifaa vya Kibaiometriki">Biometric Hardware</h3>
+                    <p data-en="Custom fingerprint and facial recognition terminals built for high-traffic environments." data-sw="Vifaa maalum vya kuchanganua alama za vidole na uso kwa mazingira yenye watu wengi.">Custom fingerprint and facial recognition terminals built for high-traffic environments.</p>
+                </div>
+                <div class="card">
+                    <h3 data-en="Cloud Dashboards" data-sw="Dashibodi za Wingu">Cloud Dashboards</h3>
+                    <p data-en="Real-time multi-tenant web applications to monitor security and attendance logs." data-sw="Programu za wavuti za wakati halisi kufuatilia usalama na mahudhurio.">Real-time multi-tenant web applications to monitor security and attendance logs.</p>
+                </div>
+                <div class="card">
+                    <h3 data-en="System Integration" data-sw="Muunganisho wa Mfumo">System Integration</h3>
+                    <p data-en="Connecting legacy institutional software with modern IoT edge devices." data-sw="Kuunganisha programu za zamani za taasisi na vifaa vya kisasa vya IoT.">Connecting legacy institutional software with modern IoT edge devices.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Work Section -->
+        <section class="section" id="work">
+            <h5 data-en="OUR WORK" data-sw="KAZI ZETU">OUR WORK</h5>
+            <h2 data-en="Recent <em>deployments</em>" data-sw="Utekelezaji wa <em>hivi karibuni</em>">Recent <em>deployments</em></h2>
+            <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Campus">
+                    <div style="padding: 20px;">
+                        <h3 data-en="Mbeka University" data-sw="Chuo Kikuu cha Mbeka">Mbeka University</h3>
+                        <p data-en="Deployed 12 biometric terminals across 4 faculties for automated attendance." data-sw="Tuliweka vifaa 12 vya kibaiometriki katika vitivo 4 kwa mahudhurio ya kiotomatiki.">Deployed 12 biometric terminals across 4 faculties for automated attendance.</p>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Office">
+                    <div style="padding: 20px;">
+                        <h3 data-en="TechHub Dar" data-sw="TechHub Dar">TechHub Dar</h3>
+                        <p data-en="Access control system for 500+ members using fingerprint and RFID." data-sw="Mfumo wa udhibiti wa ufikiaji kwa wanachama 500+ kwa kutumia alama za vidole na RFID.">Access control system for 500+ members using fingerprint and RFID.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section" id="team" style="background: #eae8e1;">
+            <h5 data-en="THE TEAM" data-sw="TIMU YETU">THE TEAM</h5>
+            <h2 data-en="The minds <em>behind it</em>" data-sw="Wanafikiri <em>nyuma yake</em>">The minds <em>behind it</em></h2>
+            <div class="section-grid">
+                <div class="card" style="text-align: center;">
+                    <div style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; margin: 0 auto 20px;"></div>
+                    <h3>Faida</h3>
+                    <p data-en="Founder & Lead Engineer" data-sw="Mwanzilishi na Mhandisi Mkuu">Founder & Lead Engineer</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; margin: 0 auto 20px;"></div>
+                    <h3>Lameck</h3>
+                    <p data-en="Hardware Architect" data-sw="Mbunifu wa Vifaa">Hardware Architect</p>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <div style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; margin: 0 auto 20px;"></div>
+                    <h3>Fedelika</h3>
+                    <p data-en="Software Developer" data-sw="Msanidi Programu">Software Developer</p>
+                </div>
+            </div>
+        </section>
+
         <!-- Contact Section -->
-        <section class="contact" id="contact">
+        <section class="section contact" id="contact">
             <div class="contact-info">
-                <h5>GET IN TOUCH</h5>
-                <h2>Back African <em>engineering</em></h2>
-                <p>Write to us about partnerships, deployment, or custom hardware requests for your institution.</p>
+                <h5 data-en="GET IN TOUCH" data-sw="WASILIANA NASI">GET IN TOUCH</h5>
+                <h2 data-en="Back African <em>engineering</em>" data-sw="Saidia <em>uhandisi wa Afrika</em>">Back African <em>engineering</em></h2>
+                <p data-en="Write to us about partnerships, deployment, or custom hardware requests for your institution." data-sw="Tuandikie kuhusu ubia, utekelezaji, au maombi maalum ya vifaa kwa taasisi yako.">Write to us about partnerships, deployment, or custom hardware requests for your institution.</p>
                 
                 <div class="info-item">
                     <div class="info-icon">📍</div>
                     <div class="info-text">
-                        <h6>LOCATION</h6>
+                        <h6 data-en="LOCATION" data-sw="MAHALI">LOCATION</h6>
                         <p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p>
                     </div>
                 </div>
-
                 <div class="info-item">
                     <div class="info-icon">📞</div>
                     <div class="info-text">
-                        <h6>PHONE</h6>
+                        <h6 data-en="PHONE" data-sw="SIMU">PHONE</h6>
                         <p>0748743673</p>
                     </div>
                 </div>
-
                 <div class="info-item">
                     <div class="info-icon">✉️</div>
                     <div class="info-text">
-                        <h6>EMAIL</h6>
+                        <h6 data-en="EMAIL" data-sw="BARUA PEPE">EMAIL</h6>
                         <p>SentinExappliances@gmail.com</p>
                     </div>
                 </div>
 
-                <!-- Map (Satellite by default) -->
                 <div class="map-container">
-                    <button class="map-toggle" onclick="toggleMap()" id="map-btn">Switch to Plain</button>
+                    <button class="map-toggle" onclick="toggleMap()" id="map-btn" data-en="Switch to Plain" data-sw="Badilisha Ramani">Switch to Plain</button>
                     <iframe id="google-map" src="https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
                 </div>
             </div>
 
             <div class="contact-card">
-                <form onsubmit="event.preventDefault(); alert('Message sent successfully (Simulation)');">
+                <form onsubmit="event.preventDefault(); alert('Message sent!');">
                     <div class="form-group">
-                        <label>NAME</label>
+                        <label data-en="NAME" data-sw="JINA">NAME</label>
                         <input type="text" placeholder="Your full name" required>
                     </div>
                     <div class="form-group">
-                        <label>EMAIL</label>
+                        <label data-en="EMAIL" data-sw="BARUA PEPE">EMAIL</label>
                         <input type="email" placeholder="you@institution.org" required>
                     </div>
                     <div class="form-group">
-                        <label>INTEREST</label>
+                        <label data-en="INTEREST" data-sw="NIA">INTEREST</label>
                         <select>
-                            <option>Partnership</option>
-                            <option>Device Deployment</option>
-                            <option>Software Customization</option>
-                            <option>General Inquiry</option>
+                            <option data-en="Partnership" data-sw="Ubia">Partnership</option>
+                            <option data-en="Device Deployment" data-sw="Utekelezaji wa Vifaa">Device Deployment</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>MESSAGE</label>
-                        <textarea placeholder="What would you like to work on with us?"></textarea>
+                        <label data-en="MESSAGE" data-sw="UJUMBE">MESSAGE</label>
+                        <textarea placeholder="What would you like to work on?"></textarea>
                     </div>
-                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Send message &rarr;</button>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" data-en="Send message &rarr;" data-sw="Tuma ujumbe &rarr;">Send message &rarr;</button>
                 </form>
             </div>
         </section>
+
+        <!-- PREMIUM FOOTER -->
+        <footer>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <div class="logo-box">SENTINEX</div> Appliances
+                    </div>
+                    <p>A local IoT engineering lab building secure biometric systems for African institutions.</p>
+                    <div class="address">
+                        Kigamboni, Kiswani<br>
+                        Dar es Salaam, Tanzania
+                    </div>
+                    <a href="mailto:SentinExappliances@gmail.com" class="email">SentinExappliances@gmail.com</a>
+                    
+                    <div class="footer-socials">
+                        <a href="#">💻</a> <!-- Replace with GitHub SVG -->
+                        <a href="#">💼</a> <!-- Replace with LinkedIn SVG -->
+                        <a href="#">📸</a> <!-- Replace with Instagram SVG -->
+                    </div>
+                </div>
+
+                <div class="footer-col">
+                    <h4>THE PLATFORM</h4>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#work">Process</a></li>
+                        <li><a href="#team">Team</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>WORK</h4>
+                    <ul>
+                        <li><a href="#work">Projects</a></li>
+                        <li><a href="#">Media</a></li>
+                        <li><a href="#">Articles</a></li>
+                        <li><a href="#">Bootcamp</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>SUPPORT</h4>
+                    <ul>
+                        <li><a href="#">Grants & partners</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div>&copy; 2026 SentinEx Appliances. All rights reserved.</div>
+                <div class="privacy">Privacy policy — coming soon ⚙️</div>
+            </div>
+        </footer>
     </div>
 
     <!-- 2. LOGIN MODAL -->
     <div id="login-modal">
         <div class="login-card">
-            <h1>SentinEx Portal</h1>
-            <p>Enter your credentials to access the live dashboard.</p>
+            <h1>SentinEx <em>Portal</em></h1>
+            <p>Enter your credentials to access your institution's dashboard.</p>
+            
+            <div class="form-group" style="text-align: left;">
+                <label>Organization ID</label>
+                <input type="text" id="org-id" placeholder="e.g. MbekaUniversity" value="SentinEx">
+            </div>
             <div class="form-group" style="text-align: left;">
                 <label>Username</label>
-                <input type="text" id="username" placeholder="SentinEx">
+                <input type="text" id="username" placeholder="admin" value="SentinEx">
             </div>
             <div class="form-group" style="text-align: left;">
                 <label>Password</label>
-                <input type="password" id="password" placeholder="••••">
+                <input type="password" id="password" placeholder="••••" value="1234">
             </div>
-            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="login()">Secure Login</button>
-            <button onclick="closeLogin()" style="background:none; border:none; margin-top:15px; color:#555; cursor:pointer;">Cancel</button>
-            <p id="login-error" style="color: #dc2626; font-size: 13px; margin-top: 10px; display: none;">Invalid credentials. Try SentinEx / 1234</p>
+            
+            <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="login()">Secure Login</button>
+            <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;">Cancel</button>
+            <p id="login-error" style="color: var(--danger); font-size: 13px; margin-top: 15px; display: none;">Invalid credentials.</p>
         </div>
     </div>
 
@@ -252,29 +402,29 @@
             <aside class="dash-sidebar">
                 <div class="logo">Sentin<span>Ex</span></div>
                 <div class="dash-nav">
-                    <a class="dash-link active">📊 Dashboard</a>
-                    <a class="dash-link">👥 Members</a>
-                    <a class="dash-link">⚙️ Settings</a>
-                    <a class="dash-link" onclick="logout()" style="margin-top: 50px; color: #dc2626;">🚪 Exit to Website</a>
+                    <a class="dash-link active" data-en="📊 Dashboard" data-sw="📊 Dashibodi">📊 Dashboard</a>
+                    <a class="dash-link" data-en="👥 Members" data-sw="👥 Wanachama">👥 Members</a>
+                    <a class="dash-link" data-en="⚙️ Settings" data-sw="⚙️ Mipangilio">⚙️ Settings</a>
+                    <a class="dash-link" onclick="logout()" style="margin-top: 50px; color: #dc2626;" data-en="🚪 Exit to Website" data-sw="🚪 Toka kwenye Wavuti">🚪 Exit to Website</a>
                 </div>
             </aside>
             <main class="dash-main">
                 <div class="dash-topbar">
-                    <h2>System Overview</h2>
-                    <div style="color: #059669; font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">🟢 Live Connection</div>
+                    <h2 data-en="System Overview" data-sw="Muhtasari wa Mfumo">System Overview</h2>
+                    <div style="color: #059669; font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;" data-en="🟢 Live Connection" data-sw="🟢 Muunganisho Hai">🟢 Live Connection</div>
                 </div>
 
                 <div class="dash-stats">
                     <div class="dash-card">
-                        <div class="title">Total Scans</div>
+                        <div class="title" data-en="Total Scans" data-sw="Jumla ya Skana">Total Scans</div>
                         <div class="value" id="total-scans">0</div>
                     </div>
                     <div class="dash-card">
-                        <div class="title">Unique Members</div>
+                        <div class="title" data-en="Unique Members" data-sw="Wanachama Pekee">Unique Members</div>
                         <div class="value" id="unique-members">0</div>
                     </div>
                     <div class="dash-card">
-                        <div class="title">Security Alerts</div>
+                        <div class="title" data-en="Security Alerts" data-sw="Tahadhari za Usalama">Security Alerts</div>
                         <div class="value" id="security-alerts" style="color: #dc2626;">0</div>
                     </div>
                 </div>
@@ -283,10 +433,10 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Member Name</th>
-                                <th>ID</th>
-                                <th>Timestamp</th>
-                                <th>Status</th>
+                                <th data-en="Member Name" data-sw="Jina la Mwanachama">Member Name</th>
+                                <th data-en="ID" data-sw="Kitambulisho">ID</th>
+                                <th data-en="Timestamp" data-sw="Muda">Timestamp</th>
+                                <th data-en="Status" data-sw="Hali">Status</th>
                             </tr>
                         </thead>
                         <tbody id="log-body">
@@ -301,6 +451,59 @@
     <script>
         let logsData = [];
         let isSatellite = true;
+
+        // --- LANGUAGE DICTIONARY ---
+        const translations = {
+            'en': {},
+            'sw': {},
+            'fr': {
+                "About": "À Propos", "Services": "Services", "Work": "Travail", "Team": "Équipe", "Contact": "Contact",
+                "Client Login &rarr;": "Connexion Client &rarr;", "ABOUT SENTINEX": "À PROPOS DE SENTINEX",
+                "Secure attendance systems built for <em>local institutions</em>": "Systèmes de présence sécurisés conçus pour les <em>institutions locales</em>",
+                "Work with us &rarr;": "Travaillez avec nous &rarr;", "OUR SERVICES": "NOS SERVICES",
+                "What we <em>deliver</em>": "Ce que nous <em>livrons</em>", "GET IN TOUCH": "CONTACTEZ-NOUS",
+                "Back African <em>engineering</em>": "Soutenir l'<em>ingénierie</em> africaine"
+            },
+            'zh': {
+                "About": "关于", "Services": "服务", "Work": "工作", "Team": "团队", "Contact": "联系我们",
+                "Client Login &rarr;": "客户登录 &rarr;", "ABOUT SENTINEX": "关于 SENTINEX",
+                "Secure attendance systems built for <em>local institutions</em>": "为<em>本地机构</em>构建的安全考勤系统",
+                "Work with us &rarr;": "与我们合作 &rarr;", "OUR SERVICES": "我们的服务",
+                "What we <em>deliver</em>": "我们<em>提供</em>什么", "GET IN TOUCH": "联系我们",
+                "Back African <em>engineering</em>": "支持非洲<em>工程</em>"
+            },
+            'ar': {
+                "About": "من نحن", "Services": "خدماتنا", "Work": "أعمالنا", "Team": "فريقنا", "Contact": "اتصل بنا",
+                "Client Login &rarr;": "دخول العملاء &rarr;", "ABOUT SENTINEX": "عن سينتينكس",
+                "Secure attendance systems built for <em>local institutions</em>": "أنظمة حضور آمنة مبنية لـ<em>لمؤسسات المحلية</em>",
+                "Work with us &rarr;": "اعمل معنا &rarr;", "OUR SERVICES": "خدماتنا",
+                "What we <em>deliver</em>": "ما <em>نقدمه</em>", "GET IN TOUCH": "تواصل معنا",
+                "Back African <em>engineering</em>": "دعم <em>الهندسة</em> الأفريقية"
+            }
+        };
+
+        function setLanguage(lang) {
+            document.getElementById('current-lang').innerText = lang.toUpperCase();
+            document.getElementById('lang-menu').classList.remove('show');
+            
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const originalEn = el.getAttribute('data-en');
+                if (lang === 'en') {
+                    el.innerHTML = originalEn;
+                } else if (lang === 'sw') {
+                    const swText = el.getAttribute('data-sw');
+                    if(swText) el.innerHTML = swText;
+                } else if (translations[lang] && translations[lang][originalEn]) {
+                    el.innerHTML = translations[lang][originalEn];
+                }
+            });
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.lang-dropdown')) {
+                document.getElementById('lang-menu').classList.remove('show');
+            }
+        }
 
         // --- MAP TOGGLE ---
         function toggleMap() {
@@ -317,20 +520,15 @@
             }
         }
 
-        // --- LANGUAGE DROPDOWN ---
-        function changeLanguage(lang) {
-            // Simple demo: alert on change. Later we will add JSON translations.
-            if(lang === 'sw') alert("Umebadilisha lugha kuwa Kiswahili (Simulation)");
-            if(lang === 'fr') alert("Langue changée en Français (Simulation)");
-        }
-
         // --- AUTH & VIEW LOGIC ---
         function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
         function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
         
         function login() {
+            const org = document.getElementById('org-id').value;
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+            
             if (user === 'SentinEx' && pass === '1234') {
                 document.getElementById('login-modal').style.display = 'none';
                 document.getElementById('landing-page').style.display = 'none';
@@ -344,9 +542,6 @@
         function logout() {
             document.getElementById('app-screen').style.display = 'none';
             document.getElementById('landing-page').style.display = 'block';
-            document.getElementById('username').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('login-error').style.display = 'none';
         }
 
         // --- DASHBOARD DATA FETCHING ---
