@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SentinEx | Biometric & IoT Systems</title>
+    
+    <!-- The Custom Favicon (Black 'S' with White Background) -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
@@ -15,7 +19,7 @@
             --text-muted: #555555;
             --card-bg: #ffffff;
             --border: #e5e5e5;
-            --primary: #000000;
+            --primary: #111111;
             --success: #059669;
             --danger: #dc2626;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
@@ -25,13 +29,15 @@
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
         em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; }
 
+        /* --- SHARED LOGO STYLES --- */
+        .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; cursor: pointer; }
+        .logo-svg { width: 32px; height: 32px; border-radius: 6px; }
+
         /* --- LANDING PAGE --- */
         #landing-page { display: block; }
 
         /* Navbar */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
-        .logo-container { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; }
-        .logo-box { background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 700; }
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
         .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
         .nav-links a:hover { color: var(--text-main); }
@@ -68,8 +74,8 @@
         .section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
         .section h2 { font-size: 3rem; font-weight: 500; margin-bottom: 40px; letter-spacing: -1px; }
         .section-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border); }
-        .card h3 { font-size: 20px; margin-bottom: 10px; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .card h3 { font-size: 20px; margin-bottom: 10px; font-weight: 600; }
         .card p { color: var(--text-muted); font-size: 15px; }
 
         /* Contact Section */
@@ -80,7 +86,7 @@
         .info-text h6 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
         .info-text p { margin: 0; font-size: 16px; color: var(--text-main); font-weight: 500; }
 
-        .contact-card { background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); }
+        .contact-card { background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter'; font-size: 15px; background: #fafafa; outline: none; transition: border 0.2s; }
@@ -92,7 +98,7 @@
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
 
         /* --- PREMIUM FOOTER --- */
-        footer { background: #0f0f0f; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
+        footer { background: #111111; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
         .footer-brand p { color: #888; font-size: 15px; max-width: 300px; margin-bottom: 20px; }
@@ -109,36 +115,46 @@
         .footer-col ul li a:hover { color: #fff; }
 
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
-        .footer-bottom .privacy { display: flex; align-items: center; gap: 8px; }
-
-        /* --- LOGIN MODAL (Premium Style) --- */
+        
+        /* --- LOGIN MODAL --- */
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.9); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
-        .login-card { background: var(--card-bg); padding: 50px; border-radius: 16px; width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 1px solid var(--border); text-align: center; }
+        .login-card { background: var(--card-bg); padding: 50px; border-radius: 16px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2.5rem; font-weight: 500; margin-bottom: 10px; letter-spacing: -1px; }
         .login-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 30px; }
         
-        /* --- DASHBOARD APP --- */
-        #app-screen { display: none; height: 100vh; background: #f3f4f6; color: #111827; }
+        /* --- NEW PREMIUM DASHBOARD APP --- */
+        #app-screen { display: none; height: 100vh; background: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; }
         .dashboard-layout { display: flex; height: 100vh; }
-        .dash-sidebar { width: 260px; background: #111827; color: white; display: flex; flex-direction: column; }
-        .dash-sidebar .logo { padding: 24px; font-size: 24px; font-weight: 700; border-bottom: 1px solid #1f2937; color: white; }
-        .dash-sidebar .logo span { color: #60a5fa; }
+        
+        /* Sidebar */
+        .dash-sidebar { width: 260px; background: #111111; color: white; display: flex; flex-direction: column; }
+        .dash-sidebar .logo { padding: 24px; border-bottom: 1px solid #333; }
         .dash-nav { padding: 20px 12px; flex: 1; }
-        .dash-link { display: block; padding: 12px 16px; color: #9ca3af; text-decoration: none; border-radius: 8px; margin-bottom: 8px; cursor: pointer; }
-        .dash-link:hover, .dash-link.active { background: #1f2937; color: white; }
-        .dash-main { flex: 1; padding: 32px; overflow-y: auto; }
-        .dash-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
-        .dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
-        .dash-card { background: white; padding: 24px; border-radius: 12px; border: 1px solid #e5e7eb; }
-        .dash-card .title { font-size: 13px; color: #6b7280; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
-        .dash-card .value { font-size: 32px; font-weight: 700; }
-        .dash-table-container { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; }
+        .dash-link { display: flex; align-items: center; gap: 10px; padding: 14px 16px; color: #888888; text-decoration: none; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; font-size: 15px; }
+        .dash-link:hover, .dash-link.active { background: #222222; color: white; }
+        
+        /* Main Content */
+        .dash-main { flex: 1; padding: 40px 5%; overflow-y: auto; }
+        .dash-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .dash-topbar h2 { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 500; letter-spacing: -1px; margin: 0; }
+        
+        /* Stats Cards */
+        .dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+        .dash-card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .dash-card .title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 12px; letter-spacing: 1px; }
+        .dash-card .value { font-size: 48px; font-weight: 500; font-family: 'Playfair Display', serif; line-height: 1; }
+        
+        /* Table */
+        .dash-table-container { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
-        th { background: #f9fafb; color: #6b7280; font-size: 12px; text-transform: uppercase; }
-        .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .badge-granted { background: #ecfdf5; color: #059669; }
-        .badge-denied { background: #fef2f2; color: #dc2626; }
+        th, td { padding: 20px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 15px; }
+        th { background: #eae8e1; color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+        tr:hover { background: #fbfbfa; }
+        tr:last-child td { border-bottom: none; }
+        
+        .badge { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+        .badge-granted { background: #ecfdf5; color: var(--success); border: 1px solid #a7f3d0; }
+        .badge-denied { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
     </style>
 </head>
 <body>
@@ -147,8 +163,9 @@
     <div id="landing-page">
         <!-- Navbar -->
         <nav>
-            <div class="logo-container">
-                <div class="logo-box">SENTINEX</div>
+            <div class="logo-container" onclick="window.scrollTo(0,0)">
+                <svg class="logo-svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#111111"/><text x="50" y="75" font-family="Inter, sans-serif" font-size="75" font-weight="bold" fill="white" text-anchor="middle">S</text></svg>
+                <span>SentinEx</span>
             </div>
             <div class="nav-links">
                 <a href="#about" data-en="About" data-sw="Kuhusu">About</a>
@@ -172,7 +189,7 @@
             </div>
         </nav>
 
-        <!-- Hero Section (Now Explains SentinEx) -->
+        <!-- Hero Section -->
         <section class="hero" id="about">
             <div class="hero-text">
                 <h5 data-en="ABOUT SENTINEX" data-sw="KUHUSU SENTINEX">ABOUT SENTINEX</h5>
@@ -216,7 +233,7 @@
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Campus">
                     <div style="padding: 20px;">
-                        <h3 data-en="Mbeka University" data-sw="Chuo Kikuu cha Mbeka">Mbeka University</h3>
+                        <h3 data-en="Ohio University" data-sw="Chuo Kikuu cha Ohio">Ohio University</h3>
                         <p data-en="Deployed 12 biometric terminals across 4 faculties for automated attendance." data-sw="Tuliweka vifaa 12 vya kibaiometriki katika vitivo 4 kwa mahudhurio ya kiotomatiki.">Deployed 12 biometric terminals across 4 faculties for automated attendance.</p>
                     </div>
                 </div>
@@ -314,12 +331,13 @@
             </div>
         </section>
 
-        <!-- PREMIUM FOOTER -->
+        <!-- FOOTER -->
         <footer>
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="logo">
-                        <div class="logo-box">SENTINEX</div> Appliances
+                        <svg class="logo-svg" viewBox="0 0 100 100" style="width: 28px; height: 28px;"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Inter, sans-serif" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg>
+                        SentinEx Appliances
                     </div>
                     <p>A local IoT engineering lab building secure biometric systems for African institutions.</p>
                     <div class="address">
@@ -379,7 +397,7 @@
             
             <div class="form-group" style="text-align: left;">
                 <label>Organization ID</label>
-                <input type="text" id="org-id" placeholder="e.g. MbekaUniversity" value="SentinEx">
+                <input type="text" id="org-id" placeholder="e.g. OhioUniversity" value="SentinEx">
             </div>
             <div class="form-group" style="text-align: left;">
                 <label>Username</label>
@@ -396,11 +414,16 @@
         </div>
     </div>
 
-    <!-- 3. THE DASHBOARD APP -->
+    <!-- 3. THE PREMIUM DASHBOARD APP -->
     <div id="app-screen">
         <div class="dashboard-layout">
             <aside class="dash-sidebar">
-                <div class="logo">Sentin<span>Ex</span></div>
+                <div class="logo">
+                    <div class="logo-container">
+                        <svg class="logo-svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Inter, sans-serif" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg>
+                        <span style="font-size: 20px; font-weight: 600; letter-spacing: -0.5px; margin-left: 5px;">SentinEx</span>
+                    </div>
+                </div>
                 <div class="dash-nav">
                     <a class="dash-link active" data-en="📊 Dashboard" data-sw="📊 Dashibodi">📊 Dashboard</a>
                     <a class="dash-link" data-en="👥 Members" data-sw="👥 Wanachama">👥 Members</a>
@@ -411,7 +434,7 @@
             <main class="dash-main">
                 <div class="dash-topbar">
                     <h2 data-en="System Overview" data-sw="Muhtasari wa Mfumo">System Overview</h2>
-                    <div style="color: #059669; font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;" data-en="🟢 Live Connection" data-sw="🟢 Muunganisho Hai">🟢 Live Connection</div>
+                    <div style="color: var(--success); font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;" data-en="🟢 Live Connection" data-sw="🟢 Muunganisho Hai">🟢 Live Connection</div>
                 </div>
 
                 <div class="dash-stats">
@@ -425,7 +448,7 @@
                     </div>
                     <div class="dash-card">
                         <div class="title" data-en="Security Alerts" data-sw="Tahadhari za Usalama">Security Alerts</div>
-                        <div class="value" id="security-alerts" style="color: #dc2626;">0</div>
+                        <div class="value" id="security-alerts" style="color: var(--danger);">0</div>
                     </div>
                 </div>
 
@@ -525,7 +548,6 @@
         function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
         
         function login() {
-            const org = document.getElementById('org-id').value;
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
             
@@ -564,7 +586,7 @@
         function renderTable() {
             const tbody = document.getElementById('log-body');
             if (logsData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: #6b7280;">No records found.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No records found.</td></tr>`;
                 return;
             }
 
