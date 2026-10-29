@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SentinEx | Biometric & IoT Systems</title>
     
-    <!-- The Custom Favicon (Black 'S' with White Background) -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,7 +110,7 @@
         .footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 24px; font-weight: 500; }
         .footer-col ul { list-style: none; }
         .footer-col ul li { margin-bottom: 12px; }
-        .footer-col ul li a { color: #ddd; text-decoration: none; font-size: 15px; transition: color 0.2s; }
+        .footer-col ul li a { color: #ddd; text-decoration: none; font-size: 15px; transition: color 0.2s; cursor: pointer; }
         .footer-col ul li a:hover { color: #fff; }
 
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
@@ -122,7 +121,7 @@
         .login-card h1 { font-size: 2.5rem; font-weight: 500; margin-bottom: 10px; letter-spacing: -1px; }
         .login-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 30px; }
         
-        /* --- NEW PREMIUM DASHBOARD APP --- */
+        /* --- PREMIUM DASHBOARD APP --- */
         #app-screen { display: none; height: 100vh; background: var(--bg-color); color: var(--text-main); font-family: 'Inter', sans-serif; }
         .dashboard-layout { display: flex; height: 100vh; }
         
@@ -339,7 +338,7 @@
                         <svg class="logo-svg" viewBox="0 0 100 100" style="width: 28px; height: 28px;"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Inter, sans-serif" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg>
                         SentinEx Appliances
                     </div>
-                    <p>A local IoT engineering lab building secure biometric systems for African institutions.</p>
+                    <p data-en="A local IoT engineering lab building secure biometric systems for African institutions." data-sw="Maabara ya uhandisi wa IoT ya ndani inayounda mifumo salama ya kibaiometriki kwa taasisi za Kiafrika.">A local IoT engineering lab building secure biometric systems for African institutions.</p>
                     <div class="address">
                         Kigamboni, Kiswani<br>
                         Dar es Salaam, Tanzania
@@ -347,44 +346,43 @@
                     <a href="mailto:SentinExappliances@gmail.com" class="email">SentinExappliances@gmail.com</a>
                     
                     <div class="footer-socials">
-                        <a href="#">💻</a> <!-- Replace with GitHub SVG -->
-                        <a href="#">💼</a> <!-- Replace with LinkedIn SVG -->
-                        <a href="#">📸</a> <!-- Replace with Instagram SVG -->
+                        <a href="#" title="GitHub">💻</a>
+                        <a href="#" title="LinkedIn">💼</a>
+                        <a href="#" title="Instagram">📸</a>
                     </div>
                 </div>
 
                 <div class="footer-col">
-                    <h4>THE PLATFORM</h4>
+                    <h4 data-en="THE PLATFORM" data-sw="JUKWAA">THE PLATFORM</h4>
                     <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#work">Process</a></li>
-                        <li><a href="#team">Team</a></li>
+                        <li><a href="#about" data-en="About" data-sw="Kuhusu">About</a></li>
+                        <li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li>
+                        <li><a href="#work" data-en="Work" data-sw="Kazi">Work</a></li>
+                        <li><a href="#team" data-en="Team" data-sw="Timu">Team</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
-                    <h4>WORK</h4>
+                    <h4 data-en="SYSTEM" data-sw="MFUMO">SYSTEM</h4>
                     <ul>
-                        <li><a href="#work">Projects</a></li>
-                        <li><a href="#">Media</a></li>
-                        <li><a href="#">Articles</a></li>
-                        <li><a href="#">Bootcamp</a></li>
+                        <li><a onclick="openLogin()" style="cursor:pointer;" data-en="Dashboard" data-sw="Dashibodi">Dashboard</a></li>
+                        <li><a href="#" data-en="Hardware" data-sw="Vifaa">Hardware</a></li>
+                        <li><a href="#" onclick="downloadApp()" data-en="Download Offline App" data-sw="Pakua Programu">Download Offline App</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-col">
-                    <h4>SUPPORT</h4>
+                    <h4 data-en="SUPPORT" data-sw="MSAADA">SUPPORT</h4>
                     <ul>
-                        <li><a href="#">Grants & partners</a></li>
-                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#contact" data-en="Contact" data-sw="Mawasiliano">Contact</a></li>
+                        <li><a href="#" data-en="Documentation" data-sw="Nyaraka">Documentation</a></li>
                     </ul>
                 </div>
             </div>
 
             <div class="footer-bottom">
-                <div>&copy; 2026 SentinEx Appliances. All rights reserved.</div>
-                <div class="privacy">Privacy policy — coming soon ⚙️</div>
+                <div data-en="&copy; 2026 SentinEx Appliances. All rights reserved." data-sw="&copy; 2026 SentinEx Appliances. Haki zote zimehifadhiwa.">&copy; 2026 SentinEx Appliances. All rights reserved.</div>
+                <div class="privacy" data-en="Built with ❤️ in Dar es Salaam" data-sw="Imeundwa kwa ❤️ jijini Dar es Salaam">Built with ❤️ in Dar es Salaam</div>
             </div>
         </footer>
     </div>
@@ -393,24 +391,24 @@
     <div id="login-modal">
         <div class="login-card">
             <h1>SentinEx <em>Portal</em></h1>
-            <p>Enter your credentials to access your institution's dashboard.</p>
+            <p data-en="Enter your credentials to access your institution's dashboard." data-sw="Weka sifa zako kufikia dashibodi ya taasisi yako.">Enter your credentials to access your institution's dashboard.</p>
             
             <div class="form-group" style="text-align: left;">
-                <label>Organization ID</label>
+                <label data-en="ORGANIZATION ID" data-sw="KITAMBULISHO CHA TAASISI">ORGANIZATION ID</label>
                 <input type="text" id="org-id" placeholder="e.g. OhioUniversity" value="SentinEx">
             </div>
             <div class="form-group" style="text-align: left;">
-                <label>Username</label>
+                <label data-en="USERNAME" data-sw="JINA LA MTUMIAJI">USERNAME</label>
                 <input type="text" id="username" placeholder="admin" value="SentinEx">
             </div>
             <div class="form-group" style="text-align: left;">
-                <label>Password</label>
+                <label data-en="PASSWORD" data-sw="NYWILA">PASSWORD</label>
                 <input type="password" id="password" placeholder="••••" value="1234">
             </div>
             
-            <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="login()">Secure Login</button>
-            <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;">Cancel</button>
-            <p id="login-error" style="color: var(--danger); font-size: 13px; margin-top: 15px; display: none;">Invalid credentials.</p>
+            <button class="btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;" onclick="login()" data-en="Secure Login" data-sw="Ingia kwa Usalama">Secure Login</button>
+            <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;" data-en="Cancel" data-sw="Ghairi">Cancel</button>
+            <p id="login-error" style="color: var(--danger); font-size: 13px; margin-top: 15px; display: none;" data-en="Invalid credentials." data-sw="Sifa si sahihi.">Invalid credentials.</p>
         </div>
     </div>
 
@@ -474,8 +472,9 @@
     <script>
         let logsData = [];
         let isSatellite = true;
+        let currentLang = 'en';
 
-        // --- LANGUAGE DICTIONARY ---
+        // --- FULL TRANSLATION DICTIONARY ---
         const translations = {
             'en': {},
             'sw': {},
@@ -483,29 +482,64 @@
                 "About": "À Propos", "Services": "Services", "Work": "Travail", "Team": "Équipe", "Contact": "Contact",
                 "Client Login &rarr;": "Connexion Client &rarr;", "ABOUT SENTINEX": "À PROPOS DE SENTINEX",
                 "Secure attendance systems built for <em>local institutions</em>": "Systèmes de présence sécurisés conçus pour les <em>institutions locales</em>",
+                "We design and deploy biometric hardware...": "Nous concevons et déployons du matériel biométrique...",
                 "Work with us &rarr;": "Travaillez avec nous &rarr;", "OUR SERVICES": "NOS SERVICES",
-                "What we <em>deliver</em>": "Ce que nous <em>livrons</em>", "GET IN TOUCH": "CONTACTEZ-NOUS",
-                "Back African <em>engineering</em>": "Soutenir l'<em>ingénierie</em> africaine"
+                "What we <em>deliver</em>": "Ce que nous <em>livrons</em>", "Biometric Hardware": "Matériel Biométrique",
+                "Cloud Dashboards": "Tableaux de bord Cloud", "System Integration": "Intégration Système",
+                "OUR WORK": "NOTRE TRAVAIL", "Recent <em>deployments</em>": "Déploiements <em>récents</em>",
+                "Ohio University": "Université de l'Ohio", "TechHub Dar": "TechHub Dar",
+                "THE TEAM": "L'ÉQUIPE", "The minds <em>behind it</em>": "Les esprits <em>derrière</em>",
+                "Founder & Lead Engineer": "Fondateur & Ingénieur en Chef", "Hardware Architect": "Architecte Matériel", "Software Developer": "Développeur Logiciel",
+                "GET IN TOUCH": "CONTACTEZ-NOUS", "Back African <em>engineering</em>": "Soutenir l'<em>ingénierie</em> africaine",
+                "Write to us about partnerships...": "Écrivez-nous pour des partenariats...",
+                "LOCATION": "EMPLACEMENT", "PHONE": "TÉLÉPHONE", "EMAIL": "E-MAIL", "NAME": "NOM", "INTEREST": "INTÉRÊT", "MESSAGE": "MESSAGE", "Send message &rarr;": "Envoyer &rarr;",
+                "THE PLATFORM": "LA PLATEFORME", "SYSTEM": "SYSTÈME", "SUPPORT": "SUPPORT", "Dashboard": "Tableau de bord", "Hardware": "Matériel", "Download Offline App": "Télécharger l'application", "Documentation": "Documentation",
+                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. Tous droits réservés.",
+                "Built with ❤️ in Dar es Salaam": "Construit avec ❤️ à Dar es Salaam"
             },
             'zh': {
                 "About": "关于", "Services": "服务", "Work": "工作", "Team": "团队", "Contact": "联系我们",
                 "Client Login &rarr;": "客户登录 &rarr;", "ABOUT SENTINEX": "关于 SENTINEX",
                 "Secure attendance systems built for <em>local institutions</em>": "为<em>本地机构</em>构建的安全考勤系统",
+                "We design and deploy biometric hardware...": "我们设计并部署生物识别硬件...",
                 "Work with us &rarr;": "与我们合作 &rarr;", "OUR SERVICES": "我们的服务",
-                "What we <em>deliver</em>": "我们<em>提供</em>什么", "GET IN TOUCH": "联系我们",
-                "Back African <em>engineering</em>": "支持非洲<em>工程</em>"
+                "What we <em>deliver</em>": "我们<em>提供</em>什么", "Biometric Hardware": "生物识别硬件",
+                "Cloud Dashboards": "云仪表板", "System Integration": "系统集成",
+                "OUR WORK": "我们的工作", "Recent <em>deployments</em>": "最近的<em>部署</em>",
+                "Ohio University": "俄亥俄大学", "TechHub Dar": "TechHub Dar",
+                "THE TEAM": "团队", "The minds <em>behind it</em>": "背后的<em>大脑</em>",
+                "Founder & Lead Engineer": "创始人兼首席工程师", "Hardware Architect": "硬件架构师", "Software Developer": "软件开发人员",
+                "GET IN TOUCH": "联系我们", "Back African <em>engineering</em>": "支持非洲<em>工程</em>",
+                "Write to us about partnerships...": "写信给我们关于合作...",
+                "LOCATION": "位置", "PHONE": "电话", "EMAIL": "电子邮件", "NAME": "姓名", "INTEREST": "兴趣", "MESSAGE": "留言", "Send message &rarr;": "发送消息 &rarr;",
+                "THE PLATFORM": "平台", "SYSTEM": "系统", "SUPPORT": "支持", "Dashboard": "仪表板", "Hardware": "硬件", "Download Offline App": "下载离线应用", "Documentation": "文档",
+                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. 版权所有。",
+                "Built with ❤️ in Dar es Salaam": "用 ❤️ 在达累斯萨拉姆制造"
             },
             'ar': {
                 "About": "من نحن", "Services": "خدماتنا", "Work": "أعمالنا", "Team": "فريقنا", "Contact": "اتصل بنا",
                 "Client Login &rarr;": "دخول العملاء &rarr;", "ABOUT SENTINEX": "عن سينتينكس",
                 "Secure attendance systems built for <em>local institutions</em>": "أنظمة حضور آمنة مبنية لـ<em>لمؤسسات المحلية</em>",
+                "We design and deploy biometric hardware...": "نحن نصمم وننشر الأجهزة البيومترية...",
                 "Work with us &rarr;": "اعمل معنا &rarr;", "OUR SERVICES": "خدماتنا",
-                "What we <em>deliver</em>": "ما <em>نقدمه</em>", "GET IN TOUCH": "تواصل معنا",
-                "Back African <em>engineering</em>": "دعم <em>الهندسة</em> الأفريقية"
+                "What we <em>deliver</em>": "ما <em>نقدمه</em>", "Biometric Hardware": "الأجهزة البيومترية",
+                "Cloud Dashboards": "لوحات المعلومات السحابية", "System Integration": "تكامل النظام",
+                "OUR WORK": "أعمالنا", "Recent <em>deployments</em>": "العمليات <em>الأخيرة</em>",
+                "Ohio University": "جامعة أوهايو", "TechHub Dar": "تك هب دار",
+                "THE TEAM": "الفريق", "The minds <em>behind it</em>": "العقول <em>الكامنة وراءها</em>",
+                "Founder & Lead Engineer": "المؤسس وكبير المهندسين", "Hardware Architect": "مهندس الأجهزة", "Software Developer": "مطور برمجيات",
+                "GET IN TOUCH": "تواصل معنا", "Back African <em>engineering</em>": "دعم <em>الهندسة</em> الأفريقية",
+                "Write to us about partnerships...": "اكتب إلينا بخصوص الشراكات...",
+                "LOCATION": "الموقع", "PHONE": "الهاتف", "EMAIL": "البريد الإلكتروني", "NAME": "الاسم", "INTEREST": "الاهتمام", "MESSAGE": "الرسالة", "Send message &rarr;": "إرسال الرسالة &rarr;",
+                "THE PLATFORM": "المنصة", "SYSTEM": "النظام", "SUPPORT": "الدعم", "Dashboard": "لوحة القيادة", "Hardware": "العتاد", "Download Offline App": "تحميل التطبيق دون اتصال", "Documentation": "توثيق",
+                "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. جميع الحقوق محفوظة.",
+                "Built with ❤️ in Dar es Salaam": "صُنع بـ ❤️ في دار السلام"
             }
         };
 
+        // Fixed translation function
         function setLanguage(lang) {
+            currentLang = lang;
             document.getElementById('current-lang').innerText = lang.toUpperCase();
             document.getElementById('lang-menu').classList.remove('show');
             
@@ -526,6 +560,18 @@
             if (!event.target.closest('.lang-dropdown')) {
                 document.getElementById('lang-menu').classList.remove('show');
             }
+        }
+
+        // --- OFFLINE DOWNLOAD ---
+        function downloadApp() {
+            const data = `SentinEx Offline System\n\nDownload complete.\nTo use this system offline, please mount the provided hardware and connect to the local network.`;
+            const blob = new Blob([data], {type: 'text/plain'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'SentinEx_Offline_Setup.txt';
+            a.click();
+            window.URL.revokeObjectURL(url);
         }
 
         // --- MAP TOGGLE ---
@@ -564,6 +610,7 @@
         function logout() {
             document.getElementById('app-screen').style.display = 'none';
             document.getElementById('landing-page').style.display = 'block';
+            setLanguage(currentLang); // Re-apply translations to landing page
         }
 
         // --- DASHBOARD DATA FETCHING ---
