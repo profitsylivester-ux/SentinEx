@@ -7,7 +7,6 @@
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
-    <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#111111">
 
@@ -98,8 +97,10 @@
             font-family: 'Inter', sans-serif; 
         }
         
+        /* The V Icon */
         .faq-icon { 
-            font-size: 20px; 
+            width: 20px;
+            height: 20px;
             color: var(--text-muted); 
             transition: transform 0.3s ease; 
             display: inline-block;
@@ -115,7 +116,9 @@
         }
         
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
-        .faq-item.active .faq-icon { transform: rotate(45deg); }
+        
+        /* Flips the V upside down when open */
+        .faq-item.active .faq-icon { transform: rotate(180deg); }
 
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
@@ -193,7 +196,7 @@
 
         .settings-card { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); max-width: 600px; }
 
-        /* --- MOBILE RESPONSIVENESS (The Magic Fix) --- */
+        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 900px) {
             nav { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
@@ -203,7 +206,7 @@
             .hero-text h1 { font-size: 2.5rem; }
             .hero-text p { margin: 0 auto 30px; }
             .hero-text button { margin: 0 auto; }
-            .hero-images { display: none; } /* Hide floating images on mobile */
+            .hero-images { display: none; }
             
             .section h2 { font-size: 2rem; }
             .section-grid { grid-template-columns: 1fr; }
@@ -326,7 +329,8 @@
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="How does the offline mode work?" data-sw="Je, hali ya nje ya mtandao inafanyaje kazi?">How does the offline mode work?</span>
-                        <span class="faq-icon">+</span>
+                        <!-- The V Icon (SVG) -->
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                     <div class="faq-answer" data-en="Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once the connection is restored, it automatically syncs the backlog to the cloud." data-sw="Kifaa chetu cha ESP32 huhifadhi nakala zote za alama za vidole kwenye kadi ya SD ikiwa mtandao unakatika. Mara muunganisho unaporejeshwa, husawazisha kiotomatiki na wingu.">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once the connection is restored, it automatically syncs the backlog to the cloud.</div>
                 </div>
@@ -334,7 +338,7 @@
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="Can it integrate with our existing database?" data-sw="Je, inaweza kuunganishwa na hifadhidata yetu iliyopo?">Can it integrate with our existing database?</span>
-                        <span class="faq-icon">+</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                     <div class="faq-answer" data-en="Yes. Because our backend uses PostgreSQL (Neon) and a REST API, we can easily export your attendance logs to CSV, or build a direct webhook integration with your school's student management system." data-sw="Ndiyo. Kwa sababu backend yetu inatumia PostgreSQL (Neon) na REST API, tunaweza kuhamisha kumbukumbu zako kwa urahisi kwenda CSV, au kujenga muunganisho wa moja kwa moja na mfumo wa usimamizi wa wanafunzi wa shule yako.">Yes. Because our backend uses PostgreSQL (Neon) and a REST API, we can easily export your attendance logs to CSV, or build a direct webhook integration with your school's student management system.</div>
                 </div>
@@ -342,7 +346,7 @@
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="Is the hardware included?" data-sw="Je, vifaa vinajumuishwa?">Is the hardware included?</span>
-                        <span class="faq-icon">+</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                     <div class="faq-answer" data-en="Yes. When you partner with SentinEx, we provide the full package: the biometric terminal (built with the AS608 sensor), the power supply, the 3D-printed enclosure, and the cloud dashboard setup." data-sw="Ndiyo. Unaposhirikiana na SentinEx, tunatoa kifurushi kamili: kifaa cha kibaiometriki, umeme, kifuniko cha 3D, na usanidi wa dashibodi ya wingu.">Yes. When you partner with SentinEx, we provide the full package: the biometric terminal (built with the AS608 sensor), the power supply, the 3D-printed enclosure, and the cloud dashboard setup.</div>
                 </div>
@@ -350,7 +354,7 @@
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="How long does installation take?" data-sw="Usanidi unachukua muda gani?">How long does installation take?</span>
-                        <span class="faq-icon">+</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                     <div class="faq-answer" data-en="A standard deployment for a single office or classroom takes less than 2 hours. For a full campus (multiple buildings), we usually complete installation and staff training within 2 days." data-sw="Usanidi wa kawaida kwa ofisi moja au darasa huchukua chini ya masaa 2. Kwa chuo kizima, kwa kawaida tunakamilisha usanidi na mafunzo ya wafanyikazi ndani ya siku 2.">A standard deployment for a single office or classroom takes less than 2 hours. For a full campus (multiple buildings), we usually complete installation and staff training within 2 days.</div>
                 </div>
@@ -358,7 +362,7 @@
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="How secure is the biometric data?" data-sw="Data ya kibaiometriki iko salama vipi?">How secure is the biometric data?</span>
-                        <span class="faq-icon">+</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                     <div class="faq-answer" data-en="Extremely secure. The AS608 sensor does not store actual fingerprint images. It converts your fingerprint into a mathematical template (a hash) and stores only that. This template cannot be reverse-engineered into a picture of your finger." data-sw="Salama sana. Sensor ya AS608 haihifadhi picha halisi za alama za vidole. Inabadilisha alama yako kuwa kiolezo cha hisabati (hash) na huhifadhi hiyo tu. Kiolezo hiki hakiwezi kubadilishwa kuwa picha ya kidole chako.">Extremely secure. The AS608 sensor does not store actual fingerprint images. It converts your fingerprint into a mathematical template (a hash) and stores only that. This template cannot be reverse-engineered into a picture of your finger.</div>
                 </div>
