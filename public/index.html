@@ -81,63 +81,111 @@
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
 
-        /* FAQ Section */
+        /* --- ACCORDION TEAM SECTION --- */
+        .team-section { padding: 80px 5%; background: #111111; border-top: 1px solid #222; }
+        .team-section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 600; }
+        .team-section h2 { font-size: 3rem; margin-bottom: 40px; color: white; }
+        
+        .team-gallery { display: flex; gap: 16px; height: 500px; width: 100%; overflow: hidden; }
+        
+        .team-card { 
+            position: relative; 
+            flex: 1; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            cursor: pointer; 
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+            background: #222;
+        }
+        
+        /* The Magic: Flex-grow animation */
+        .team-card.active { flex: 4; }
+        
+        .team-card img { 
+            width: 100%; height: 100%; 
+            object-fit: cover; 
+            object-position: center top;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); 
+            filter: grayscale(100%) brightness(0.7);
+        }
+        
+        .team-card.active img { 
+            transform: scale(1.02); 
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .team-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+        
+        /* Collapsed text (Vertical) */
+        .collapsed-text {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) rotate(180deg);
+            writing-mode: vertical-rl;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 2px;
+            white-space: nowrap;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Expanded text */
+        .expanded-text {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease 0.1s;
+            pointer-events: none;
+        }
+
+        .team-card.active .collapsed-text { opacity: 0; }
+        .team-card.active .expanded-text { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+        .expanded-text h3 { color: white; font-size: 32px; margin-bottom: 5px; font-family: 'Playfair Display', serif; }
+        .expanded-text p.role { color: #60a5fa; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .expanded-text p.bio { color: #ccc; font-size: 15px; line-height: 1.5; max-width: 350px; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .expanded-text a { color: white; font-weight: 500; font-size: 14px; text-decoration: none; border-bottom: 1px solid white; padding-bottom: 2px; transition: color 0.2s; }
+        .expanded-text a:hover { color: #60a5fa; border-color: #60a5fa; }
+
+        /* --- FAQ --- */
         .faq-section { padding: 80px 5%; background: var(--bg-color); border-top: 1px solid var(--border); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-container h2 { text-align: center; margin-bottom: 40px; font-size: 2.5rem; }
         .faq-item { border-bottom: 1px solid var(--border); padding: 24px 0; }
-        
-        .faq-question { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            cursor: pointer; 
-            font-weight: 500; 
-            font-size: 16px; 
-            font-family: 'Inter', sans-serif; 
-        }
-        
-        /* The V Icon */
-        .faq-icon { 
-            width: 20px;
-            height: 20px;
-            color: var(--text-muted); 
-            transition: transform 0.3s ease; 
-            display: inline-block;
-        }
-        
-        .faq-answer { 
-            max-height: 0; 
-            overflow: hidden; 
-            transition: max-height 0.3s ease, padding 0.3s ease; 
-            color: var(--text-muted); 
-            font-size: 14px; 
-            font-weight: 300;
-        }
-        
+        .faq-question { display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 500; font-size: 16px; }
+        .faq-icon { width: 20px; height: 20px; color: var(--text-muted); transition: transform 0.3s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-muted); font-size: 14px; font-weight: 300; }
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
-        
-        /* Flips the V upside down when open */
         .faq-item.active .faq-icon { transform: rotate(180deg); }
 
+        /* Contact & Footer... (Kept the same) */
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
         .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
         .info-icon { background: white; padding: 12px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .info-text h6 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; font-family: 'Inter'; font-weight: 600; }
         .info-text p { margin: 0; font-size: 16px; color: var(--text-main); font-weight: 500; }
-
         .contact-card { background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; background: #fafafa; outline: none; transition: border 0.2s; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
         .form-group textarea { resize: vertical; height: 120px; }
-        
         .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-container iframe { width: 100%; height: 100%; border: 0; }
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
-
         footer { background: #111111; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
@@ -147,53 +195,44 @@
         .footer-socials { display: flex; gap: 12px; margin-top: 30px; }
         .footer-socials a { display: flex; justify-content: center; align-items: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #333; color: #888; text-decoration: none; transition: all 0.3s; }
         .footer-socials a:hover { border-color: #fff; color: #fff; }
-        
         .footer-col h4 { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #888; margin-bottom: 24px; font-family: 'Inter'; font-weight: 500; }
         .footer-col ul { list-style: none; }
         .footer-col ul li { margin-bottom: 12px; }
         .footer-col ul li a { color: #ddd; text-decoration: none; font-size: 15px; transition: color 0.2s; cursor: pointer; }
         .footer-col ul li a:hover { color: #fff; }
-
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
-        
+
+        /* Login & Dashboard CSS... (Kept the same) */
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.9); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
         .login-card { background: var(--card-bg); padding: 50px; border-radius: 16px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2.5rem; margin-bottom: 10px; }
         .login-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 30px; }
-        
         #app-screen { display: none; height: 100vh; background: var(--bg-color); color: var(--text-main); }
         .dashboard-layout { display: flex; height: 100vh; }
-        
         .dash-sidebar { width: 260px; background: #111111; color: white; display: flex; flex-direction: column; }
         .dash-sidebar .logo { padding: 24px; border-bottom: 1px solid #333; }
         .dash-nav { padding: 20px 12px; flex: 1; }
         .dash-link { display: flex; align-items: center; gap: 10px; padding: 14px 16px; color: #888888; text-decoration: none; border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; font-size: 15px; }
         .dash-link:hover, .dash-link.active { background: #222222; color: white; }
-        
         .dash-main { flex: 1; padding: 40px 5%; overflow-y: auto; }
         .dash-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
         .dash-topbar h2 { font-size: 3rem; margin: 0; }
-        
         .dash-view { display: none; animation: fadeIn 0.3s ease; }
         .dash-view.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
         .dash-card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .dash-card .title { font-size: 13px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; margin-bottom: 12px; letter-spacing: 1px; }
         .dash-card .value { font-size: 48px; font-weight: 500; font-family: 'Playfair Display', serif; line-height: 1; }
-        
         .dash-table-container { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 20px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 15px; }
         th { background: #eae8e1; color: var(--text-muted); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
         tr:hover { background: #fbfbfa; }
         tr:last-child td { border-bottom: none; }
-        
         .badge { padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
         .badge-granted { background: #ecfdf5; color: var(--success); border: 1px solid #a7f3d0; }
         .badge-denied { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
-
         .settings-card { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); max-width: 600px; }
 
         /* --- MOBILE RESPONSIVENESS --- */
@@ -201,28 +240,29 @@
             nav { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
             .nav-actions { width: 100%; justify-content: center; }
-            
             .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 5%; }
             .hero-text h1 { font-size: 2.5rem; }
             .hero-text p { margin: 0 auto 30px; }
             .hero-text button { margin: 0 auto; }
             .hero-images { display: none; }
-            
             .section h2 { font-size: 2rem; }
             .section-grid { grid-template-columns: 1fr; }
+            
+            /* Mobile Team Accordion (Stacks vertically) */
+            .team-gallery { flex-direction: column; height: auto; }
+            .team-card { flex: none; height: 80px; transition: height 0.5s ease; }
+            .team-card.active { height: 400px; }
+            .collapsed-text { writing-mode: horizontal-tb; transform: none; left: 30px; bottom: 25px; font-size: 20px; }
             
             .contact { grid-template-columns: 1fr; gap: 40px; }
             .contact-info p { margin: 0 auto 30px; }
             .info-item { justify-content: center; text-align: left; }
-            
             .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; }
             .footer-brand .logo { justify-content: center; }
             .footer-brand p { margin: 0 auto 20px; }
             .footer-socials { justify-content: center; }
             .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
-
             .login-card { width: 90%; padding: 30px; }
-            
             .dashboard-layout { flex-direction: column; }
             .dash-sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 10px; }
             .dash-sidebar .logo { padding: 10px; border: none; }
@@ -252,7 +292,6 @@
             </div>
             <div class="nav-actions">
                 <button id="installBtn" onclick="installPWA()">⬇️ Install App</button>
-                
                 <div class="lang-dropdown">
                     <button class="lang-btn" onclick="document.getElementById('lang-menu').classList.toggle('show')">🌐 <span id="current-lang">EN</span></button>
                     <div class="lang-menu" id="lang-menu">
@@ -329,12 +368,10 @@
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="How does the offline mode work?" data-sw="Je, hali ya nje ya mtandao inafanyaje kazi?">How does the offline mode work?</span>
-                        <!-- The V Icon (SVG) -->
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
                     <div class="faq-answer" data-en="Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once the connection is restored, it automatically syncs the backlog to the cloud." data-sw="Kifaa chetu cha ESP32 huhifadhi nakala zote za alama za vidole kwenye kadi ya SD ikiwa mtandao unakatika. Mara muunganisho unaporejeshwa, husawazisha kiotomatiki na wingu.">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once the connection is restored, it automatically syncs the backlog to the cloud.</div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="Can it integrate with our existing database?" data-sw="Je, inaweza kuunganishwa na hifadhidata yetu iliyopo?">Can it integrate with our existing database?</span>
@@ -342,7 +379,6 @@
                     </div>
                     <div class="faq-answer" data-en="Yes. Because our backend uses PostgreSQL (Neon) and a REST API, we can easily export your attendance logs to CSV, or build a direct webhook integration with your school's student management system." data-sw="Ndiyo. Kwa sababu backend yetu inatumia PostgreSQL (Neon) na REST API, tunaweza kuhamisha kumbukumbu zako kwa urahisi kwenda CSV, au kujenga muunganisho wa moja kwa moja na mfumo wa usimamizi wa wanafunzi wa shule yako.">Yes. Because our backend uses PostgreSQL (Neon) and a REST API, we can easily export your attendance logs to CSV, or build a direct webhook integration with your school's student management system.</div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="Is the hardware included?" data-sw="Je, vifaa vinajumuishwa?">Is the hardware included?</span>
@@ -350,7 +386,6 @@
                     </div>
                     <div class="faq-answer" data-en="Yes. When you partner with SentinEx, we provide the full package: the biometric terminal (built with the AS608 sensor), the power supply, the 3D-printed enclosure, and the cloud dashboard setup." data-sw="Ndiyo. Unaposhirikiana na SentinEx, tunatoa kifurushi kamili: kifaa cha kibaiometriki, umeme, kifuniko cha 3D, na usanidi wa dashibodi ya wingu.">Yes. When you partner with SentinEx, we provide the full package: the biometric terminal (built with the AS608 sensor), the power supply, the 3D-printed enclosure, and the cloud dashboard setup.</div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="How long does installation take?" data-sw="Usanidi unachukua muda gani?">How long does installation take?</span>
@@ -358,7 +393,6 @@
                     </div>
                     <div class="faq-answer" data-en="A standard deployment for a single office or classroom takes less than 2 hours. For a full campus (multiple buildings), we usually complete installation and staff training within 2 days." data-sw="Usanidi wa kawaida kwa ofisi moja au darasa huchukua chini ya masaa 2. Kwa chuo kizima, kwa kawaida tunakamilisha usanidi na mafunzo ya wafanyikazi ndani ya siku 2.">A standard deployment for a single office or classroom takes less than 2 hours. For a full campus (multiple buildings), we usually complete installation and staff training within 2 days.</div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span data-en="How secure is the biometric data?" data-sw="Data ya kibaiometriki iko salama vipi?">How secure is the biometric data?</span>
@@ -369,24 +403,52 @@
             </div>
         </section>
 
-        <section class="section" id="team" style="background: #eae8e1;">
+        <!-- UPDATED ACCORDION TEAM SECTION -->
+        <section class="team-section" id="team">
             <h5 data-en="THE TEAM" data-sw="TIMU YETU">THE TEAM</h5>
-            <h2 data-en="The minds <em>behind it</em>" data-sw="Wanafikiri <em>nyuma yake</em>">The minds <em>behind it</em></h2>
-            <div class="section-grid">
-                <div class="card" style="text-align: center;">
-                    <div style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; margin: 0 auto 20px;"></div>
-                    <h3>Faida</h3>
-                    <p data-en="Founder & Lead Engineer" data-sw="Mwanzilishi na Mhandisi Mkuu">Founder & Lead Engineer</p>
+            <h2 data-en="The minds <em>behind it</em>" data-sw="Wanafikiri <em>nyuma yake</em>" style="color:white;">The minds <em>behind it</em></h2>
+            
+            <div class="team-gallery">
+                <!-- Card 1: Faida (Active by default) -->
+                <div class="team-card active" onclick="setActiveCard(this)">
+                    <img src="https://files.oaiusercontent.com/file-K1yX6t4Z9h3Q2w7V5s8N1?se=2024-10-29T12%3A00%3A00Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dfaida.jpg&sig=xyz" alt="Faida">
+                    <div class="team-overlay">
+                        <div class="collapsed-text" data-en="FAIDA" data-sw="FAIDA">FAIDA</div>
+                        <div class="expanded-text">
+                            <h3>Faida</h3>
+                            <p class="role" data-en="CEO & Founder" data-sw="Mkurugenzi Mtendaji na Mwanzilishi">CEO & Founder</p>
+                            <p class="bio" data-en="Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania." data-sw="Kuongoza SentinEx kwa maono ya kuleta usalama wa kibaiometriki wa kiwango cha kimataifa kwa taasisi za ndani nchini Tanzania.">Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania.</p>
+                            <a href="#" data-en="View Profile &rarr;" data-sw="Tazama Wasifu &rarr;">View Profile &rarr;</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; margin: 0 auto 20px;"></div>
-                    <h3>Lameck</h3>
-                    <p data-en="Hardware Architect" data-sw="Mbunifu wa Vifaa">Hardware Architect</p>
+
+                <!-- Card 2: Lameck -->
+                <div class="team-card" onclick="setActiveCard(this)">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Lameck">
+                    <div class="team-overlay">
+                        <div class="collapsed-text" data-en="LAMECK" data-sw="LAMECK">LAMECK</div>
+                        <div class="expanded-text">
+                            <h3>Lameck</h3>
+                            <p class="role" data-en="Hardware Architect" data-sw="Mbunifu wa Vifaa">Hardware Architect</p>
+                            <p class="bio" data-en="Designing the physical circuits and enclosures that make our devices durable and reliable." data-sw="Kubuni mizunguko ya kimwili na vifuniko vinavyofanya vifaa vyetu kuwa vya kudumu na vya kuaminika.">Designing the physical circuits and enclosures that make our devices durable and reliable.</p>
+                            <a href="#" data-en="View Profile &rarr;" data-sw="Tazama Wasifu &rarr;">View Profile &rarr;</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card" style="text-align: center;">
-                    <div style="width: 100px; height: 100px; background: #ccc; border-radius: 50%; margin: 0 auto 20px;"></div>
-                    <h3>Fedelika</h3>
-                    <p data-en="Software Developer" data-sw="Msanidi Programu">Software Developer</p>
+
+                <!-- Card 3: Fedelika -->
+                <div class="team-card" onclick="setActiveCard(this)">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Fedelika">
+                    <div class="team-overlay">
+                        <div class="collapsed-text" data-en="FEDELIKA" data-sw="FEDELIKA">FEDELIKA</div>
+                        <div class="expanded-text">
+                            <h3>Fedelika</h3>
+                            <p class="role" data-en="Software Developer" data-sw="Msanidi Programu">Software Developer</p>
+                            <p class="bio" data-en="Building the cloud backend and the interfaces that connect our hardware to the internet." data-sw="Kujenga backend ya wingu na interface zinazounganisha vifaa vyetu na mtandao.">Building the cloud backend and the interfaces that connect our hardware to the internet.</p>
+                            <a href="#" data-en="View Profile &rarr;" data-sw="Tazama Wasifu &rarr;">View Profile &rarr;</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -668,6 +730,14 @@
         let isSatellite = true;
         let currentLang = 'en';
 
+        // --- NEW: Accordion Team Logic ---
+        function setActiveCard(card) {
+            // Remove active class from all cards
+            document.querySelectorAll('.team-card').forEach(c => c.classList.remove('active'));
+            // Add active class to the clicked card
+            card.classList.add('active');
+        }
+
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -691,6 +761,7 @@
             element.classList.add('active');
         }
 
+        // Translations (Kept exactly the same)
         const translations = {
             'en': {},
             'sw': {},
@@ -711,13 +782,17 @@
                 "How long does installation take?": "Combien de temps prend l'installation ?",
                 "How secure is the biometric data?": "Quelle est la sécurité des données biométriques ?",
                 "THE TEAM": "L'ÉQUIPE", "The minds <em>behind it</em>": "Les esprits <em>derrière</em>",
-                "Founder & Lead Engineer": "Fondateur & Ingénieur en Chef", "Hardware Architect": "Architecte Matériel", "Software Developer": "Développeur Logiciel",
+                "CEO & Founder": "PDG & Fondateur", "Hardware Architect": "Architecte Matériel", "Software Developer": "Développeur Logiciel",
+                "FAIDA": "FAIDA", "LAMECK": "LAMECK", "FEDELIKA": "FEDELIKA",
+                "View Profile &rarr;": "Voir le profil &rarr;",
+                "Leading SentinEx with a vision...": "Diriger SentinEx avec une vision...",
+                "Designing the physical circuits...": "Concevoir les circuits physiques...",
+                "Building the cloud backend...": "Construire le backend cloud...",
                 "GET IN TOUCH": "CONTACTEZ-NOUS", "Back African <em>engineering</em>": "Soutenir l'<em>ingénierie</em> africaine",
                 "Write to us about partnerships...": "Écrivez-nous pour des partenariats...",
                 "LOCATION": "EMPLACEMENT", "PHONE": "TÉLÉPHONE", "EMAIL": "E-MAIL", "NAME": "NOM", "INTEREST": "INTÉRÊT", "MESSAGE": "MESSAGE", "Send message &rarr;": "Envoyer &rarr;",
                 "THE PLATFORM": "LA PLATEFORME", "SYSTEM": "SYSTÈME", "SUPPORT": "SUPPORT", "Dashboard": "Tableau de bord", "Hardware": "Matériel", "FAQ": "FAQ",
                 "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. Tous droits réservés.",
-                "Built with ❤️ in Dar es Salaam": "Construit avec ❤️ à Dar es Salaam",
                 "📊 Dashboard": "📊 Tableau de bord", "👥 Members": "👥 Membres", "⚙️ Settings": "⚙️ Paramètres", "🚪 Exit to Website": "🚪 Quitter le site",
                 "System Overview": "Aperçu du système", "🟢 Live Connection": "🟢 Connexion en direct", "Total Scans": "Total des scans", "Unique Members": "Membres uniques", "Security Alerts": "Alertes de sécurité",
                 "Member Name": "Nom du membre", "ID": "ID", "Timestamp": "Horodatage", "Status": "Statut", "Registered Members": "Membres inscrits", "Fingerprint ID": "ID d'empreinte", "Total Scans Today": "Scans aujourd'hui",
@@ -740,13 +815,17 @@
                 "How long does installation take?": "安装需要多长时间？",
                 "How secure is the biometric data?": "生物识别数据有多安全？",
                 "THE TEAM": "团队", "The minds <em>behind it</em>": "背后的<em>大脑</em>",
-                "Founder & Lead Engineer": "创始人兼首席工程师", "Hardware Architect": "硬件架构师", "Software Developer": "软件开发人员",
+                "CEO & Founder": "首席执行官兼创始人", "Hardware Architect": "硬件架构师", "Software Developer": "软件开发人员",
+                "FAIDA": "FAIDA", "LAMECK": "LAMECK", "FEDELIKA": "FEDELIKA",
+                "View Profile &rarr;": "查看个人资料 &rarr;",
+                "Leading SentinEx with a vision...": "以愿景领导 SentinEx...",
+                "Designing the physical circuits...": "设计物理电路...",
+                "Building the cloud backend...": "构建云后端...",
                 "GET IN TOUCH": "联系我们", "Back African <em>engineering</em>": "支持非洲<em>工程</em>",
                 "Write to us about partnerships...": "写信给我们关于合作...",
                 "LOCATION": "位置", "PHONE": "电话", "EMAIL": "电子邮件", "NAME": "姓名", "INTEREST": "兴趣", "MESSAGE": "留言", "Send message &rarr;": "发送消息 &rarr;",
                 "THE PLATFORM": "平台", "SYSTEM": "系统", "SUPPORT": "支持", "Dashboard": "仪表板", "Hardware": "硬件", "FAQ": "常见问题",
                 "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. 版权所有。",
-                "Built with ❤️ in Dar es Salaam": "用 ❤️ 在达累斯萨拉姆制造",
                 "📊 Dashboard": "📊 仪表板", "👥 Members": "👥 成员", "⚙️ Settings": "⚙️ 设置", "🚪 Exit to Website": "🚪 退出网站",
                 "System Overview": "系统概览", "🟢 Live Connection": "🟢 实时连接", "Total Scans": "总扫描数", "Unique Members": "独立成员", "Security Alerts": "安全警报",
                 "Member Name": "成员姓名", "ID": "ID", "Timestamp": "时间戳", "Status": "状态", "Registered Members": "注册成员", "Fingerprint ID": "指纹 ID", "Total Scans Today": "今日扫描",
@@ -769,13 +848,17 @@
                 "How long does installation take?": "كم يستغرق التثبيت؟",
                 "How secure is the biometric data?": "ما مدى أمان البيانات البيومترية؟",
                 "THE TEAM": "الفريق", "The minds <em>behind it</em>": "العقول <em>الكامنة وراءها</em>",
-                "Founder & Lead Engineer": "المؤسس وكبير المهندسين", "Hardware Architect": "مهندس الأجهزة", "Software Developer": "مطور برمجيات",
+                "CEO & Founder": "المدير التنفيذي والمؤسس", "Hardware Architect": "مهندس الأجهزة", "Software Developer": "مطور برمجيات",
+                "FAIDA": "FAIDA", "LAMECK": "LAMECK", "FEDELIKA": "FEDELIKA",
+                "View Profile &rarr;": "عرض الملف الشخصي &rarr;",
+                "Leading SentinEx with a vision...": "قيادة سينتينكس برؤية...",
+                "Designing the physical circuits...": "تصميم الدوائر المادية...",
+                "Building the cloud backend...": "بناء الواجهة الخلفية السحابية...",
                 "GET IN TOUCH": "تواصل معنا", "Back African <em>engineering</em>": "دعم <em>الهندسة</em> الأفريقية",
                 "Write to us about partnerships...": "اكتب إلينا بخصوص الشراكات...",
                 "LOCATION": "الموقع", "PHONE": "الهاتف", "EMAIL": "البريد الإلكتروني", "NAME": "الاسم", "INTEREST": "الاهتمام", "MESSAGE": "الرسالة", "Send message &rarr;": "إرسال الرسالة &rarr;",
                 "THE PLATFORM": "المنصة", "SYSTEM": "النظام", "SUPPORT": "الدعم", "Dashboard": "لوحة القيادة", "Hardware": "العتاد", "FAQ": "الأسئلة الشائعة",
                 "&copy; 2026 SentinEx Appliances. All rights reserved.": "&copy; 2026 SentinEx Appliances. جميع الحقوق محفوظة.",
-                "Built with ❤️ in Dar es Salaam": "صُنع بـ ❤️ في دار السلام",
                 "📊 Dashboard": "📊 لوحة القيادة", "👥 Members": "👥 الأعضاء", "⚙️ Settings": "⚙️ الإعدادات", "🚪 Exit to Website": "🚪 الخروج إلى الموقع",
                 "System Overview": "نظرة عامة على النظام", "🟢 Live Connection": "🟢 اتصال مباشر", "Total Scans": "إجمالي المسح", "Unique Members": "أعضاء فريدون", "Security Alerts": "تنبيهات أمنية",
                 "Member Name": "اسم العضو", "ID": "المعرف", "Timestamp": "الوقت", "Status": "الحالة", "Registered Members": "الأعضاء المسجلون", "Fingerprint ID": "معرف البصمة", "Total Scans Today": "مسح اليوم",
