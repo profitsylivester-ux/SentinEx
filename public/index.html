@@ -3,167 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SentinEx | Secure Access</title>
+    <title>SentinEx | Security & Innovation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-        
-        /* Light Theme (Default) */
         :root {
-            --bg-body: #f3f4f6;
-            --bg-card: #ffffff;
-            --bg-sidebar: #111827;
-            --text-main: #111827;
-            --text-muted: #6b7280;
-            --text-sidebar: #9ca3af;
-            --primary: #2563eb;
+            --bg-color: #f6f5f2;
+            --text-main: #111111;
+            --text-muted: #555555;
+            --card-bg: #ffffff;
+            --border: #e5e5e5;
+            --primary: #000000;
             --success: #059669;
             --danger: #dc2626;
-            --border: #e5e7eb;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
         }
 
-        /* Dark Theme */
-        [data-theme="dark"] {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --bg-sidebar: #020617;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --border: #334155;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-        body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; overflow: hidden; }
+        /* --- LANDING PAGE --- */
+        #landing-page { display: block; }
 
-        /* --- LOGIN SCREEN --- */
-        #login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; background: var(--bg-sidebar); }
-        .login-card { background: var(--bg-card); padding: 40px; border-radius: 16px; width: 380px; box-shadow: var(--shadow); text-align: center; transform: scale(1); animation: floatIn 0.5s ease-out; }
-        @keyframes floatIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .login-card h1 { color: var(--primary); font-size: 28px; margin-bottom: 10px; }
-        .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
-        .input-group { margin-bottom: 20px; text-align: left; }
-        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-body); color: var(--text-main); outline: none; }
-        .input-group input:focus { border-color: var(--primary); }
-        .btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.1s; }
-        .btn:active { transform: scale(0.97); }
+        /* Navbar */
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; background: transparent; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
+        .logo-container { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; }
+        .logo-box { background: var(--primary); color: white; padding: 8px 12px; border-radius: 6px; font-size: 14px; font-weight: 700; }
+        .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
+        .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
+        .nav-links a:hover { color: var(--text-main); }
+        .nav-actions { display: flex; gap: 16px; align-items: center; }
+        .lang-select { border: none; background: transparent; font-family: 'Inter'; font-size: 14px; font-weight: 500; cursor: pointer; outline: none; }
+        .btn-primary { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; border: none; }
+        .btn-primary:hover { transform: translateY(-2px); }
 
-        /* --- APP SCREEN --- */
-        #app-screen { display: none; height: 100vh; }
+        /* Hero Section */
+        .hero { display: grid; grid-template-columns: 1fr 1fr; padding: 80px 5%; gap: 40px; align-items: center; min-height: 80vh; }
+        .hero-text h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
+        .hero-text h1 { font-size: 4.5rem; line-height: 1.1; font-weight: 500; letter-spacing: -2px; margin-bottom: 30px; }
+        .hero-text p { font-size: 18px; color: var(--text-muted); max-width: 480px; margin-bottom: 40px; font-weight: 300; }
+        .hero-images { position: relative; height: 500px; }
+        .hero-img { position: absolute; border-radius: 12px; box-shadow: var(--shadow); object-fit: cover; transition: transform 0.3s; }
+        .hero-img:hover { transform: scale(1.02) translateY(-5px); z-index: 10; }
+        .img-1 { width: 65%; top: 0; left: 0; height: 300px; object-fit: cover; }
+        .img-2 { width: 45%; top: 20px; right: 0; height: 220px; object-fit: cover; }
+        .img-3 { width: 40%; bottom: 0; right: 5%; height: 250px; object-fit: cover; }
+        .img-4 { width: 35%; bottom: 40px; left: 10%; height: 180px; object-fit: cover; filter: blur(2px); opacity: 0.8; }
+
+        /* Contact Section */
+        .contact { background: #eae8e1; padding: 80px 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; border-top: 1px solid var(--border); }
+        .contact-info h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
+        .contact-info h2 { font-size: 3.5rem; line-height: 1.1; font-weight: 500; letter-spacing: -1px; margin-bottom: 30px; }
+        .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
+        .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
+        .info-icon { background: white; padding: 12px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .info-text h6 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; }
+        .info-text p { margin: 0; font-size: 16px; color: var(--text-main); font-weight: 500; }
+
+        .contact-card { background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter'; font-size: 15px; background: #fafafa; outline: none; transition: border 0.2s; }
+        .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
+        .form-group textarea { resize: vertical; height: 120px; }
         
-        /* Sidebar */
-        .sidebar { width: 260px; background: var(--bg-sidebar); display: flex; flex-direction: column; height: 100vh; position: fixed; left: 0; top: 0; }
-        .logo { padding: 24px; font-size: 24px; font-weight: 700; color: white; border-bottom: 1px solid #1f2937; }
-        .logo span { color: #60a5fa; }
-        .nav-links { padding: 20px 12px; flex: 1; }
-        .nav-link { display: flex; align-items: center; padding: 12px 16px; color: var(--text-sidebar); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 500; cursor: pointer; }
-        .nav-link:hover, .nav-link.active { background: #1f2937; color: white; }
-        .nav-link.active { border-left: 4px solid var(--primary); }
+        /* Map Container */
+        .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .map-container iframe { width: 100%; height: 100%; border: 0; }
+        .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
 
-        /* Main Content */
-        .main-content { margin-left: 260px; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow-y: auto; }
-        .topbar { background: var(--bg-card); height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
-        .topbar-controls { display: flex; gap: 16px; }
-        .icon-btn { background: var(--bg-body); border: 1px solid var(--border); color: var(--text-main); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
-        .icon-btn:hover { background: var(--border); }
+        /* --- DASHBOARD (Hidden by default) --- */
+        #app-screen { display: none; height: 100vh; background: #f3f4f6; color: #111827; }
+        
+        /* Login Screen Overlay */
+        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; justify-content: center; align-items: center; }
+        .login-card { background: white; padding: 40px; border-radius: 16px; width: 380px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); text-align: center; }
+        .login-card h1 { color: #000; font-size: 28px; margin-bottom: 10px; }
+        .login-card p { color: #555; font-size: 14px; margin-bottom: 30px; }
+        
+        .dashboard-layout { display: flex; height: 100vh; }
+        .dash-sidebar { width: 260px; background: #111827; color: white; display: flex; flex-direction: column; }
+        .dash-sidebar .logo { padding: 24px; font-size: 24px; font-weight: 700; border-bottom: 1px solid #1f2937; color: white; }
+        .dash-sidebar .logo span { color: #60a5fa; }
+        .dash-nav { padding: 20px 12px; flex: 1; }
+        .dash-link { display: block; padding: 12px 16px; color: #9ca3af; text-decoration: none; border-radius: 8px; margin-bottom: 8px; cursor: pointer; }
+        .dash-link:hover, .dash-link.active { background: #1f2937; color: white; }
+        .dash-main { flex: 1; padding: 32px; overflow-y: auto; }
+        .dash-topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        .dash-topbar h2 { font-size: 24px; font-weight: 600; }
+        .dash-btn { background: #dc2626; color: white; padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; }
 
-        .view-container { padding: 32px; max-width: 1200px; display: none; animation: fadeIn 0.3s ease; }
-        .view-container.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .dash-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+        .dash-card { background: white; padding: 24px; border-radius: 12px; border: 1px solid #e5e7eb; }
+        .dash-card .title { font-size: 13px; color: #6b7280; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+        .dash-card .value { font-size: 32px; font-weight: 700; }
 
-        /* Stats Grid */
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: var(--bg-card); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; }
-        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
-        .stat-card:active { transform: scale(0.98); }
-        .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
-        .stat-value { font-size: 32px; font-weight: 700; }
-
-        /* Table */
-        .table-container { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
+        .dash-table-container { background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
-        th { background: var(--bg-body); color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
-        tr:hover { background: var(--bg-body); }
-        
+        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
+        th { background: #f9fafb; color: #6b7280; font-size: 12px; text-transform: uppercase; }
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-        .badge-granted { background: #ecfdf5; color: var(--success); }
-        .badge-denied { background: #fef2f2; color: var(--danger); }
+        .badge-granted { background: #ecfdf5; color: #059669; }
+        .badge-denied { background: #fef2f2; color: #dc2626; }
 
-        /* Settings Form */
-        .settings-card { background: var(--bg-card); padding: 32px; border-radius: 12px; border: 1px solid var(--border); max-width: 500px; }
-        .settings-card h3 { margin-bottom: 24px; font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+        @media (max-width: 900px) {
+            .hero, .contact { grid-template-columns: 1fr; }
+            .hero-images { display: none; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. LOGIN SCREEN -->
-    <div id="login-screen">
+    <!-- 1. LANDING PAGE -->
+    <div id="landing-page">
+        <!-- Navbar -->
+        <nav>
+            <div class="logo-container">
+                <div class="logo-box">SENTINEX</div>
+            </div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#work">Work</a>
+                <a href="#team">Team</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="nav-actions">
+                <select class="lang-select" onchange="changeLanguage(this.value)">
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="sw">🇹🇿 SW</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ar">🇸🇦 AR</option>
+                </select>
+                <button class="btn-primary" onclick="openLogin()">Client Login &rarr;</button>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="hero" id="about">
+            <div class="hero-text">
+                <h5>ABOUT SENTINEX</h5>
+                <h1>A security system that stays <em>close to the problem</em></h1>
+                <p>We engineer biometric and IoT solutions from Kigamboni, Kiswani, Dar es Salaam, building secure systems aimed at real-world institutional challenges.</p>
+                <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Work with us &rarr;</button>
+            </div>
+            <div class="hero-images">
+                <!-- Placeholder images mimicking the screenshot layout -->
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team working">
+                <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=600" class="hero-img img-2" alt="Presentation">
+                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=600" class="hero-img img-3" alt="Meeting">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="hero-img img-4" alt="Working">
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="contact-info">
+                <h5>GET IN TOUCH</h5>
+                <h2>Back African <em>engineering</em></h2>
+                <p>Write to us about partnerships, deployment, or custom hardware requests for your institution.</p>
+                
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-text">
+                        <h6>LOCATION</h6>
+                        <p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div class="info-text">
+                        <h6>PHONE</h6>
+                        <p>0748743673</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-text">
+                        <h6>EMAIL</h6>
+                        <p>SentinExappliances@gmail.com</p>
+                    </div>
+                </div>
+
+                <!-- Map (Satellite by default) -->
+                <div class="map-container">
+                    <button class="map-toggle" onclick="toggleMap()" id="map-btn">Switch to Plain</button>
+                    <iframe id="google-map" src="https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <form onsubmit="event.preventDefault(); alert('Message sent successfully (Simulation)');">
+                    <div class="form-group">
+                        <label>NAME</label>
+                        <input type="text" placeholder="Your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>EMAIL</label>
+                        <input type="email" placeholder="you@institution.org" required>
+                    </div>
+                    <div class="form-group">
+                        <label>INTEREST</label>
+                        <select>
+                            <option>Partnership</option>
+                            <option>Device Deployment</option>
+                            <option>Software Customization</option>
+                            <option>General Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>MESSAGE</label>
+                        <textarea placeholder="What would you like to work on with us?"></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Send message &rarr;</button>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <!-- 2. LOGIN MODAL -->
+    <div id="login-modal">
         <div class="login-card">
-            <h1>SentinEx</h1>
-            <p>Enter your credentials to access the dashboard.</p>
-            <div class="input-group">
+            <h1>SentinEx Portal</h1>
+            <p>Enter your credentials to access the live dashboard.</p>
+            <div class="form-group" style="text-align: left;">
                 <label>Username</label>
                 <input type="text" id="username" placeholder="SentinEx">
             </div>
-            <div class="input-group">
+            <div class="form-group" style="text-align: left;">
                 <label>Password</label>
                 <input type="password" id="password" placeholder="••••">
             </div>
-            <button class="btn" onclick="login()">Secure Login</button>
-            <p id="login-error" style="color: var(--danger); font-size: 13px; margin-top: 15px; display: none;">Invalid credentials. Try SentinEx / 1234</p>
+            <button class="btn-primary" style="width: 100%; justify-content: center;" onclick="login()">Secure Login</button>
+            <button onclick="closeLogin()" style="background:none; border:none; margin-top:15px; color:#555; cursor:pointer;">Cancel</button>
+            <p id="login-error" style="color: #dc2626; font-size: 13px; margin-top: 10px; display: none;">Invalid credentials. Try SentinEx / 1234</p>
         </div>
     </div>
 
-    <!-- 2. MAIN APP -->
+    <!-- 3. THE DASHBOARD APP -->
     <div id="app-screen">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo">Sentin<span>Ex</span></div>
-            <div class="nav-links">
-                <a class="nav-link active" onclick="switchTab('dashboard', this)">📊 Dashboard</a>
-                <a class="nav-link" onclick="switchTab('members', this)">👥 Members</a>
-                <a class="nav-link" onclick="switchTab('settings', this)">⚙️ Settings</a>
-                <a class="nav-link" onclick="logout()" style="margin-top: 50px; color: var(--danger);">🚪 Logout</a>
-            </div>
-        </aside>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="topbar">
-                <h2 id="page-title">Dashboard Overview</h2>
-                <div class="topbar-controls">
-                    <button class="icon-btn" onclick="toggleTheme()">🌙 Theme</button>
-                    <button class="icon-btn" onclick="toggleLanguage()">🌐 <span id="lang-text">EN</span></button>
+        <div class="dashboard-layout">
+            <aside class="dash-sidebar">
+                <div class="logo">Sentin<span>Ex</span></div>
+                <div class="dash-nav">
+                    <a class="dash-link active">📊 Dashboard</a>
+                    <a class="dash-link">👥 Members</a>
+                    <a class="dash-link">⚙️ Settings</a>
+                    <a class="dash-link" onclick="logout()" style="margin-top: 50px; color: #dc2626;">🚪 Exit to Website</a>
                 </div>
-            </header>
+            </aside>
+            <main class="dash-main">
+                <div class="dash-topbar">
+                    <h2>System Overview</h2>
+                    <div style="color: #059669; font-weight: 600; font-size: 14px; display:flex; align-items:center; gap:8px;">🟢 Live Connection</div>
+                </div>
 
-            <!-- View 1: Dashboard -->
-            <div id="view-dashboard" class="view-container active">
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-title" data-en="Total Scans" data-sw="Jumla ya Skana">Total Scans</div>
-                        <div class="stat-value" id="total-scans">0</div>
+                <div class="dash-stats">
+                    <div class="dash-card">
+                        <div class="title">Total Scans</div>
+                        <div class="value" id="total-scans">0</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-title" data-en="Unique Members" data-sw="Wanachama Pekee">Unique Members</div>
-                        <div class="stat-value" id="unique-members">0</div>
+                    <div class="dash-card">
+                        <div class="title">Unique Members</div>
+                        <div class="value" id="unique-members">0</div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-title" data-en="Security Alerts" data-sw="Tahadhari za Usalama">Security Alerts</div>
-                        <div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div>
+                    <div class="dash-card">
+                        <div class="title">Security Alerts</div>
+                        <div class="value" id="security-alerts" style="color: #dc2626;">0</div>
                     </div>
                 </div>
 
-                <div class="table-container">
+                <div class="dash-table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th data-en="Member Name" data-sw="Jina la Mwanachama">Member Name</th>
-                                <th data-en="ID" data-sw="Kitambulisho">ID</th>
-                                <th data-en="Timestamp" data-sw="Muda">Timestamp</th>
-                                <th data-en="Status" data-sw="Hali">Status</th>
+                                <th>Member Name</th>
+                                <th>ID</th>
+                                <th>Timestamp</th>
+                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="log-body">
@@ -171,93 +294,62 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-
-            <!-- View 2: Members (Placeholder) -->
-            <div id="view-members" class="view-container">
-                <div class="settings-card" style="max-width: 100%;">
-                    <h3>Member Management</h3>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">This section will allow you to enroll new fingerprints directly from the web in Phase 2.</p>
-                </div>
-            </div>
-
-            <!-- View 3: Settings -->
-            <div id="view-settings" class="view-container">
-                <div class="settings-card">
-                    <h3>Admin Settings</h3>
-                    <div class="input-group">
-                        <label>Change Admin Username</label>
-                        <input type="text" value="SentinEx">
-                    </div>
-                    <div class="input-group">
-                        <label>Change Password</label>
-                        <input type="password" value="1234">
-                    </div>
-                    <button class="btn" onclick="alert('Settings saved (simulation)')">Save Changes</button>
-                </div>
-            </div>
-        </main>
+            </main>
+        </div>
     </div>
 
     <script>
-        // --- STATE ---
-        let currentLang = 'en';
         let logsData = [];
+        let isSatellite = true;
 
-        // --- LOGIN LOGIC ---
+        // --- MAP TOGGLE ---
+        function toggleMap() {
+            const iframe = document.getElementById('google-map');
+            const btn = document.getElementById('map-btn');
+            if (isSatellite) {
+                iframe.src = "https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=m&z=14&ie=UTF8&iwloc=&output=embed";
+                btn.innerText = "Switch to Satellite";
+                isSatellite = false;
+            } else {
+                iframe.src = "https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed";
+                btn.innerText = "Switch to Plain";
+                isSatellite = true;
+            }
+        }
+
+        // --- LANGUAGE DROPDOWN ---
+        function changeLanguage(lang) {
+            // Simple demo: alert on change. Later we will add JSON translations.
+            if(lang === 'sw') alert("Umebadilisha lugha kuwa Kiswahili (Simulation)");
+            if(lang === 'fr') alert("Langue changée en Français (Simulation)");
+        }
+
+        // --- AUTH & VIEW LOGIC ---
+        function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
+        function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
+        
         function login() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            const errorMsg = document.getElementById('login-error');
-
             if (user === 'SentinEx' && pass === '1234') {
-                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('landing-page').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
                 fetchLogs();
             } else {
-                errorMsg.style.display = 'block';
+                document.getElementById('login-error').style.display = 'block';
             }
         }
 
         function logout() {
-            document.getElementById('login-screen').style.display = 'flex';
             document.getElementById('app-screen').style.display = 'none';
+            document.getElementById('landing-page').style.display = 'block';
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
+            document.getElementById('login-error').style.display = 'none';
         }
 
-        // --- UI NAVIGATION ---
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById('view-' + tabId).classList.add('active');
-            element.classList.add('active');
-
-            const titles = { 'dashboard': 'Dashboard Overview', 'members': 'Member Management', 'settings': 'System Settings' };
-            document.getElementById('page-title').innerText = titles[tabId];
-        }
-
-        // --- THEME & LANGUAGE ---
-        function toggleTheme() {
-            const html = document.documentElement;
-            if (html.getAttribute('data-theme') === 'dark') {
-                html.removeAttribute('data-theme');
-            } else {
-                html.setAttribute('data-theme', 'dark');
-            }
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'sw' : 'en';
-            document.getElementById('lang-text').innerText = currentLang.toUpperCase();
-            document.querySelectorAll('[data-en]').forEach(el => {
-                el.innerText = el.getAttribute('data-' + currentLang);
-            });
-            renderTable(); // Re-render table for Swahili badges
-        }
-
-        // --- FETCH DATA ---
+        // --- DASHBOARD DATA FETCHING ---
         async function fetchLogs() {
             try {
                 const response = await fetch('/api/logs');
@@ -277,33 +369,28 @@
         function renderTable() {
             const tbody = document.getElementById('log-body');
             if (logsData.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No records found.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: #6b7280;">No records found.</td></tr>`;
                 return;
             }
-
-            const statusGranted = currentLang === 'en' ? 'Granted' : 'Ameruhusiwa';
-            const statusDenied = currentLang === 'en' ? 'Denied' : 'Amekataliwa';
 
             tbody.innerHTML = logsData.map(log => {
                 const date = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 const dateStr = new Date(log.scanned_at).toLocaleDateString();
                 const isGranted = log.status === 'Granted';
                 const badgeClass = isGranted ? 'badge-granted' : 'badge-denied';
-                const displayStatus = isGranted ? statusGranted : statusDenied;
-                const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times today!" style="color:var(--warning); cursor:help;">⚠️</span>` : '';
+                const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:#d97706; cursor:help;">⚠️</span>` : '';
 
                 return `
                     <tr>
                         <td><strong>${log.student_name}</strong> ${warning}</td>
                         <td>#${log.fingerprint_id}</td>
                         <td>${dateStr} at ${date}</td>
-                        <td><span class="badge ${badgeClass}">${displayStatus}</span></td>
+                        <td><span class="badge ${badgeClass}">${log.status}</span></td>
                     </tr>
                 `;
             }).join('');
         }
 
-        // Auto-refresh every 3 seconds if logged in
         setInterval(() => {
             if (document.getElementById('app-screen').style.display === 'block') {
                 fetchLogs();
