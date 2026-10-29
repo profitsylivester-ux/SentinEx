@@ -3,167 +3,312 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SentinEx | Dashboard</title>
+    <title>SentinEx | Secure Access</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         
+        /* Light Theme (Default) */
         :root {
             --bg-body: #f3f4f6;
-            --bg-sidebar: #111827;
             --bg-card: #ffffff;
+            --bg-sidebar: #111827;
             --text-main: #111827;
             --text-muted: #6b7280;
+            --text-sidebar: #9ca3af;
             --primary: #2563eb;
             --success: #059669;
             --danger: #dc2626;
-            --warning: #d97706;
             --border: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg-body); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --bg-body: #0f172a;
+            --bg-card: #1e293b;
+            --bg-sidebar: #020617;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        body { background-color: var(--bg-body); color: var(--text-main); height: 100vh; overflow: hidden; }
+
+        /* --- LOGIN SCREEN --- */
+        #login-screen { display: flex; justify-content: center; align-items: center; height: 100vh; background: var(--bg-sidebar); }
+        .login-card { background: var(--bg-card); padding: 40px; border-radius: 16px; width: 380px; box-shadow: var(--shadow); text-align: center; transform: scale(1); animation: floatIn 0.5s ease-out; }
+        @keyframes floatIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .login-card h1 { color: var(--primary); font-size: 28px; margin-bottom: 10px; }
+        .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; color: var(--text-muted); }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-body); color: var(--text-main); outline: none; }
+        .input-group input:focus { border-color: var(--primary); }
+        .btn { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: transform 0.1s; }
+        .btn:active { transform: scale(0.97); }
+
+        /* --- APP SCREEN --- */
+        #app-screen { display: none; height: 100vh; }
+        
         /* Sidebar */
-        .sidebar { width: 260px; background: var(--bg-sidebar); color: white; display: flex; flex-direction: column; }
-        .logo { padding: 24px; font-size: 24px; font-weight: 700; letter-spacing: -0.5px; border-bottom: 1px solid #1f2937; }
+        .sidebar { width: 260px; background: var(--bg-sidebar); display: flex; flex-direction: column; height: 100vh; position: fixed; left: 0; top: 0; }
+        .logo { padding: 24px; font-size: 24px; font-weight: 700; color: white; border-bottom: 1px solid #1f2937; }
         .logo span { color: #60a5fa; }
         .nav-links { padding: 20px 12px; flex: 1; }
-        .nav-link { display: flex; align-items: center; padding: 12px 16px; color: #9ca3af; text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 500; transition: 0.2s; }
+        .nav-link { display: flex; align-items: center; padding: 12px 16px; color: var(--text-sidebar); text-decoration: none; border-radius: 8px; margin-bottom: 8px; font-weight: 500; cursor: pointer; }
         .nav-link:hover, .nav-link.active { background: #1f2937; color: white; }
         .nav-link.active { border-left: 4px solid var(--primary); }
 
         /* Main Content */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow-y: auto; }
-        .topbar { background: var(--bg-card); height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid var(--border); }
-        .topbar h2 { font-size: 20px; font-weight: 600; }
-        .status-indicator { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--success); background: #ecfdf5; padding: 6px 12px; border-radius: 20px; }
-        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .main-content { margin-left: 260px; padding: 0; height: 100vh; display: flex; flex-direction: column; overflow-y: auto; }
+        .topbar { background: var(--bg-card); height: 70px; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+        .topbar-controls { display: flex; gap: 16px; }
+        .icon-btn { background: var(--bg-body); border: 1px solid var(--border); color: var(--text-main); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; }
+        .icon-btn:hover { background: var(--border); }
 
-        .dashboard-container { padding: 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
-        
-        /* Stat Cards */
+        .view-container { padding: 32px; max-width: 1200px; display: none; animation: fadeIn 0.3s ease; }
+        .view-container.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: var(--bg-card); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
-        .stat-title { font-size: 14px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .stat-value { font-size: 32px; font-weight: 700; color: var(--text-main); }
+        .stat-card { background: var(--bg-card); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); cursor: pointer; }
+        .stat-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+        .stat-card:active { transform: scale(0.98); }
+        .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        .stat-value { font-size: 32px; font-weight: 700; }
 
         /* Table */
-        .table-container { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow: hidden; }
+        .table-container { background: var(--bg-card); border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); }
-        th { background: #f9fafb; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
-        td { font-size: 14px; font-weight: 500; }
-        tr:last-child td { border-bottom: none; }
-        tr:hover { background: #f9fafb; }
-
-        /* Badges */
+        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
+        th { background: var(--bg-body); color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        tr:hover { background: var(--bg-body); }
+        
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-denied { background: #fef2f2; color: var(--danger); }
-        
-        /* Warning Icon */
-        .warning-icon { color: var(--warning); cursor: pointer; margin-left: 8px; font-size: 16px; }
-        .warning-icon:hover::after { content: "Duplicate Scan!"; position: absolute; background: #111; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 12px; transform: translate(-50%, -100%); margin-top: -8px; }
+
+        /* Settings Form */
+        .settings-card { background: var(--bg-card); padding: 32px; border-radius: 12px; border: 1px solid var(--border); max-width: 500px; }
+        .settings-card h3 { margin-bottom: 24px; font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">Sentin<span>Ex</span></div>
-        <div class="nav-links">
-            <a href="#" class="nav-link active">📊 Dashboard</a>
-            <a href="#" class="nav-link">👥 Students</a>
-            <a href="#" class="nav-link">📝 Attendance Logs</a>
-            <a href="#" class="nav-link">⚙️ Settings</a>
+
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-screen">
+        <div class="login-card">
+            <h1>SentinEx</h1>
+            <p>Enter your credentials to access the dashboard.</p>
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="SentinEx">
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="••••">
+            </div>
+            <button class="btn" onclick="login()">Secure Login</button>
+            <p id="login-error" style="color: var(--danger); font-size: 13px; margin-top: 15px; display: none;">Invalid credentials. Try SentinEx / 1234</p>
         </div>
-    </aside>
+    </div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="topbar">
-            <h2>Attendance Overview</h2>
-            <div class="status-indicator"><div class="dot"></div> Live System</div>
-        </header>
+    <!-- 2. MAIN APP -->
+    <div id="app-screen">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">Sentin<span>Ex</span></div>
+            <div class="nav-links">
+                <a class="nav-link active" onclick="switchTab('dashboard', this)">📊 Dashboard</a>
+                <a class="nav-link" onclick="switchTab('members', this)">👥 Members</a>
+                <a class="nav-link" onclick="switchTab('settings', this)">⚙️ Settings</a>
+                <a class="nav-link" onclick="logout()" style="margin-top: 50px; color: var(--danger);">🚪 Logout</a>
+            </div>
+        </aside>
 
-        <div class="dashboard-container">
-            <!-- Stats -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-title">Total Scans Today</div>
-                    <div class="stat-value" id="total-scans">0</div>
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="topbar">
+                <h2 id="page-title">Dashboard Overview</h2>
+                <div class="topbar-controls">
+                    <button class="icon-btn" onclick="toggleTheme()">🌙 Theme</button>
+                    <button class="icon-btn" onclick="toggleLanguage()">🌐 <span id="lang-text">EN</span></button>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title">Unique Students</div>
-                    <div class="stat-value" id="unique-students">0</div>
+            </header>
+
+            <!-- View 1: Dashboard -->
+            <div id="view-dashboard" class="view-container active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-title" data-en="Total Scans" data-sw="Jumla ya Skana">Total Scans</div>
+                        <div class="stat-value" id="total-scans">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title" data-en="Unique Members" data-sw="Wanachama Pekee">Unique Members</div>
+                        <div class="stat-value" id="unique-members">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title" data-en="Security Alerts" data-sw="Tahadhari za Usalama">Security Alerts</div>
+                        <div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-title">Security Alerts</div>
-                    <div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th data-en="Member Name" data-sw="Jina la Mwanachama">Member Name</th>
+                                <th data-en="ID" data-sw="Kitambulisho">ID</th>
+                                <th data-en="Timestamp" data-sw="Muda">Timestamp</th>
+                                <th data-en="Status" data-sw="Hali">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="log-body">
+                            <tr><td colspan="4" style="text-align:center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <!-- Table -->
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Student Name</th>
-                            <th>ID</th>
-                            <th>Timestamp</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody id="log-body">
-                        <tr><td colspan="4" style="text-align:center; color: var(--text-muted);">Loading secure records...</td></tr>
-                    </tbody>
-                </table>
+            <!-- View 2: Members (Placeholder) -->
+            <div id="view-members" class="view-container">
+                <div class="settings-card" style="max-width: 100%;">
+                    <h3>Member Management</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">This section will allow you to enroll new fingerprints directly from the web in Phase 2.</p>
+                </div>
             </div>
-        </div>
-    </main>
+
+            <!-- View 3: Settings -->
+            <div id="view-settings" class="view-container">
+                <div class="settings-card">
+                    <h3>Admin Settings</h3>
+                    <div class="input-group">
+                        <label>Change Admin Username</label>
+                        <input type="text" value="SentinEx">
+                    </div>
+                    <div class="input-group">
+                        <label>Change Password</label>
+                        <input type="password" value="1234">
+                    </div>
+                    <button class="btn" onclick="alert('Settings saved (simulation)')">Save Changes</button>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script>
+        // --- STATE ---
+        let currentLang = 'en';
+        let logsData = [];
+
+        // --- LOGIN LOGIC ---
+        function login() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            const errorMsg = document.getElementById('login-error');
+
+            if (user === 'SentinEx' && pass === '1234') {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('app-screen').style.display = 'block';
+                fetchLogs();
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('app-screen').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // --- UI NAVIGATION ---
+        function switchTab(tabId, element) {
+            document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById('view-' + tabId).classList.add('active');
+            element.classList.add('active');
+
+            const titles = { 'dashboard': 'Dashboard Overview', 'members': 'Member Management', 'settings': 'System Settings' };
+            document.getElementById('page-title').innerText = titles[tabId];
+        }
+
+        // --- THEME & LANGUAGE ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.getAttribute('data-theme') === 'dark') {
+                html.removeAttribute('data-theme');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+            }
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'sw' : 'en';
+            document.getElementById('lang-text').innerText = currentLang.toUpperCase();
+            document.querySelectorAll('[data-en]').forEach(el => {
+                el.innerText = el.getAttribute('data-' + currentLang);
+            });
+            renderTable(); // Re-render table for Swahili badges
+        }
+
+        // --- FETCH DATA ---
         async function fetchLogs() {
             try {
                 const response = await fetch('/api/logs');
-                const data = await response.json();
-                const tbody = document.getElementById('log-body');
+                logsData = await response.json();
                 
-                // Update Stats
-                document.getElementById('total-scans').innerText = data.length;
-                const uniqueIds = new Set(data.map(log => log.fingerprint_id));
-                document.getElementById('unique-students').innerText = uniqueIds.size;
-                document.getElementById('security-alerts').innerText = data.filter(l => l.status === 'Denied').length;
+                document.getElementById('total-scans').innerText = logsData.length;
+                const uniqueIds = new Set(logsData.map(log => log.fingerprint_id));
+                document.getElementById('unique-members').innerText = uniqueIds.size;
+                document.getElementById('security-alerts').innerText = logsData.filter(l => l.status === 'Denied').length;
 
-                if (data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No records found.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = data.map(log => {
-                    const date = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    const dateStr = new Date(log.scanned_at).toLocaleDateString();
-                    const badgeClass = log.status === 'Granted' ? 'badge-granted' : 'badge-denied';
-                    
-                    // Check if duplicate (scan_count > 1)
-                    const warning = (log.scan_count > 1) ? `<span class="warning-icon" title="Scanned ${log.scan_count} times today!">⚠️</span>` : '';
-
-                    return `
-                        <tr>
-                            <td><strong>${log.student_name}</strong> ${warning}</td>
-                            <td>#${log.fingerprint_id}</td>
-                            <td>${dateStr} at ${date}</td>
-                            <td><span class="badge ${badgeClass}">${log.status}</span></td>
-                        </tr>
-                    `;
-                }).join('');
+                renderTable();
             } catch (err) {
                 console.error("Error fetching logs:", err);
             }
         }
 
-        setInterval(fetchLogs, 2000);
-        fetchLogs();
+        function renderTable() {
+            const tbody = document.getElementById('log-body');
+            if (logsData.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; color: var(--text-muted);">No records found.</td></tr>`;
+                return;
+            }
+
+            const statusGranted = currentLang === 'en' ? 'Granted' : 'Ameruhusiwa';
+            const statusDenied = currentLang === 'en' ? 'Denied' : 'Amekataliwa';
+
+            tbody.innerHTML = logsData.map(log => {
+                const date = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                const dateStr = new Date(log.scanned_at).toLocaleDateString();
+                const isGranted = log.status === 'Granted';
+                const badgeClass = isGranted ? 'badge-granted' : 'badge-denied';
+                const displayStatus = isGranted ? statusGranted : statusDenied;
+                const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times today!" style="color:var(--warning); cursor:help;">⚠️</span>` : '';
+
+                return `
+                    <tr>
+                        <td><strong>${log.student_name}</strong> ${warning}</td>
+                        <td>#${log.fingerprint_id}</td>
+                        <td>${dateStr} at ${date}</td>
+                        <td><span class="badge ${badgeClass}">${displayStatus}</span></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Auto-refresh every 3 seconds if logged in
+        setInterval(() => {
+            if (document.getElementById('app-screen').style.display === 'block') {
+                fetchLogs();
+            }
+        }, 3000);
     </script>
 </body>
 </html>
