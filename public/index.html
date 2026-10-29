@@ -192,6 +192,43 @@
         .badge-denied { background: #fef2f2; color: var(--danger); border: 1px solid #fecaca; }
 
         .settings-card { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); max-width: 600px; }
+
+        /* --- MOBILE RESPONSIVENESS (The Magic Fix) --- */
+        @media (max-width: 900px) {
+            nav { flex-direction: column; gap: 15px; padding: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
+            .nav-actions { width: 100%; justify-content: center; }
+            
+            .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 5%; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .hero-text p { margin: 0 auto 30px; }
+            .hero-text button { margin: 0 auto; }
+            .hero-images { display: none; } /* Hide floating images on mobile */
+            
+            .section h2 { font-size: 2rem; }
+            .section-grid { grid-template-columns: 1fr; }
+            
+            .contact { grid-template-columns: 1fr; gap: 40px; }
+            .contact-info p { margin: 0 auto 30px; }
+            .info-item { justify-content: center; text-align: left; }
+            
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .footer-brand .logo { justify-content: center; }
+            .footer-brand p { margin: 0 auto 20px; }
+            .footer-socials { justify-content: center; }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+
+            .login-card { width: 90%; padding: 30px; }
+            
+            .dashboard-layout { flex-direction: column; }
+            .dash-sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 10px; }
+            .dash-sidebar .logo { padding: 10px; border: none; }
+            .dash-nav { display: flex; flex-direction: row; overflow-x: auto; padding: 10px; gap: 10px; width: 100%; }
+            .dash-link { white-space: nowrap; padding: 8px 12px; font-size: 14px; }
+            .dash-topbar h2 { font-size: 2rem; }
+            .dash-stats { grid-template-columns: 1fr; }
+            .dash-table-container { overflow-x: auto; }
+        }
     </style>
 </head>
 <body>
@@ -232,7 +269,7 @@
                 <h5 data-en="ABOUT SENTINEX" data-sw="KUHUSU SENTINEX">ABOUT SENTINEX</h5>
                 <h1 data-en="Secure attendance systems built for <em>local institutions</em>" data-sw="Mifumo salama ya mahudhurio iliyoundwa kwa ajili ya <em>taasisi za ndani</em>">Secure attendance systems built for <em>local institutions</em></h1>
                 <p data-en="We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline." data-sw="Tunabuni na kutekeleza vifaa vya kibaiometriki na dashibodi za wingu kutoka Kigamboni, Kiswani. Mifumo yetu husaidia shule na ofisi kusimamia mahudhurio na udhibiti wa ufikiaji kwa uhakika, hata mtandao unapokatika.">We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline.</p>
-                <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" data-en="Work with us &rarr;" data-sw="Fanya kazi nasi &rarr;">Work with us &rarr;</button>
+                <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" data-en="Work with us &rarr;" data-sw="Fanya kazi nasi &rarr;">Work with us &rarr;</button>
             </div>
             <div class="hero-images">
                 <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team working">
@@ -460,7 +497,6 @@
 
             <div class="footer-bottom">
                 <div data-en="&copy; 2026 SentinEx Appliances. All rights reserved." data-sw="&copy; 2026 SentinEx Appliances. Haki zote zimehifadhiwa.">&copy; 2026 SentinEx Appliances. All rights reserved.</div>
-                <!-- The 'Built with' text has been removed here -->
             </div>
         </footer>
     </div>
