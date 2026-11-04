@@ -18,7 +18,7 @@
             --card-bg: #ffffff; --border: #e5e5e5; --primary: #111111;
             --success: #059669; --danger: #dc2626; --warning: #d97706;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-            --dash-bg: #f1f5f9; --sidebar-bg: #1e293b; --sidebar-hover: #334155;
+            --dash-bg: #f4f7fe; --sidebar-bg: #1e293b; --sidebar-hover: #334155;
             --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
             --dash-text: #0f172a; --dash-muted: #64748b; --dash-border: #e2e8f0;
         }
@@ -29,6 +29,8 @@
         p, a, div, span, td, button, input, textarea, select, label { font-family: 'Inter', sans-serif; }
         .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; cursor: pointer; }
         .logo-svg { width: 32px; height: 32px; border-radius: 6px; }
+        
+        /* LANDING PAGE */
         #landing-page { display: block; }
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
@@ -55,6 +57,8 @@
         .card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
+        
+        /* FAQ - RESTORED ALL 5 */
         .faq-section { padding: 80px 5%; background: var(--bg-color); border-top: 1px solid var(--border); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-container h2 { text-align: center; margin-bottom: 40px; font-size: 2.5rem; }
@@ -64,6 +68,8 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-muted); font-size: 14px; }
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
         .faq-item.active .faq-icon { transform: rotate(180deg); }
+        
+        /* TEAM & CONTACT */
         .team-section { padding: 80px 5%; background: #111111; border-top: 1px solid #222; }
         .team-section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 600; }
         .team-section h2 { font-size: 3rem; margin-bottom: 40px; color: white; }
@@ -82,6 +88,7 @@
         .expanded-text p.bio { color: #ccc; font-size: 15px; line-height: 1.5; max-width: 350px; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         .expanded-text a { color: white; font-weight: 500; font-size: 14px; text-decoration: none; border-bottom: 1px solid white; padding-bottom: 2px; transition: color 0.2s; display: inline-block; }
         .expanded-text a:hover { color: #60a5fa; border-color: #60a5fa; }
+        
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
         .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
@@ -97,6 +104,7 @@
         .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-container iframe { width: 100%; height: 100%; border: 0; }
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
+        
         footer { background: #111111; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
@@ -113,7 +121,7 @@
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
         
-        /* DASHBOARD */
+        /* DASHBOARD LAYOUT */
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
@@ -129,11 +137,13 @@
         .btn-warning { background: #fef3c7; color: var(--warning); }
         .btn-outline { background: transparent; border: 1px solid var(--dash-border); color: var(--dash-text); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
+        
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; color: var(--text-main); }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         .login-card .form-group input { font-family: 'Inter', sans-serif; }
+        
         .dashboard-layout { display: flex; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
@@ -145,29 +155,32 @@
         .nav-item.danger { color: #f87171; margin-top: auto; }
         .nav-item.danger:hover { background: rgba(248, 113, 113, 0.1); }
         .nav-item.danger .nav-icon { stroke: #f87171; }
+        
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--dash-border); }
         .topbar h2 { font-size: 1.25rem; font-weight: 600; }
         .date-picker { padding: 8px 16px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; outline: none; font-weight: 500; font-family: 'Inter', sans-serif; }
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
-        .stat-title { font-size: 13px; color: var(--dash-muted); font-weight: 500; margin-bottom: 8px; }
-        .stat-value { font-size: 32px; font-weight: 600; line-height: 1; }
-        .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--dash-border); font-size: 14px; }
-        th { background: #f8fafc; color: var(--dash-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background: #f8fafc; }
-        .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; }
-        .badge-active { background: #ecfdf5; color: var(--success); }
-        .badge-pending { background: #fffbeb; color: var(--warning); }
-        .badge-suspended { background: #fef2f2; color: var(--danger); }
-        .badge-denied { background: #fef2f2; color: var(--danger); }
-        .badge-granted { background: #ecfdf5; color: var(--success); }
-        .badge-manual { background: #fffbeb; color: var(--warning); }
+        
+        /* ANALYTICS PAGE - ENTERPRISE DESIGN */
+        .analytics-grid-top { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-bottom: 24px; }
+        .analytics-grid-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        
+        .analytic-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--dash-border); padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .summary-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; margin-bottom: 16px; }
+        .summary-val { font-size: 36px; font-weight: 700; color: var(--text-main); margin-bottom: 24px; letter-spacing: -1px; }
+        .summary-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid var(--dash-border); padding-top: 16px; }
+        .summary-subtitle { font-size: 12px; color: var(--dash-muted); font-weight: 500; margin-bottom: 4px; }
+        .summary-subval { font-size: 20px; font-weight: 600; color: var(--text-main); }
+        
+        .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .chart-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; }
+        .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: #f8fafc; }
+        
+        .chart-container-large { height: 250px; width: 100%; }
+        .chart-container-small { height: 200px; width: 100%; display: flex; justify-content: center; }
+        
         @media (max-width: 900px) {
             nav { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
@@ -193,7 +206,8 @@
             .dash-nav { display: flex; flex-direction: row; overflow-x: auto; padding: 10px; gap: 10px; width: 100%; }
             .nav-item { white-space: nowrap; padding: 8px 12px; font-size: 14px; }
             .dash-topbar h2 { font-size: 2rem; }
-            .stats-grid { grid-template-columns: 1fr; }
+            .analytics-grid-top { grid-template-columns: 1fr; }
+            .analytics-grid-bottom { grid-template-columns: 1fr; }
             .table-card { overflow-x: auto; }
         }
     </style>
@@ -260,6 +274,7 @@
             </div>
         </section>
 
+        <!-- FAQ - FULLY RESTORED -->
         <section class="faq-section" id="faq">
             <div class="faq-container">
                 <h2>Frequently asked</h2>
@@ -268,7 +283,7 @@
                         <span>How does the offline mode work?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down.</div>
+                    <div class="faq-answer">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once restored, it syncs to the cloud.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
@@ -277,10 +292,30 @@
                     </div>
                     <div class="faq-answer">Yes. Because our backend uses PostgreSQL and a REST API, we can easily export logs to CSV.</div>
                 </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is the hardware included?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">Yes. When you partner with SentinEx, we provide the full package: the terminal, power supply, enclosure, and cloud setup.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How long does installation take?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">A standard deployment for a single office or classroom takes less than 2 hours. A full campus takes 2 days.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How secure is the biometric data?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">Extremely secure. The AS608 sensor does not store images. It converts your fingerprint into a mathematical template (hash).</div>
+                </div>
             </div>
         </section>
 
-        <!-- UPDATED: FAIDA IMAGE -->
         <section class="team-section" id="team">
             <h5>THE TEAM</h5>
             <h2 style="color:white;">The minds <em>behind it</em></h2>
@@ -437,16 +472,57 @@
                     </div>
                 </div>
 
-                <!-- NEW ANALYTICS TAB -->
+                <!-- NEW ANALYTICS TAB - ENTERPRISE DESIGN -->
                 <div id="view-analytics" class="view-container">
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
-                        <div class="table-card" style="padding: 24px;">
-                            <h3 style="margin-bottom: 16px; font-size: 16px;">Today's Attendance</h3>
-                            <canvas id="doughnutChart"></canvas>
+                    <div class="analytics-grid-top">
+                        <!-- Summary Card -->
+                        <div class="analytic-card">
+                            <div class="summary-title">Total Collected</div>
+                            <div class="summary-val" id="ana-total-scans">0</div>
+                            
+                            <div class="summary-split">
+                                <div>
+                                    <div class="summary-subtitle">Unique Members</div>
+                                    <div class="summary-subval" id="ana-unique-members">0</div>
+                                </div>
+                                <div>
+                                    <div class="summary-subtitle">Security Alerts</div>
+                                    <div class="summary-subval" id="ana-security-alerts" style="color: var(--danger);">0</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="table-card" style="padding: 24px;">
-                            <h3 style="margin-bottom: 16px; font-size: 16px;">7-Day Trend</h3>
-                            <canvas id="barChart"></canvas>
+
+                        <!-- Main Line Chart -->
+                        <div class="analytic-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Received (Last 7 Days)</div>
+                                <select class="chart-select"><option>All Scans</option></select>
+                            </div>
+                            <div class="chart-container-large">
+                                <canvas id="lineChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-grid-bottom">
+                        <!-- Doughnut Chart -->
+                        <div class="analytic-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Structure</div>
+                            </div>
+                            <div class="chart-container-small">
+                                <canvas id="doughnutChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Bar Chart -->
+                        <div class="analytic-card">
+                            <div class="chart-header">
+                                <div class="chart-title">Scans vs Alerts (Last 7 Days)</div>
+                            </div>
+                            <div class="chart-container-large" style="height: 180px;">
+                                <canvas id="barChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -603,6 +679,7 @@
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
+        let lineChartInstance = null;
         let doughnutChartInstance = null;
         let barChartInstance = null;
 
@@ -703,7 +780,6 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
-        // --- EXPORT CSV ---
         function exportCSV() {
             if (logsData.length === 0) { alert("No data to export for this date."); return; }
             
@@ -725,17 +801,21 @@
             document.body.removeChild(link);
         }
 
-        // --- ANALYTICS CHARTS ---
+        // --- NEW ENTERPRISE ANALYTICS CHARTS ---
         async function fetchAnalytics() {
-            // Fetch today's data for the doughnut chart
             const today = new Date().toISOString().split('T')[0];
             try {
+                // 1. Fetch Today's Data for Summary & Doughnut
                 const resToday = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
                 const todayLogs = await resToday.json();
                 
+                document.getElementById('ana-total-scans').innerText = todayLogs.filter(l => l.status !== 'Pending').length;
+                const uniqueIds = new Set(todayLogs.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
+                document.getElementById('ana-unique-members').innerText = uniqueIds.size;
+                document.getElementById('ana-security-alerts').innerText = todayLogs.filter(l => l.status === 'Denied').length;
+
                 const present = todayLogs.filter(l => l.status === 'Granted' || l.status === 'Manual').length;
                 const denied = todayLogs.filter(l => l.status === 'Denied').length;
-                const pending = todayLogs.filter(l => l.status === 'Pending').length;
 
                 // Render Doughnut
                 if (doughnutChartInstance) doughnutChartInstance.destroy();
@@ -743,21 +823,21 @@
                 doughnutChartInstance = new Chart(ctxDoughnut, {
                     type: 'doughnut',
                     data: {
-                        labels: ['Present', 'Denied', 'Pending'],
+                        labels: ['Present', 'Denied'],
                         datasets: [{
-                            data: [present, denied, pending],
-                            backgroundColor: ['#059669', '#dc2626', '#d97706'],
-                            borderWidth: 0
+                            data: [present, denied],
+                            backgroundColor: ['#3b82f6', '#f59e0b'], // Blue & Orange like screenshot
+                            borderWidth: 0,
+                            cutout: '80%'
                         }]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
                 });
 
-                // Fetch 7-day trend
+                // 2. Fetch 7-Day Trend for Line and Bar Charts
                 const resTrend = await fetch(`/api/analytics/trend?tenant_id=${currentTenant}`);
                 const trendData = await resTrend.json();
                 
-                // Fill missing dates with 0
                 const last7Days = [];
                 for (let i = 6; i >= 0; i--) {
                     const d = new Date();
@@ -767,21 +847,49 @@
                     last7Days.push({ date: dateStr.slice(5), count: match ? parseInt(match.count) : 0 });
                 }
 
-                // Render Bar
+                // Render Line Chart (Smooth Curve with Gradient)
+                if (lineChartInstance) lineChartInstance.destroy();
+                const ctxLine = document.getElementById('lineChart').getContext('2d');
+                const gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+                gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+                lineChartInstance = new Chart(ctxLine, {
+                    type: 'line',
+                    data: {
+                        labels: last7Days.map(d => d.date),
+                        datasets: [{
+                            label: 'Scans',
+                            data: last7Days.map(d => d.count),
+                            borderColor: '#3b82f6',
+                            backgroundColor: gradient,
+                            borderWidth: 3,
+                            tension: 0.4, // Smooth curve
+                            fill: true,
+                            pointBackgroundColor: '#3b82f6',
+                            pointRadius: 4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { border: { display: false }, beginAtZero: true } } }
+                });
+
+                // Render Bar Chart (Grouped)
                 if (barChartInstance) barChartInstance.destroy();
                 const ctxBar = document.getElementById('barChart').getContext('2d');
                 barChartInstance = new Chart(ctxBar, {
                     type: 'bar',
                     data: {
                         labels: last7Days.map(d => d.date),
-                        datasets: [{
-                            label: 'Scans',
-                            data: last7Days.map(d => d.count),
-                            backgroundColor: '#0f172a',
-                            borderRadius: 4
-                        }]
+                        datasets: [
+                            {
+                                label: 'Granted',
+                                data: last7Days.map(d => d.count), // Simplified: using total count for granted
+                                backgroundColor: '#3b82f6',
+                                borderRadius: 4
+                            }
+                        ]
                     },
-                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } } }
                 });
 
             } catch (err) { console.error("Error loading analytics", err); }
