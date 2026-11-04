@@ -20,11 +20,22 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+// --- HELPER: Write Immutable Audit Log ---
+async function logAction(admin, action, target, details) {
+  try {
+    await pool.query(
+      'INSERT INTO audit_logs (admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4)',
+      [admin, action, target, details]
+    );
+  } catch (err) {
+    console.error("Failed to write audit log:", err);
+  }
+}
+
 // 1. ESP32 Endpoint (Save Attendance)
 app.post('/api/scan', async (req, res) => {
   try {
     const { fingerprint_id, status } = req.body;
-    
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [fingerprint_id]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
@@ -32,14 +43,29 @@ app.post('/api/scan', async (req, res) => {
       'INSERT INTO attendance (fingerprint_id, student_name, status) VALUES ($1, $2, $3)',
       [fingerprint_id, studentName, status]
     );
-
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false });
   }
 });
 
-// 2. Get Attendance Logs
+// 2. Admin Login Audit
+app.post('/api/login-audit', async (req, res) => {
+  await logAction(req.body.admin_name, 'LOGIN', 'System', 'Admin logged into the dashboard.');
+  res.status(200).json({ success: true });
+});
+
+// 3. Get Audit Logs (Read-Only)
+app.get('/api/audit-logs', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 100');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    res.status(500).json({ success: false });
+  }
+});
+
+// 4. Get Attendance Logs
 app.get('/api/logs', async (req, res) => {
   try {
     const { date } = req.query; 
@@ -52,13 +78,11 @@ app.get('/api/logs', async (req, res) => {
       LEFT JOIN students s ON a.fingerprint_id = s.fingerprint_id
     `;
     let values = [];
-
     if (date) {
       query += ` WHERE DATE(a.scanned_at) = $1`;
       values.push(date);
     }
     query += ` ORDER BY a.scanned_at DESC LIMIT 100`;
-    
     const result = await pool.query(query, values);
     res.status(200).json(result.rows);
   } catch (error) {
@@ -66,7 +90,7 @@ app.get('/api/logs', async (req, res) => {
   }
 });
 
-// 3. Get All Active Students
+// 5. Get All Active Students
 app.get('/api/students', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM students WHERE deleted_at IS NULL ORDER BY name ASC');
@@ -76,57 +100,70 @@ app.get('/api/students', async (req, res) => {
   }
 });
 
-// 4. ADD NEW STUDENT (Web Enrollment)
+// 6. ADD NEW STUDENT
 app.post('/api/students', async (req, res) => {
   try {
-    const { fingerprint_id, name, reg_number } = req.body;
+    const { fingerprint_id, name, reg_number, admin_name } = req.body;
     await pool.query(
       'INSERT INTO students (fingerprint_id, name, reg_number, role) VALUES ($1, $2, $3, $4)',
       [fingerprint_id, name, reg_number, 'student']
     );
-    res.status(200).json({ success: true, message: "Student added successfully" });
+    await logAction(admin_name || 'Admin', 'ADD_STUDENT', reg_number, `Added new student: ${name} (Slot ${fingerprint_id})`);
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false, error: "ID or Reg No already exists." });
   }
 });
 
-// 5. EDIT STUDENT NAME/REG NO
+// 7. EDIT STUDENT
 app.put('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, reg_number } = req.body;
+    const { name, reg_number, admin_name } = req.body;
     await pool.query(
       'UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3',
       [name, reg_number, id]
     );
-    res.status(200).json({ success: true, message: "Student updated successfully" });
+    await logAction(admin_name || 'Admin', 'EDIT_STUDENT', reg_number, `Updated student details to Name: ${name}, Reg: ${reg_number}`);
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false });
   }
 });
 
-// 6. Soft Delete (Trash)
+// 8. SOFT DELETE (Trash)
 app.delete('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const { admin_name } = req.body;
+    const student = await pool.query('SELECT name, reg_number FROM students WHERE fingerprint_id = $1', [id]);
+    const name = student.rows.length > 0 ? student.rows[0].name : `Slot ${id}`;
+    
     await pool.query('UPDATE students SET deleted_at = NOW() WHERE fingerprint_id = $1', [id]);
+    await logAction(admin_name || 'Admin', 'DELETE_STUDENT', id, `Moved student ${name} to Trash Bin.`);
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false });
   }
 });
 
-// 7. Restore from Trash
+// 9. RESTORE FROM TRASH
 app.put('/api/trash/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    const { admin_name } = req.body;
+    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [id]);
+    const name = student.rows.length > 0 ? student.rows[0].name : `Slot ${id}`;
+
     await pool.query('UPDATE students SET deleted_at = NULL WHERE fingerprint_id = $1', [id]);
+    await logAction(admin_name || 'Admin', 'RESTORE_STUDENT', id, `Restored student ${name} from Trash Bin.`);
     res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false });
   }
 });
 
+// 10. Get Trash
 app.get('/api/trash', async (req, res) => {
   try {
     const result = await pool.query('SELECT * FROM students WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC');
