@@ -47,7 +47,7 @@ app.post('/api/login', async (req, res) => {
     if (tenantRes.rows.length > 0) {
       const t = tenantRes.rows[0];
       if (t.status !== 'active') return res.status(403).json({ error: `Account is ${t.status}. Contact SentinEx HQ.` });
-      return res.json({ success: true, role: 'admin', tenant_id: t.tenant_id, name: t.name, logo: t.logo_data });
+      return res.json({ success: true, role: 'admin', tenant_id: t.tenant_id, name: t.name, logo: t.logo_data, late_time: t.late_time });
     }
 
     return res.status(401).json({ error: "Invalid Organization ID or Password." });
@@ -65,7 +65,7 @@ app.post('/api/login-audit', async (req, res) => {
   res.status(200).json({ success: true });
 });
 
-// --- PASSWORD MANAGEMENT ---
+// --- SETTINGS ---
 app.put('/api/settings/password', async (req, res) => {
   try {
     const { tenant_id, old_password, new_password } = req.body;
@@ -84,6 +84,14 @@ app.put('/api/settings/password', async (req, res) => {
   } catch (error) { res.status(500).json({ error: "Server error" }); }
 });
 
+app.put('/api/settings/late-time', async (req, res) => {
+  try {
+    const { tenant_id, late_time } = req.body;
+    await pool.query('UPDATE tenants SET late_time = $1 WHERE tenant_id = $2', [late_time, tenant_id]);
+    res.json({ success: true });
+  } catch (error) { res.status(500).json({ error: "Server error" }); }
+});
+
 // --- TENANT MANAGEMENT ---
 app.get('/api/tenants', async (req, res) => {
   try {
@@ -96,7 +104,7 @@ app.post('/api/tenants', async (req, res) => {
   try {
     const { tenant_id, name, logo_data } = req.body;
     await pool.query(
-      "INSERT INTO tenants (tenant_id, name, logo_data, status, admin_password) VALUES ($1, $2, $3, 'pending', '1234')",
+      "INSERT INTO tenants (tenant_id, name, logo_data, status, admin_password, late_time) VALUES ($1, $2, $3, 'pending', '1234', '08:00')",
       [tenant_id.toLowerCase(), name, logo_data]
     );
     res.status(200).json({ success: true });
@@ -111,7 +119,7 @@ app.put('/api/tenants/:id/status', async (req, res) => {
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// --- ANALYTICS (7-Day Trend) ---
+// --- ANALYTICS ---
 app.get('/api/analytics/trend', async (req, res) => {
   try {
     const { tenant_id } = req.query;
@@ -132,15 +140,26 @@ app.post('/api/scan', async (req, res) => {
     const { fingerprint_id, status, tenant_id } = req.body;
     const tid = tenant_id || 'sentinex';
     
-    const tenantCheck = await pool.query('SELECT status FROM tenants WHERE tenant_id = $1', [tid]);
+    const tenantCheck = await pool.query('SELECT status, late_time FROM tenants WHERE tenant_id = $1', [tid]);
     if (tenantCheck.rows.length > 0 && tenantCheck.rows[0].status !== 'active') return res.status(403).json({ success: false });
 
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [fingerprint_id, tid]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
+    // LATE LOGIC: Check if it's a Granted scan and if it's past the late_time
+    let finalStatus = status;
+    if (status === 'Granted') {
+      const now = new Date();
+      const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+      const lateTime = tenantCheck.rows[0].late_time;
+      if (currentTime > lateTime) {
+        finalStatus = 'Late';
+      }
+    }
+
     await pool.query(
       'INSERT INTO attendance (tenant_id, fingerprint_id, student_name, status) VALUES ($1, $2, $3, $4)',
-      [tid, fingerprint_id, studentName, status]
+      [tid, fingerprint_id, studentName, finalStatus]
     );
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }

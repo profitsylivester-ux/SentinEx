@@ -6,10 +6,8 @@
     <title>SentinEx | Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -30,7 +28,6 @@
         .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; cursor: pointer; }
         .logo-svg { width: 32px; height: 32px; border-radius: 6px; }
         
-        /* LANDING PAGE */
         #landing-page { display: block; }
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
@@ -58,7 +55,6 @@
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
         
-        /* FAQ */
         .faq-section { padding: 80px 5%; background: var(--bg-color); border-top: 1px solid var(--border); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-container h2 { text-align: center; margin-bottom: 40px; font-size: 2.5rem; }
@@ -69,7 +65,6 @@
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
         .faq-item.active .faq-icon { transform: rotate(180deg); }
         
-        /* TEAM & CONTACT */
         .team-section { padding: 80px 5%; background: #111111; border-top: 1px solid #222; }
         .team-section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 600; }
         .team-section h2 { font-size: 3rem; margin-bottom: 40px; color: white; }
@@ -121,11 +116,10 @@
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
         
-        /* DASHBOARD LAYOUT */
+        /* DASHBOARD */
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
-        
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .badge-count { background: var(--danger); color: white; font-size: 11px; border-radius: 10px; padding: 2px 6px; margin-left: auto; font-weight: 600; display: none; }
         
@@ -141,28 +135,22 @@
         .btn-outline { background: transparent; border: 1px solid var(--dash-border); color: var(--dash-text); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
         
-        /* LOGIN MODAL */
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; color: var(--text-main); }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         .login-card .form-group input { font-family: 'Inter', sans-serif; }
         
-        /* PASSWORD EYE FIX */
         .password-wrapper { position: relative; }
         .password-wrapper input { padding-right: 40px !important; }
         .password-toggle { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; }
         .password-toggle svg { width: 20px; height: 20px; }
         
-        /* DASHBOARD SIDEBAR (Restored) */
         .dashboard-layout { display: flex; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
         .sidebar-logo img { width: 32px; height: 32px; border-radius: 6px; background: white; object-fit: contain; }
-        
-        /* This class was missing and caused the sidebar to break */
         .dash-nav { display: flex; flex-direction: column; flex: 1; }
-        
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--sidebar-text); border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 14px; font-weight: 500; }
         .nav-item:hover { background: var(--sidebar-hover); color: #ffffff; }
         .nav-item.active { background: var(--sidebar-hover); color: var(--sidebar-active); font-weight: 600; }
@@ -178,7 +166,6 @@
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
         
-        /* DASHBOARD CARDS & TABLES */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
         .stat-title { font-size: 13px; color: var(--dash-muted); font-weight: 500; margin-bottom: 8px; }
@@ -198,22 +185,19 @@
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
+        .badge-late { background: #fef08a; color: #854d0e; } /* NEW LATE BADGE */
         
-        /* ENTERPRISE ANALYTICS */
         .analytics-grid-top { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-bottom: 24px; }
         .analytics-grid-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        
         .analytic-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--dash-border); padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
         .summary-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; margin-bottom: 16px; }
         .summary-val { font-size: 36px; font-weight: 700; color: var(--text-main); margin-bottom: 24px; letter-spacing: -1px; }
         .summary-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid var(--dash-border); padding-top: 16px; }
         .summary-subtitle { font-size: 12px; color: var(--dash-muted); font-weight: 500; margin-bottom: 4px; }
         .summary-subval { font-size: 20px; font-weight: 600; color: var(--text-main); }
-        
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .chart-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; }
         .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: #f8fafc; cursor: pointer; font-weight: 500; color: var(--text-main); }
-        
         .chart-container-large { height: 250px; width: 100%; }
         .chart-container-small { height: 200px; width: 100%; display: flex; justify-content: center; }
         
@@ -250,7 +234,6 @@
 </head>
 <body>
 
-    <!-- LANDING PAGE -->
     <div id="landing-page">
         <nav>
             <div class="logo-container" onclick="window.scrollTo(0,0)">
@@ -430,36 +413,28 @@
         </footer>
     </div>
 
-    <!-- LOGIN MODAL -->
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
             <p>Enter your credentials to access the dashboard.</p>
-            
             <div class="form-group"><input type="text" id="username" placeholder="Organization ID / Username" value="sentinex"></div>
-            
             <div class="form-group password-wrapper">
                 <input type="password" id="password" placeholder="Password" value="1234">
                 <span class="password-toggle" onclick="togglePasswordVisibility()">
-                    <!-- Eye Open -->
                     <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                    <!-- Eye Closed -->
                     <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
                 </span>
             </div>
-            
             <button class="btn btn-primary" style="width: 100%; margin-top: 8px; border-radius: 8px;" onclick="login()">Secure Login</button>
             <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;">Cancel</button>
         </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div id="app-screen">
         <div class="dashboard-layout">
             <aside class="sidebar">
                 <div class="sidebar-logo" id="sidebar-brand"><img id="tenant-logo" src="" alt="Logo"><span id="tenant-name">SentinEx</span></div>
                 
-                <!-- RESTORED: dash-nav class for proper layout -->
                 <div class="dash-nav" id="tenant-menu">
                     <div class="nav-item active" onclick="switchTab('dashboard', this)">
                         <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Dashboard</span>
@@ -521,7 +496,6 @@
                     </div>
                 </div>
 
-                <!-- ENTERPRISE ANALYTICS TAB WITH DROPDOWNS -->
                 <div id="view-analytics" class="view-container">
                     <div class="analytics-grid-top">
                         <div class="analytic-card">
@@ -543,7 +517,6 @@
                         <div class="analytic-card">
                             <div class="chart-header">
                                 <div class="chart-title">Received (Last 7 Days)</div>
-                                <!-- DROPDOWN FOR CHART TYPE -->
                                 <select id="lineChartType" class="chart-select" onchange="updateChartType('line')">
                                     <option value="line">Line Chart</option>
                                     <option value="bar">Bar Chart</option>
@@ -560,7 +533,6 @@
                         <div class="analytic-card">
                             <div class="chart-header">
                                 <div class="chart-title">Structure</div>
-                                <!-- DROPDOWN FOR DOUGHNUT -->
                                 <select id="doughnutChartType" class="chart-select" onchange="updateChartType('doughnut')">
                                     <option value="doughnut">Doughnut</option>
                                     <option value="pie">Pie Chart</option>
@@ -575,7 +547,6 @@
                         <div class="analytic-card">
                             <div class="chart-header">
                                 <div class="chart-title">Scans vs Alerts (Last 7 Days)</div>
-                                <!-- DROPDOWN FOR BAR -->
                                 <select id="barChartType" class="chart-select" onchange="updateChartType('bar')">
                                     <option value="bar">Bar Chart</option>
                                     <option value="line">Line Chart</option>
@@ -640,6 +611,17 @@
                         <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirm-pass" placeholder="Confirm new password"></div>
                         <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
                     </div>
+
+                    <!-- NEW: CLASS START TIME SETTING -->
+                    <div class="table-card" style="padding: 32px; max-width: 500px; margin-top: 24px;">
+                        <h3 style="margin-bottom: 16px; font-size: 18px;">Class Start Time (Late Logic)</h3>
+                        <p style="font-size: 13px; color: var(--dash-muted); margin-bottom: 16px;">Any scan after this time will be marked as "Late".</p>
+                        <div class="form-group">
+                            <label>Late Time (24h format)</label>
+                            <input type="time" id="late-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveLateTime()">Save Time</button>
+                    </div>
                 </div>
 
                 <div id="view-super-dashboard" class="view-container">
@@ -702,7 +684,6 @@
     </div>
 
     <script>
-        // --- PASSWORD TOGGLE ---
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const eyeOpen = document.getElementById('eye-open');
@@ -719,7 +700,6 @@
             }
         }
 
-        // --- LANDING PAGE JS ---
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -753,17 +733,15 @@
             }
         }
 
-        // --- DASHBOARD JS ---
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
+        let currentLateTime = '08:00';
         
-        // Chart Instances
         let lineChartInstance = null;
         let doughnutChartInstance = null;
         let barChartInstance = null;
 
-        // Chart Data Cache
         let cachedTodayLogs = null;
         let cachedTrendData = null;
 
@@ -792,6 +770,7 @@
                 
                 if (data.success) {
                     currentTenant = data.tenant_id;
+                    if (data.late_time) currentLateTime = data.late_time;
                     
                     document.getElementById('login-modal').style.display = 'none';
                     document.getElementById('landing-page').style.display = 'none';
@@ -801,7 +780,7 @@
 
                     if (currentTenant === 'superadmin') {
                         document.getElementById('tenant-menu').style.display = 'none';
-                        document.getElementById('super-admin-menu').style.display = 'flex'; // Restored flex
+                        document.getElementById('super-admin-menu').style.display = 'flex'; 
                         document.getElementById('topbar-actions').style.display = 'none';
                         
                         document.getElementById('tenant-logo').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23dc2626"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="white" text-anchor="middle">M</text></svg>';
@@ -810,12 +789,15 @@
                         switchTab('super-dashboard', document.querySelector('#super-admin-menu .nav-item'));
                         fetchTenants();
                     } else {
-                        document.getElementById('tenant-menu').style.display = 'flex'; // Restored flex
+                        document.getElementById('tenant-menu').style.display = 'flex'; 
                         document.getElementById('super-admin-menu').style.display = 'none';
                         document.getElementById('topbar-actions').style.display = 'flex';
                         
                         if(data.logo) document.getElementById('tenant-logo').src = data.logo;
                         document.getElementById('tenant-name').innerText = data.name;
+                        
+                        // Set the Late Time input value
+                        document.getElementById('late-time-input').value = currentLateTime;
 
                         fetchLogs();
                         checkPendingCount();
@@ -864,6 +846,7 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
+        // --- FIXED CSV EXPORT ---
         function exportCSV() {
             if (logsData.length === 0) { alert("No data to export for this date."); return; }
             
@@ -871,9 +854,17 @@
             csvContent += "Name,Registration Number,Time,Status\n";
             
             logsData.forEach(log => {
-                const timeStr = new Date(log.scanned_at).toLocaleTimeString();
+                // Format: YYYY-MM-DD HH:mm:ss (Prevents Excel '#########')
+                const dateObj = new Date(log.scanned_at);
+                const formattedDate = dateObj.getFullYear() + '-' + 
+                                      String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
+                                      String(dateObj.getDate()).padStart(2, '0') + ' ' + 
+                                      String(dateObj.getHours()).padStart(2, '0') + ':' + 
+                                      String(dateObj.getMinutes()).padStart(2, '0') + ':' + 
+                                      String(dateObj.getSeconds()).padStart(2, '0');
+                                      
                 const reg = log.reg_number || 'N/A';
-                csvContent += `"${log.student_name}","${reg}","${timeStr}","${log.status}"\n`;
+                csvContent += `"${log.student_name}","${reg}","${formattedDate}","${log.status}"\n`;
             });
             
             const encodedUri = encodeURI(csvContent);
@@ -883,6 +874,21 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        async function saveLateTime() {
+            const lateTime = document.getElementById('late-time-input').value;
+            if(!lateTime) { alert("Please select a time."); return; }
+            
+            try {
+                await fetch('/api/settings/late-time', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id: currentTenant, late_time: lateTime })
+                });
+                alert("Late time setting saved!");
+                currentLateTime = lateTime;
+            } catch (err) { alert("Error saving setting."); }
         }
 
         async function fetchAnalytics() {
@@ -906,7 +912,7 @@
         function renderCharts() {
             if (!cachedTodayLogs || !cachedTrendData) return;
 
-            const present = cachedTodayLogs.filter(l => l.status === 'Granted' || l.status === 'Manual').length;
+            const present = cachedTodayLogs.filter(l => l.status === 'Granted' || l.status === 'Late' || l.status === 'Manual').length;
             const denied = cachedTodayLogs.filter(l => l.status === 'Denied').length;
 
             const last7Days = [];
@@ -918,12 +924,10 @@
                 last7Days.push({ date: dateStr.slice(5), count: match ? parseInt(match.count) : 0 });
             }
 
-            // Get selected types from dropdowns
             const lineType = document.getElementById('lineChartType').value;
             const doughnutType = document.getElementById('doughnutChartType').value;
             const barType = document.getElementById('barChartType').value;
 
-            // 1. Line Chart (or selected type)
             if (lineChartInstance) lineChartInstance.destroy();
             const ctxLine = document.getElementById('lineChart').getContext('2d');
             const gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
@@ -949,7 +953,6 @@
                 options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { border: { display: false }, beginAtZero: true } } }
             });
 
-            // 2. Doughnut Chart (or selected type)
             if (doughnutChartInstance) doughnutChartInstance.destroy();
             const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
             doughnutChartInstance = new Chart(ctxDoughnut, {
@@ -965,7 +968,6 @@
                 options: { responsive: true, maintainAspectRatio: false, cutout: doughnutType === 'doughnut' ? '70%' : '0%', plugins: { legend: { position: 'right' } } }
             });
 
-            // 3. Bar Chart (or selected type)
             if (barChartInstance) barChartInstance.destroy();
             const ctxBar = document.getElementById('barChart').getContext('2d');
             barChartInstance = new Chart(ctxBar, {
@@ -985,7 +987,6 @@
             });
         }
 
-        // Function to trigger re-render when dropdown changes
         function updateChartType(chartName) {
             renderCharts();
         }
@@ -1269,6 +1270,7 @@
                     let badgeClass = 'badge-granted';
                     if (log.status === 'Denied') badgeClass = 'badge-denied';
                     if (log.status === 'Manual') badgeClass = 'badge-manual';
+                    if (log.status === 'Late') badgeClass = 'badge-late'; // NEW LATE BADGE
                     if (log.status === 'Pending') badgeClass = 'badge-pending';
                     
                     const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); margin-left: 6px; cursor:help;">⚠️</span>` : '';
