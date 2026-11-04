@@ -7,7 +7,6 @@
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
@@ -116,10 +115,10 @@
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
         
-        /* DASHBOARD */
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
+        
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .badge-count { background: var(--danger); color: white; font-size: 11px; border-radius: 10px; padding: 2px 6px; margin-left: auto; font-weight: 600; display: none; }
         
@@ -182,10 +181,12 @@
         .badge-active { background: #ecfdf5; color: var(--success); }
         .badge-pending { background: #fffbeb; color: var(--warning); }
         .badge-suspended { background: #fef2f2; color: var(--danger); }
-        .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
-        .badge-late { background: #fef08a; color: #854d0e; } /* NEW LATE BADGE */
+        
+        /* NEW: RED LATE BADGE & PURPLE MULTIPLE BADGE */
+        .badge-late { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
+        .badge-multiple { background: #faf5ff; color: #9333ea; border: 1px solid #d8b4fe; margin-left: 6px; }
         
         .analytics-grid-top { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-bottom: 24px; }
         .analytics-grid-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -612,15 +613,24 @@
                         <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
                     </div>
 
-                    <!-- NEW: CLASS START TIME SETTING -->
+                    <!-- NEW: ATTENDANCE TIMINGS -->
                     <div class="table-card" style="padding: 32px; max-width: 500px; margin-top: 24px;">
-                        <h3 style="margin-bottom: 16px; font-size: 18px;">Class Start Time (Late Logic)</h3>
-                        <p style="font-size: 13px; color: var(--dash-muted); margin-bottom: 16px;">Any scan after this time will be marked as "Late".</p>
+                        <h3 style="margin-bottom: 16px; font-size: 18px;">Attendance Timings</h3>
+                        
+                        <div class="form-group">
+                            <label>Start Time (24h format)</label>
+                            <input type="time" id="start-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
+                        </div>
                         <div class="form-group">
                             <label>Late Time (24h format)</label>
                             <input type="time" id="late-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
                         </div>
-                        <button class="btn btn-primary" onclick="saveLateTime()">Save Time</button>
+                        <div class="form-group">
+                            <label>Closing Time (24h format)</label>
+                            <input type="time" id="closing-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="saveTimes()">Save Timings</button>
                     </div>
                 </div>
 
@@ -655,7 +665,6 @@
         </div>
     </div>
 
-    <!-- MODALS -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -736,7 +745,9 @@
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
+        let currentStartTime = '07:00';
         let currentLateTime = '08:00';
+        let currentClosingTime = '18:00';
         
         let lineChartInstance = null;
         let doughnutChartInstance = null;
@@ -770,7 +781,9 @@
                 
                 if (data.success) {
                     currentTenant = data.tenant_id;
+                    if (data.start_time) currentStartTime = data.start_time;
                     if (data.late_time) currentLateTime = data.late_time;
+                    if (data.closing_time) currentClosingTime = data.closing_time;
                     
                     document.getElementById('login-modal').style.display = 'none';
                     document.getElementById('landing-page').style.display = 'none';
@@ -796,8 +809,10 @@
                         if(data.logo) document.getElementById('tenant-logo').src = data.logo;
                         document.getElementById('tenant-name').innerText = data.name;
                         
-                        // Set the Late Time input value
+                        // Set the Time input values
+                        document.getElementById('start-time-input').value = currentStartTime;
                         document.getElementById('late-time-input').value = currentLateTime;
+                        document.getElementById('closing-time-input').value = currentClosingTime;
 
                         fetchLogs();
                         checkPendingCount();
@@ -846,7 +861,6 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
-        // --- FIXED CSV EXPORT ---
         function exportCSV() {
             if (logsData.length === 0) { alert("No data to export for this date."); return; }
             
@@ -854,7 +868,6 @@
             csvContent += "Name,Registration Number,Time,Status\n";
             
             logsData.forEach(log => {
-                // Format: YYYY-MM-DD HH:mm:ss (Prevents Excel '#########')
                 const dateObj = new Date(log.scanned_at);
                 const formattedDate = dateObj.getFullYear() + '-' + 
                                       String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
@@ -876,19 +889,24 @@
             document.body.removeChild(link);
         }
 
-        async function saveLateTime() {
-            const lateTime = document.getElementById('late-time-input').value;
-            if(!lateTime) { alert("Please select a time."); return; }
+        async function saveTimes() {
+            const start = document.getElementById('start-time-input').value;
+            const late = document.getElementById('late-time-input').value;
+            const close = document.getElementById('closing-time-input').value;
+            
+            if(!start || !late || !close) { alert("Please fill all time fields."); return; }
             
             try {
-                await fetch('/api/settings/late-time', {
+                await fetch('/api/settings/times', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: currentTenant, late_time: lateTime })
+                    body: JSON.stringify({ tenant_id: currentTenant, start_time: start, late_time: late, closing_time: close })
                 });
-                alert("Late time setting saved!");
-                currentLateTime = lateTime;
-            } catch (err) { alert("Error saving setting."); }
+                alert("Timings saved successfully!");
+                currentStartTime = start;
+                currentLateTime = late;
+                currentClosingTime = close;
+            } catch (err) { alert("Error saving settings."); }
         }
 
         async function fetchAnalytics() {
@@ -1266,16 +1284,28 @@
                 }
 
                 tbody.innerHTML = logsData.map(log => {
-                    const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
                     let badgeClass = 'badge-granted';
                     if (log.status === 'Denied') badgeClass = 'badge-denied';
                     if (log.status === 'Manual') badgeClass = 'badge-manual';
-                    if (log.status === 'Late') badgeClass = 'badge-late'; // NEW LATE BADGE
+                    if (log.status === 'Late') badgeClass = 'badge-late';
                     if (log.status === 'Pending') badgeClass = 'badge-pending';
                     
-                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); margin-left: 6px; cursor:help;">⚠️</span>` : '';
+                    // NEW: Purple Multiple Badge + Yellow Triangle
+                    let warning = '';
+                    if (log.scan_count > 1) {
+                        warning = `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); cursor:help; margin-left: 5px;">⚠️</span>`;
+                        warning += `<span class="badge badge-multiple">Multiple</span>`;
+                    }
+                    
                     const regNum = log.reg_number ? log.reg_number : `ID: ${log.fingerprint_id}`;
-                    return `<tr><td><strong>${log.student_name}</strong> ${warning}</td><td>${regNum}</td><td>${timeStr}</td><td><span class="badge ${badgeClass}">${log.status}</span></td></tr>`;
+                    
+                    return `<tr>
+                        <td><strong>${log.student_name}</strong> ${warning}</td>
+                        <td>${regNum}</td>
+                        <td>${timeStr}</td>
+                        <td><span class="badge ${badgeClass}">${log.status}</span></td>
+                    </tr>`;
                 }).join('');
             } catch (err) { console.error(err); }
         }

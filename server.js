@@ -47,7 +47,10 @@ app.post('/api/login', async (req, res) => {
     if (tenantRes.rows.length > 0) {
       const t = tenantRes.rows[0];
       if (t.status !== 'active') return res.status(403).json({ error: `Account is ${t.status}. Contact SentinEx HQ.` });
-      return res.json({ success: true, role: 'admin', tenant_id: t.tenant_id, name: t.name, logo: t.logo_data, late_time: t.late_time });
+      return res.json({ 
+        success: true, role: 'admin', tenant_id: t.tenant_id, name: t.name, logo: t.logo_data, 
+        start_time: t.start_time, late_time: t.late_time, closing_time: t.closing_time 
+      });
     }
 
     return res.status(401).json({ error: "Invalid Organization ID or Password." });
@@ -84,10 +87,13 @@ app.put('/api/settings/password', async (req, res) => {
   } catch (error) { res.status(500).json({ error: "Server error" }); }
 });
 
-app.put('/api/settings/late-time', async (req, res) => {
+app.put('/api/settings/times', async (req, res) => {
   try {
-    const { tenant_id, late_time } = req.body;
-    await pool.query('UPDATE tenants SET late_time = $1 WHERE tenant_id = $2', [late_time, tenant_id]);
+    const { tenant_id, start_time, late_time, closing_time } = req.body;
+    await pool.query(
+      'UPDATE tenants SET start_time = $1, late_time = $2, closing_time = $3 WHERE tenant_id = $4', 
+      [start_time, late_time, closing_time, tenant_id]
+    );
     res.json({ success: true });
   } catch (error) { res.status(500).json({ error: "Server error" }); }
 });
@@ -104,7 +110,7 @@ app.post('/api/tenants', async (req, res) => {
   try {
     const { tenant_id, name, logo_data } = req.body;
     await pool.query(
-      "INSERT INTO tenants (tenant_id, name, logo_data, status, admin_password, late_time) VALUES ($1, $2, $3, 'pending', '1234', '08:00')",
+      "INSERT INTO tenants (tenant_id, name, logo_data, status, admin_password, start_time, late_time, closing_time) VALUES ($1, $2, $3, 'pending', '1234', '07:00', '08:00', '18:00')",
       [tenant_id.toLowerCase(), name, logo_data]
     );
     res.status(200).json({ success: true });
@@ -126,7 +132,7 @@ app.get('/api/analytics/trend', async (req, res) => {
     const result = await pool.query(`
       SELECT DATE(scanned_at) as date, COUNT(*) as count 
       FROM attendance 
-      WHERE tenant_id = $1 AND status != 'Pending' AND scanned_at >= CURRENT_DATE - INTERVAL '6 days'
+      WHERE tenant_id = $1 AND status != 'Pending' AND status != 'Denied' AND scanned_at >= CURRENT_DATE - INTERVAL '6 days'
       GROUP BY DATE(scanned_at) 
       ORDER BY DATE(scanned_at) ASC
     `, [tenant_id]);
@@ -140,20 +146,30 @@ app.post('/api/scan', async (req, res) => {
     const { fingerprint_id, status, tenant_id } = req.body;
     const tid = tenant_id || 'sentinex';
     
-    const tenantCheck = await pool.query('SELECT status, late_time FROM tenants WHERE tenant_id = $1', [tid]);
+    const tenantCheck = await pool.query('SELECT status, start_time, late_time, closing_time FROM tenants WHERE tenant_id = $1', [tid]);
     if (tenantCheck.rows.length > 0 && tenantCheck.rows[0].status !== 'active') return res.status(403).json({ success: false });
 
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [fingerprint_id, tid]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
-    // LATE LOGIC: Check if it's a Granted scan and if it's past the late_time
+    // --- TIME LOGIC ---
     let finalStatus = status;
     if (status === 'Granted') {
       const now = new Date();
       const currentTime = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
-      const lateTime = tenantCheck.rows[0].late_time;
-      if (currentTime > lateTime) {
-        finalStatus = 'Late';
+      
+      const startTime = tenantCheck.rows[0].start_time || '07:00';
+      const lateTime = tenantCheck.rows[0].late_time || '08:00';
+      const closingTime = tenantCheck.rows[0].closing_time || '18:00';
+      
+      if (currentTime < startTime) {
+          finalStatus = 'Denied'; // Too early
+      } else if (currentTime >= startTime && currentTime <= lateTime) {
+          finalStatus = 'Granted'; // On time
+      } else if (currentTime > lateTime && currentTime <= closingTime) {
+          finalStatus = 'Late'; // Late
+      } else {
+          finalStatus = 'Denied'; // Too late (after closing)
       }
     }
 
@@ -194,7 +210,7 @@ app.get('/api/logs', async (req, res) => {
       SELECT a.*, s.reg_number,
       (SELECT COUNT(*) FROM attendance a2 WHERE a2.fingerprint_id = a.fingerprint_id AND a2.tenant_id = a.tenant_id AND DATE(a2.scanned_at) = DATE(a.scanned_at)) as scan_count
       FROM attendance a LEFT JOIN students s ON a.fingerprint_id = s.fingerprint_id AND a.tenant_id = s.tenant_id
-      WHERE a.tenant_id = $1
+      WHERE a.tenant_id = $1 AND a.status != 'Denied'
     `;
     let values = [tenant_id];
     if (date) { query += ` AND DATE(a.scanned_at) = $2`; values.push(date); }
