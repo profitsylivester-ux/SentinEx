@@ -6,7 +6,6 @@
     <title>SentinEx | Biometric & IoT Systems</title>
     
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
-    
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#111111">
 
@@ -15,33 +14,38 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- GLOBAL & LANDING PAGE CSS --- */
+        /* =========================================
+           GLOBAL VARIABLES & RESET
+           ========================================= */
         :root {
+            /* Landing Page Variables */
             --bg-color: #f6f5f2; --text-main: #111111; --text-muted: #555555;
             --card-bg: #ffffff; --border: #e5e5e5; --primary: #111111;
             --success: #059669; --danger: #dc2626; --warning: #d97706;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
             
-            /* Dashboard Specific Variables */
+            /* Dashboard Variables */
             --dash-bg: #f1f5f9; --sidebar-bg: #1e293b; --sidebar-hover: #334155;
             --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
-            --dash-text: #0f172a; --dash-muted: #64748b;
-            --dash-border: #e2e8f0;
+            --dash-text: #0f172a; --dash-muted: #64748b; --dash-border: #e2e8f0;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
         
+        /* Typography */
         h1, h2, h3, h4, h5, h6, th { font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: -0.5px; }
         em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; }
         p, a, div, span, td, button, input, textarea, select, label { font-family: 'Inter', sans-serif; }
 
+        /* =========================================
+           LANDING PAGE STYLES
+           ========================================= */
         .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; cursor: pointer; }
         .logo-svg { width: 32px; height: 32px; border-radius: 6px; }
 
         #landing-page { display: block; }
 
-        /* Navbar */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
         .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
@@ -51,7 +55,6 @@
         .btn-primary { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; border: none; }
         .btn-primary:hover { transform: translateY(-2px); }
 
-        /* Hero Section */
         .hero { display: grid; grid-template-columns: 1fr 1fr; padding: 80px 5%; gap: 40px; align-items: center; min-height: 80vh; }
         .hero-text h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
         .hero-text h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 30px; }
@@ -84,7 +87,27 @@
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
         .faq-item.active .faq-icon { transform: rotate(180deg); }
 
-        /* Contact & Footer */
+        /* TEAM ACCORDION */
+        .team-section { padding: 80px 5%; background: #111111; border-top: 1px solid #222; }
+        .team-section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 600; }
+        .team-section h2 { font-size: 3rem; margin-bottom: 40px; color: white; }
+        .team-gallery { display: flex; gap: 16px; height: 500px; width: 100%; overflow: hidden; }
+        .team-card { position: relative; flex: 1; border-radius: 20px; overflow: hidden; cursor: pointer; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); background: #222; }
+        .team-card.active { flex: 4; }
+        .team-card img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); filter: grayscale(100%) brightness(0.7); }
+        .team-card.active img { transform: scale(1.02); filter: grayscale(0%) brightness(1); }
+        .team-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0) 100%); display: flex; flex-direction: column; justify-content: flex-end; padding: 30px; }
+        .collapsed-text { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%) rotate(180deg); writing-mode: vertical-rl; color: white; font-weight: 600; font-size: 18px; letter-spacing: 2px; white-space: nowrap; opacity: 1; transition: opacity 0.3s ease; }
+        .expanded-text { opacity: 0; transform: translateY(20px); transition: all 0.5s ease 0.1s; pointer-events: none; }
+        .team-card.active .collapsed-text { opacity: 0; }
+        .team-card.active .expanded-text { opacity: 1; transform: translateY(0); pointer-events: auto; }
+        .expanded-text h3 { color: white; font-size: 32px; margin-bottom: 5px; font-family: 'Playfair Display', serif; }
+        .expanded-text p.role { color: #60a5fa; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; }
+        .expanded-text p.bio { color: #ccc; font-size: 15px; line-height: 1.5; max-width: 350px; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .expanded-text a { color: white; font-weight: 500; font-size: 14px; text-decoration: none; border-bottom: 1px solid white; padding-bottom: 2px; transition: color 0.2s; display: inline-block; }
+        .expanded-text a:hover { color: #60a5fa; border-color: #60a5fa; }
+
+        /* CONTACT & MAP */
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
         .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
@@ -97,11 +120,11 @@
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; background: #fafafa; outline: none; transition: border 0.2s; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
         .form-group textarea { resize: vertical; height: 120px; }
-        
         .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-container iframe { width: 100%; height: 100%; border: 0; }
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
-        
+
+        /* FOOTER */
         footer { background: #111111; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
@@ -118,7 +141,9 @@
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
 
-        /* --- DASHBOARD CSS --- */
+        /* =========================================
+           DASHBOARD & MODAL STYLES
+           ========================================= */
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
@@ -128,7 +153,7 @@
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--dash-border); }
-        .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; }
+        .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; color: var(--text-main); }
         
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
         .btn-success { background: var(--success); color: white; }
@@ -138,12 +163,14 @@
         .btn-outline { background: transparent; border: 1px solid var(--dash-border); color: var(--dash-text); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
 
-        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
+        /* LOGIN MODAL */
+        #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; color: var(--text-main); }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         .login-card .form-group input { font-family: 'Inter', sans-serif; }
 
+        /* DASHBOARD LAYOUT */
         .dashboard-layout { display: flex; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
@@ -184,11 +211,43 @@
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            nav { flex-direction: column; gap: 15px; padding: 15px; }
+            .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
+            .nav-actions { width: 100%; justify-content: center; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 5%; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .hero-images { display: none; }
+            .section h2 { font-size: 2rem; }
+            .section-grid { grid-template-columns: 1fr; }
+            .team-gallery { flex-direction: column; height: auto; }
+            .team-card { flex: none; height: 80px; transition: height 0.5s ease; }
+            .team-card.active { height: 400px; }
+            .collapsed-text { writing-mode: horizontal-tb; transform: none; left: 30px; bottom: 25px; font-size: 20px; }
+            .contact { grid-template-columns: 1fr; gap: 40px; }
+            .footer-grid { grid-template-columns: 1fr; text-align: center; gap: 30px; }
+            .footer-brand .logo { justify-content: center; }
+            .footer-socials { justify-content: center; }
+            .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+            .login-card { width: 90%; padding: 30px; }
+            .dashboard-layout { flex-direction: column; }
+            .sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 10px; }
+            .sidebar-logo { padding: 10px; border: none; }
+            .dash-nav { display: flex; flex-direction: row; overflow-x: auto; padding: 10px; gap: 10px; width: 100%; }
+            .nav-item { white-space: nowrap; padding: 8px 12px; font-size: 14px; }
+            .dash-topbar h2 { font-size: 2rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .table-card { overflow-x: auto; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- 1. LANDING PAGE -->
+    <!-- =========================================
+         1. LANDING PAGE
+         ========================================= -->
     <div id="landing-page">
         <nav>
             <div class="logo-container" onclick="window.scrollTo(0,0)">
@@ -208,6 +267,7 @@
             </div>
         </nav>
 
+        <!-- HERO -->
         <section class="hero" id="about">
             <div class="hero-text">
                 <h5>ABOUT SENTINEX</h5>
@@ -216,13 +276,14 @@
                 <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Work with us &rarr;</button>
             </div>
             <div class="hero-images">
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team">
-                <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=600" class="hero-img img-2" alt="Pres">
-                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=600" class="hero-img img-3" alt="Meet">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="hero-img img-4" alt="Work">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team working">
+                <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=600" class="hero-img img-2" alt="Presentation">
+                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=600" class="hero-img img-3" alt="Meeting">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="hero-img img-4" alt="Working">
             </div>
         </section>
 
+        <!-- SERVICES -->
         <section class="section" id="services" style="background: #eae8e1;">
             <h5>OUR SERVICES</h5>
             <h2>What we <em>deliver</em></h2>
@@ -242,6 +303,29 @@
             </div>
         </section>
 
+        <!-- WORK -->
+        <section class="section" id="work">
+            <h5>OUR WORK</h5>
+            <h2>Recent <em>deployments</em></h2>
+            <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Campus">
+                    <div style="padding: 20px;">
+                        <h3>Ohio University</h3>
+                        <p>Deployed 12 biometric terminals across 4 faculties for automated attendance.</p>
+                    </div>
+                </div>
+                <div class="card" style="padding: 0; overflow: hidden;">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Office">
+                    <div style="padding: 20px;">
+                        <h3>TechHub Dar</h3>
+                        <p>Access control system for 500+ members using fingerprint and RFID.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
         <section class="faq-section" id="faq">
             <div class="faq-container">
                 <h2>Frequently asked</h2>
@@ -259,9 +343,128 @@
                     </div>
                     <div class="faq-answer">Yes. Because our backend uses PostgreSQL (Neon) and a REST API, we can easily export your logs to CSV.</div>
                 </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>Is the hardware included?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">Yes. When you partner with SentinEx, we provide the full package: the terminal, power supply, enclosure, and cloud setup.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How long does installation take?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">A standard deployment for a single office or classroom takes less than 2 hours. A full campus takes 2 days.</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        <span>How secure is the biometric data?</span>
+                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </div>
+                    <div class="faq-answer">Extremely secure. The AS608 sensor does not store images. It converts your fingerprint into a mathematical template (hash).</div>
+                </div>
             </div>
         </section>
 
+        <!-- TEAM ACCORDION -->
+        <section class="team-section" id="team">
+            <h5>THE TEAM</h5>
+            <h2 style="color:white;">The minds <em>behind it</em></h2>
+            
+            <div class="team-gallery">
+                <div class="team-card active" onclick="setActiveCard(this)">
+                    <img src="https://files.oaiusercontent.com/file-K1yX6t4Z9h3Q2w7V5s8N1?se=2024-10-29T12%3A00%3A00Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dfaida.jpg&sig=xyz" alt="Faida">
+                    <div class="team-overlay">
+                        <div class="collapsed-text">FAIDA</div>
+                        <div class="expanded-text">
+                            <h3>Faida</h3>
+                            <p class="role">CEO & Founder</p>
+                            <p class="bio">Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania.</p>
+                            <a href="https://faida-sylivester.vercel.app/" target="_blank">View Profile &rarr;</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card" onclick="setActiveCard(this)">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Lameck">
+                    <div class="team-overlay">
+                        <div class="collapsed-text">LAMECK</div>
+                        <div class="expanded-text">
+                            <h3>Lameck</h3>
+                            <p class="role">Hardware Architect</p>
+                            <p class="bio">Designing the physical circuits and enclosures that make our devices durable and reliable.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="team-card" onclick="setActiveCard(this)">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Fedelika">
+                    <div class="team-overlay">
+                        <div class="collapsed-text">FEDELIKA</div>
+                        <div class="expanded-text">
+                            <h3>Fedelika</h3>
+                            <p class="role">Software Developer</p>
+                            <p class="bio">Building the cloud backend and the interfaces that connect our hardware to the internet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT & MAP -->
+        <section class="section contact" id="contact">
+            <div class="contact-info">
+                <h5>GET IN TOUCH</h5>
+                <h2>Back African <em>engineering</em></h2>
+                <p>Write to us about partnerships, deployment, or custom hardware requests for your institution.</p>
+                
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-text">
+                        <h6>LOCATION</h6>
+                        <p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div class="info-text">
+                        <h6>PHONE</h6>
+                        <p>0748743673</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-text">
+                        <h6>EMAIL</h6>
+                        <p>SentinExappliances@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <button class="map-toggle" onclick="toggleMap()" id="map-btn">Switch to Plain</button>
+                    <iframe id="google-map" src="https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
+                </div>
+            </div>
+
+            <div class="contact-card">
+                <form onsubmit="event.preventDefault(); alert('Message sent!');">
+                    <div class="form-group"><label>NAME</label><input type="text" placeholder="Your full name" required></div>
+                    <div class="form-group"><label>EMAIL</label><input type="email" placeholder="you@institution.org" required></div>
+                    <div class="form-group">
+                        <label>INTEREST</label>
+                        <select>
+                            <option>Partnership</option>
+                            <option>Device Deployment</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>MESSAGE</label><textarea placeholder="What would you like to work on?"></textarea></div>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Send message &rarr;</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
         <footer>
             <div class="footer-grid">
                 <div class="footer-brand">
@@ -272,23 +475,49 @@
                     <p>A local IoT engineering lab building secure biometric systems for African institutions.</p>
                     <div class="address">Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</div>
                     <a href="mailto:SentinExappliances@gmail.com" class="email">SentinExappliances@gmail.com</a>
+                    <div class="footer-socials">
+                        <a href="#">💻</a>
+                        <a href="#">💼</a>
+                        <a href="#">📸</a>
+                    </div>
                 </div>
+
                 <div class="footer-col">
                     <h4>THE PLATFORM</h4>
-                    <ul><li><a href="#about">About</a></li><li><a href="#services">Services</a></li></ul>
+                    <ul>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#work">Work</a></li>
+                        <li><a href="#team">Team</a></li>
+                    </ul>
                 </div>
+
                 <div class="footer-col">
                     <h4>SYSTEM</h4>
-                    <ul><li><a onclick="openLogin()" style="cursor:pointer;">Client Portal</a></li></ul>
+                    <ul>
+                        <li><a onclick="openLogin()" style="cursor:pointer;">Dashboard</a></li>
+                        <li><a href="#">Hardware</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-col">
+                    <h4>SUPPORT</h4>
+                    <ul>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
                 </div>
             </div>
+
             <div class="footer-bottom">
                 <div>&copy; 2026 SentinEx Appliances. All rights reserved.</div>
             </div>
         </footer>
     </div>
 
-    <!-- 2. LOGIN MODAL -->
+    <!-- =========================================
+         2. LOGIN MODAL
+         ========================================= -->
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
@@ -302,7 +531,9 @@
         </div>
     </div>
 
-    <!-- 3. MAIN DASHBOARD -->
+    <!-- =========================================
+         3. DASHBOARD
+         ========================================= -->
     <div id="app-screen">
         <div class="dashboard-layout">
             <aside class="sidebar">
@@ -434,7 +665,7 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT STUDENT MODAL -->
+    <!-- MODALS -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -448,7 +679,6 @@
         </div>
     </div>
 
-    <!-- REGISTER TENANT MODAL -->
     <div id="tenant-modal" class="modal-overlay">
         <div class="modal-card">
             <h2>Apply for System Access</h2>
@@ -467,11 +697,10 @@
     </div>
 
     <script>
-        // --- LANDING PAGE LOGIC ---
+        // --- LANDING PAGE JS ---
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
-            
             document.querySelectorAll('.faq-item').forEach(i => {
                 if(i !== item) {
                     i.classList.remove('active');
@@ -482,7 +711,27 @@
             answer.classList.toggle('open');
         }
 
-        // --- AUTH & DASHBOARD LOGIC ---
+        function setActiveCard(card) {
+            document.querySelectorAll('.team-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+        }
+
+        let isSatellite = true;
+        function toggleMap() {
+            const iframe = document.getElementById('google-map');
+            const btn = document.getElementById('map-btn');
+            if (isSatellite) {
+                iframe.src = "https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=m&z=14&ie=UTF8&iwloc=&output=embed";
+                btn.innerText = "Switch to Satellite";
+                isSatellite = false;
+            } else {
+                iframe.src = "https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed";
+                btn.innerText = "Switch to Plain";
+                isSatellite = true;
+            }
+        }
+
+        // --- AUTH & DASHBOARD JS ---
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
@@ -508,7 +757,6 @@
             if (isSuperAdmin || isRegularTenant) {
                 currentTenant = tenantInput;
                 
-                // Fetch Tenant Status
                 if (!isSuperAdmin) {
                     try {
                         const res = await fetch(`/api/tenants/${currentTenant}`);
@@ -524,7 +772,7 @@
                 document.getElementById('landing-page').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'block';
                 
-                document.querySelector('.dashboard-layout').style.display = 'flex'; // Ensure flex
+                document.querySelector('.dashboard-layout').style.display = 'flex'; 
                 setDefaultDate();
 
                 if (currentTenant === 'superadmin') {
