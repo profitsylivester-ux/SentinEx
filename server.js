@@ -63,6 +63,46 @@ app.post('/api/login-audit', async (req, res) => {
   res.status(200).json({ success: true });
 });
 
+// --- SUPER ADMIN GLOBAL STATS ---
+app.get('/api/superadmin/stats', async (req, res) => {
+  try {
+    // 1. Get all tenants with their specific counts
+    const tenantsQuery = `
+      SELECT t.tenant_id, t.name, t.logo_data, t.status, t.created_at,
+      (SELECT COUNT(*) FROM students s WHERE s.tenant_id = t.tenant_id AND deleted_at IS NULL) as student_count,
+      (SELECT COUNT(*) FROM attendance a WHERE a.tenant_id = t.tenant_id AND status != 'Denied') as scan_count
+      FROM tenants t 
+      ORDER BY t.created_at DESC
+    `;
+    const tenantsResult = await pool.query(tenantsQuery);
+
+    // 2. Calculate global totals
+    let globalStudents = 0;
+    let globalScans = 0;
+    tenantsResult.rows.forEach(t => {
+      globalStudents += parseInt(t.student_count);
+      globalScans += parseInt(t.scan_count);
+    });
+
+    res.status(200).json({
+      tenants: tenantsResult.rows,
+      globalStudents,
+      globalScans
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false });
+  }
+});
+
+app.put('/api/tenants/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    await pool.query('UPDATE tenants SET status = $1 WHERE tenant_id = $2', [status, req.params.id]);
+    res.status(200).json({ success: true });
+  } catch (error) { res.status(500).json({ success: false }); }
+});
+
 // --- SETTINGS ---
 app.put('/api/settings/password', async (req, res) => {
   try {
@@ -93,14 +133,6 @@ app.put('/api/settings/times', async (req, res) => {
   } catch (error) { res.status(500).json({ error: "Server error" }); }
 });
 
-// --- TENANT MANAGEMENT ---
-app.get('/api/tenants', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT tenant_id, name, logo_data, status, created_at FROM tenants ORDER BY created_at DESC');
-    res.status(200).json(result.rows);
-  } catch (error) { res.status(500).json({ success: false }); }
-});
-
 app.post('/api/tenants', async (req, res) => {
   try {
     const { tenant_id, name, logo_data } = req.body;
@@ -112,15 +144,7 @@ app.post('/api/tenants', async (req, res) => {
   } catch (error) { res.status(500).json({ success: false, error: "Tenant ID exists" }); }
 });
 
-app.put('/api/tenants/:id/status', async (req, res) => {
-  try {
-    const { status } = req.body;
-    await pool.query('UPDATE tenants SET status = $1 WHERE tenant_id = $2', [status, req.params.id]);
-    res.status(200).json({ success: true });
-  } catch (error) { res.status(500).json({ success: false }); }
-});
-
-// --- ANALYTICS ---
+// --- ANALYTICS (FOR TENANT) ---
 app.get('/api/analytics/trend', async (req, res) => {
   try {
     const { tenant_id } = req.query;
@@ -184,7 +208,6 @@ app.put('/api/approve-pending', async (req, res) => {
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// --- OFFLINE SYNC ---
 app.post('/api/sync-offline', async (req, res) => {
   try {
     const { tenant_id, records } = req.body;
@@ -297,7 +320,6 @@ app.get('/api/trash', async (req, res) => {
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// --- START SERVER ---
 app.listen(process.env.PORT, () => {
   console.log(`🚀 SentinEx API running on port ${process.env.PORT}`);
 });

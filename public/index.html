@@ -310,6 +310,7 @@
 </head>
 <body>
 
+    <!-- LANDING PAGE -->
     <div id="landing-page">
         <nav>
             <div class="logo-container" onclick="window.scrollTo(0,0)">
@@ -325,8 +326,6 @@
                 <a href="#contact" data-en="Contact" data-sw="Mawasiliano">Contact</a>
             </div>
             <div style="display: flex; gap: 16px; align-items: center;">
-                
-                <!-- PREMIUM PREFERENCES MENU -->
                 <div class="preferences-container">
                     <button class="icon-btn" onclick="togglePrefs(event)">🌐</button>
                     <div class="preferences-popover" id="prefs-menu">
@@ -347,7 +346,6 @@
                         </div>
                     </div>
                 </div>
-
                 <button class="btn-primary" onclick="openLogin()" data-en="Client Portal &rarr;" data-sw="Tovuti ya Mteja &rarr;">Client Portal &rarr;</button>
             </div>
         </nav>
@@ -581,7 +579,6 @@
                     
                     <div id="topbar-actions" style="display: flex; gap: 12px; align-items: center;">
                         
-                        <!-- PREMIUM PREFERENCES MENU (DASHBOARD) -->
                         <div class="preferences-container">
                             <button class="icon-btn" onclick="togglePrefs(event)">🌐</button>
                             <div class="preferences-popover" id="prefs-menu-dash">
@@ -835,26 +832,33 @@
                     </div>
                 </div>
 
+                <!-- MASTER CONTROL DASHBOARD -->
                 <div id="view-super-dashboard" class="view-container">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
-                        <div class="stats-grid" style="flex: 1; margin-bottom: 0;">
-                            <div class="stat-card"><div class="stat-title" data-en="Total Clients" data-sw="Wateja Wote">Total Clients</div><div class="stat-value" id="total-tenants">0</div></div>
-                            <div class="stat-card"><div class="stat-title" data-en="Pending Approvals" data-sw="Kuidhinisha">Pending Approvals</div><div class="stat-value" id="pending-tenants" style="color: var(--warning);">0</div></div>
-                        </div>
+                    <div class="stats-grid">
+                        <div class="stat-card"><div class="stat-title">Total Schools</div><div class="stat-value" id="total-tenants">0</div></div>
+                        <div class="stat-card"><div class="stat-title">Total Global Students</div><div class="stat-value" id="total-students">0</div></div>
+                        <div class="stat-card"><div class="stat-title">Total Global Scans</div><div class="stat-value" id="total-global-scans">0</div></div>
                     </div>
-                    <div class="table-card" style="margin-top: 24px;">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                        <p style="color: var(--dash-muted); font-size: 14px;">All registered schools and their live performance.</p>
+                        <button class="btn btn-primary" onclick="openTenantModal()">+ Add New School</button>
+                    </div>
+
+                    <div class="table-card">
                         <table>
                             <thead>
                                 <tr>
-                                    <th data-en="Logo" data-sw="Nembo">Logo</th>
-                                    <th data-en="School Name" data-sw="Jina la Shule">School Name</th>
-                                    <th data-en="Tenant ID" data-sw="Kitambulisho">Tenant ID</th>
-                                    <th data-en="Status" data-sw="Hali">Status</th>
-                                    <th data-en="Actions" data-sw="Vitendo">Actions</th>
+                                    <th>School</th>
+                                    <th>Tenant ID</th>
+                                    <th>Students</th>
+                                    <th>Total Scans</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="super-body">
-                                <tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading schools...</td></tr>
+                                <tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading schools...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -902,12 +906,45 @@
     </div>
 
     <script>
-        // --- PREMIUM PREFERENCES LOGIC ---
+        // ================================================================
+        //  GLOBAL STATE
+        // ================================================================
+        let logsData = [];
+        let membersData = [];
+        let currentModalMode = 'add';
+        let currentTenant = 'sentinex';
+        let currentStartTime = '07:00';
+        let currentLateTime = '08:00';
+        let currentClosingTime = '18:00';
+
+        let lineChartInstance = null;
+        let doughnutChartInstance = null;
+        let barChartInstance = null;
+
+        let cachedTodayLogs = null;
+        let cachedTrendData = null;
+
+        let currentLineType = 'line';
+        let currentDoughnutType = 'doughnut';
+        let currentBarType = 'bar';
+
+        // ================================================================
+        //  HELPERS
+        // ================================================================
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str).replace(/[&<>"']/g, s => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[s]));
+        }
+
+        // ================================================================
+        //  PREMIUM PREFERENCES LOGIC
+        // ================================================================
         function togglePrefs(event) {
             event.stopPropagation();
             const menus = document.querySelectorAll('.preferences-popover');
             menus.forEach(menu => {
-                // Close other open menus
                 if (menu.id !== event.target.nextElementSibling?.id && !menu.contains(event.target)) {
                     menu.classList.remove('show');
                 }
@@ -923,9 +960,10 @@
             }
         });
 
-        // --- THEME LOGIC ---
+        // ================================================================
+        //  THEME LOGIC
+        // ================================================================
         function setTheme(theme, element) {
-            // Update active dots
             document.querySelectorAll('.pref-group:nth-child(3) .pref-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
 
@@ -939,7 +977,6 @@
             }
         }
 
-        // Listen for OS theme changes if 'System' is selected
         window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
             const activeTheme = document.querySelector('.pref-group:nth-child(3) .pref-item.active');
             if (activeTheme && activeTheme.id.includes('system')) {
@@ -947,7 +984,9 @@
             }
         });
 
-        // --- LANGUAGE LOGIC ---
+        // ================================================================
+        //  LANGUAGE LOGIC
+        // ================================================================
         const translations = {
             'en': {},
             'sw': {},
@@ -981,11 +1020,9 @@
         };
 
         function setLang(lang, element) {
-            // Update active dots
             document.querySelectorAll('.pref-group:nth-child(1) .pref-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
 
-            // Translate all elements
             document.querySelectorAll('[data-en]').forEach(el => {
                 const originalEn = el.getAttribute('data-en');
                 if (lang === 'en') {
@@ -999,7 +1036,9 @@
             });
         }
 
-        // --- LANDING PAGE JS ---
+        // ================================================================
+        //  LANDING PAGE JS
+        // ================================================================
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -1033,21 +1072,9 @@
             }
         }
 
-        // --- DASHBOARD JS ---
-        let logsData = [];
-        let currentModalMode = 'add';
-        let currentTenant = 'sentinex'; 
-        let currentStartTime = '07:00';
-        let currentLateTime = '08:00';
-        let currentClosingTime = '18:00';
-        
-        let lineChartInstance = null;
-        let doughnutChartInstance = null;
-        let barChartInstance = null;
-
-        let cachedTodayLogs = null;
-        let cachedTrendData = null;
-
+        // ================================================================
+        //  LOGIN / LOGOUT
+        // ================================================================
         function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
         function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
 
@@ -1108,7 +1135,7 @@
                         document.getElementById('tenant-name').innerText = "Master Admin";
                         
                         switchTab('super-dashboard', document.querySelector('#super-admin-menu .nav-item'));
-                        fetchTenants();
+                        fetchSuperAdminStats();
                     } else {
                         document.getElementById('tenant-menu').style.display = 'flex'; 
                         document.getElementById('super-admin-menu').style.display = 'none';
@@ -1142,6 +1169,9 @@
             document.getElementById('landing-page').style.display = 'block';
         }
 
+        // ================================================================
+        //  TAB NAVIGATION
+        // ================================================================
         function switchTab(tabId, element) {
             document.querySelectorAll('.view-container').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
@@ -1165,9 +1195,12 @@
             if (tabId === 'members') fetchMembers();
             if (tabId === 'trash') fetchTrash();
             if (tabId === 'audit') fetchAuditLogs();
-            if (tabId === 'super-dashboard') fetchTenants();
+            if (tabId === 'super-dashboard') fetchSuperAdminStats();
         }
 
+        // ================================================================
+        //  CSV EXPORT
+        // ================================================================
         function exportCSV() {
             if (logsData.length === 0) { alert("No data to export for this date."); return; }
             
@@ -1195,6 +1228,9 @@
             document.body.removeChild(link);
         }
 
+        // ================================================================
+        //  OFFLINE CSV SYNC
+        // ================================================================
         async function syncOfflineData(input) {
             if (!input.files || input.files.length === 0) return;
             
@@ -1209,542 +1245,638 @@
                 lines.forEach(line => {
                     const parts = line.split(',');
                     if (parts.length >= 3) {
-                        records.push({
-                            fingerprint_id: parseInt(parts[0]),
-                            status: parts[1].trim(),
-                            timestamp: parts[2].trim()
-                        });
+                        const fid = parseInt(parts[0]);
+                        if (!isNaN(fid)) {
+                            records.push({
+                                fingerprint_id: fid,
+                                status: parts[1].trim(),
+                                timestamp: parts[2].trim()
+                            });
+                        }
                     }
                 });
                 
-                if (records.length === 0) { alert("No valid records found in CSV."); return; }
-                
-                if (!confirm(`Found ${records.length} records. Upload to cloud?`)) return;
+                if (records.length === 0) { 
+                    alert("No valid records found in the CSV file."); 
+                    input.value = '';
+                    return; 
+                }
                 
                 try {
                     const res = await fetch('/api/sync-offline', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ tenant_id: currentTenant, records: records })
+                        body: JSON.stringify({ tenant_id: currentTenant, records })
                     });
                     const data = await res.json();
                     if (data.success) {
-                        alert(`Successfully synced ${data.inserted} offline records!`);
+                        alert(`Successfully synced ${data.inserted} records.`);
                         fetchLogs();
+                        checkPendingCount();
                     } else {
-                        alert("Error syncing data.");
+                        alert("Sync failed. Please try again.");
                     }
-                } catch (err) { alert("Network error during sync."); }
+                } catch (err) {
+                    alert("Error syncing offline data.");
+                }
+                input.value = '';
             };
-            
             reader.readAsText(file);
-            input.value = ""; 
         }
 
-        async function saveTimes() {
-            const start = document.getElementById('start-time-input').value;
-            const late = document.getElementById('late-time-input').value;
-            const close = document.getElementById('closing-time-input').value;
+        // ================================================================
+        //  DASHBOARD LOGS
+        // ================================================================
+        async function fetchLogs() {
+            const date = document.getElementById('date-picker').value;
+            const tbody = document.getElementById('log-body');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Fetching data...</td></tr>';
             
-            if(!start || !late || !close) { alert("Please fill all time fields."); return; }
-            
             try {
-                await fetch('/api/settings/times', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: currentTenant, start_time: start, late_time: late, closing_time: close })
-                });
-                alert("Timings saved successfully!");
-                currentStartTime = start;
-                currentLateTime = late;
-                currentClosingTime = close;
-            } catch (err) { alert("Error saving settings."); }
-        }
-
-        async function fetchAnalytics() {
-            const today = new Date().toISOString().split('T')[0];
-            try {
-                const resToday = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
-                cachedTodayLogs = await resToday.json();
-                
-                document.getElementById('ana-total-scans').innerText = cachedTodayLogs.filter(l => l.status !== 'Pending').length;
-                const uniqueIds = new Set(cachedTodayLogs.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
-                document.getElementById('ana-unique-members').innerText = uniqueIds.size;
-                document.getElementById('ana-security-alerts').innerText = cachedTodayLogs.filter(l => l.status === 'Denied').length;
-
-                const resTrend = await fetch(`/api/analytics/trend?tenant_id=${currentTenant}`);
-                cachedTrendData = await resTrend.json();
-
-                renderCharts();
-            } catch (err) { console.error("Error loading analytics", err); }
-        }
-
-        function renderCharts() {
-            if (!cachedTodayLogs || !cachedTrendData) return;
-
-            const present = cachedTodayLogs.filter(l => l.status === 'Granted' || l.status === 'Late' || l.status === 'Manual').length;
-            const denied = cachedTodayLogs.filter(l => l.status === 'Denied').length;
-
-            const last7Days = [];
-            for (let i = 6; i >= 0; i--) {
-                const d = new Date();
-                d.setDate(d.getDate() - i);
-                const dateStr = d.toISOString().split('T')[0];
-                const match = cachedTrendData.find(t => t.date.startsWith(dateStr));
-                last7Days.push({ date: dateStr.slice(5), count: match ? parseInt(match.count) : 0 });
-            }
-
-            const lineType = document.getElementById('lineChartType').value;
-            const doughnutType = document.getElementById('doughnutChartType').value;
-            const barType = document.getElementById('barChartType').value;
-
-            if (lineChartInstance) lineChartInstance.destroy();
-            const ctxLine = document.getElementById('lineChart').getContext('2d');
-            const gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
-            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-            gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-
-            lineChartInstance = new Chart(ctxLine, {
-                type: lineType,
-                data: {
-                    labels: last7Days.map(d => d.date),
-                    datasets: [{
-                        label: 'Scans',
-                        data: last7Days.map(d => d.count),
-                        borderColor: '#3b82f6',
-                        backgroundColor: lineType === 'line' ? gradient : '#3b82f6',
-                        borderWidth: 3,
-                        tension: 0.4,
-                        fill: lineType === 'line',
-                        pointBackgroundColor: '#3b82f6',
-                        pointRadius: 4
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { border: { display: false }, beginAtZero: true } } }
-            });
-
-            if (doughnutChartInstance) doughnutChartInstance.destroy();
-            const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
-            doughnutChartInstance = new Chart(ctxDoughnut, {
-                type: doughnutType,
-                data: {
-                    labels: ['Present', 'Denied'],
-                    datasets: [{
-                        data: [present, denied],
-                        backgroundColor: ['#3b82f6', '#f59e0b'],
-                        borderWidth: 0
-                    }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, cutout: doughnutType === 'doughnut' ? '70%' : '0%', plugins: { legend: { position: 'right' } } }
-            });
-
-            if (barChartInstance) barChartInstance.destroy();
-            const ctxBar = document.getElementById('barChart').getContext('2d');
-            barChartInstance = new Chart(ctxBar, {
-                type: barType,
-                data: {
-                    labels: last7Days.map(d => d.date),
-                    datasets: [
-                        {
-                            label: 'Total Scans',
-                            data: last7Days.map(d => d.count),
-                            backgroundColor: '#3b82f6',
-                            borderRadius: 4
-                        }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } } }
-            });
-        }
-
-        function updateChartType(chartName) {
-            renderCharts();
-        }
-
-        async function changePassword() {
-            const oldPass = document.getElementById('current-pass').value;
-            const newPass = document.getElementById('new-pass').value;
-            const confirmPass = document.getElementById('confirm-pass').value;
-
-            if(!oldPass || !newPass || !confirmPass) { alert("Fill all fields"); return; }
-            if(newPass !== confirmPass) { alert("New passwords do not match"); return; }
-
-            try {
-                const res = await fetch('/api/settings/password', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: currentTenant, old_password: oldPass, new_password: newPass })
-                });
+                const res = await fetch(`/api/logs?tenant_id=${currentTenant}&date=${date}`);
                 const data = await res.json();
-                if(data.success) {
-                    alert("Password updated successfully!");
-                    document.getElementById('current-pass').value = '';
-                    document.getElementById('new-pass').value = '';
-                    document.getElementById('confirm-pass').value = '';
-                } else {
-                    alert(data.error || "Error updating password");
-                }
-            } catch (err) { alert("Error updating password"); }
-        }
-
-        async function changeSuperPassword() {
-            const oldPass = document.getElementById('sa-current-pass').value;
-            const newPass = document.getElementById('sa-new-pass').value;
-            const confirmPass = document.getElementById('sa-confirm-pass').value;
-
-            if(!oldPass || !newPass || !confirmPass) { alert("Fill all fields"); return; }
-            if(newPass !== confirmPass) { alert("New passwords do not match"); return; }
-
-            try {
-                const res = await fetch('/api/settings/password', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: 'superadmin', old_password: oldPass, new_password: newPass })
-                });
-                const data = await res.json();
-                if(data.success) {
-                    alert("Master password updated successfully!");
-                    document.getElementById('sa-current-pass').value = '';
-                    document.getElementById('sa-new-pass').value = '';
-                    document.getElementById('sa-confirm-pass').value = '';
-                } else {
-                    alert(data.error || "Error updating password");
-                }
-            } catch (err) { alert("Error updating password"); }
-        }
-
-        function openTenantModal() {
-            document.getElementById('new-tenant-id').value = "";
-            document.getElementById('new-tenant-name').value = "";
-            document.getElementById('new-tenant-logo').value = "";
-            document.getElementById('tenant-modal').style.display = 'flex';
-        }
-        function closeTenantModal() { document.getElementById('tenant-modal').style.display = 'none'; }
-
-        function getBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = error => reject(error);
-            });
-        }
-
-        async function saveTenant() {
-            const id = document.getElementById('new-tenant-id').value.trim().toLowerCase();
-            const name = document.getElementById('new-tenant-name').value;
-            const logoFile = document.getElementById('new-tenant-logo').files[0];
-
-            if(!id || !name) { alert("ID and Name are required."); return; }
-
-            let logoBase64 = null;
-            if (logoFile) {
-                logoBase64 = await getBase64(logoFile);
-            }
-
-            try {
-                await fetch('/api/tenants', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: id, name: name, logo_data: logoBase64 })
-                });
-                closeTenantModal();
-                alert("Application submitted! You will be notified once approved by SentinEx HQ.");
-            } catch (err) { alert("Error submitting application."); }
-        }
-
-        async function fetchTenants() {
-            const tbody = document.getElementById('super-body');
-            try {
-                const response = await fetch('/api/tenants');
-                const tenants = await response.json();
+                logsData = data;
+                cachedTodayLogs = data;
                 
-                let pending = 0;
-                document.getElementById('total-tenants').innerText = tenants.length;
-
-                tbody.innerHTML = tenants.map(t => {
-                    let statusBadge = '';
-                    let actionButtons = '';
-
-                    if (t.tenant_id === 'sentinex') {
-                        statusBadge = `<span class="badge badge-active">Platform Owner</span>`;
-                        actionButtons = `<span style="color:var(--dash-muted); font-size:12px;">N/A</span>`;
-                    } else {
-                        if (t.status === 'pending') { pending++; statusBadge = `<span class="badge badge-pending">Pending</span>`; }
-                        else if (t.status === 'active') { statusBadge = `<span class="badge badge-active">Active</span>`; }
-                        else { statusBadge = `<span class="badge badge-suspended">${t.status}</span>`; }
-
-                        if (t.status !== 'active') {
-                            actionButtons += `<button class="btn btn-sm btn-success" onclick="updateTenantStatus('${t.tenant_id}', 'active')">Approve</button> `;
-                        }
-                        if (t.status !== 'suspended' && t.status !== 'rejected') {
-                            actionButtons += `<button class="btn btn-sm btn-warning" onclick="updateTenantStatus('${t.tenant_id}', 'suspended')">Suspend</button> `;
-                        }
-                        actionButtons += `<button class="btn btn-sm btn-danger" onclick="updateTenantStatus('${t.tenant_id}', 'rejected')">Reject</button>`;
-                    }
-
-                    const logo = t.logo_data || 'https://cdn-icons-png.flaticon.com/512/3064/3064197.png';
-
-                    return `
-                    <tr>
-                        <td><img src="${logo}" style="width: 32px; height: 32px; border-radius: 6px; object-fit: contain;"></td>
-                        <td><strong>${t.name}</strong></td>
-                        <td>${t.tenant_id}</td>
-                        <td>${statusBadge}</td>
-                        <td style="display: flex; gap: 8px;">${actionButtons}</td>
-                    </tr>
-                    `;
+                document.getElementById('total-scans').innerText = data.length;
+                document.getElementById('unique-members').innerText = new Set(data.map(l => l.fingerprint_id)).size;
+                document.getElementById('security-alerts').innerText = data.filter(l => l.status === 'Late').length;
+                
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No scans found for this date.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.map(log => {
+                    const dateObj = new Date(log.scanned_at);
+                    const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    let badgeClass = 'badge-granted';
+                    if (log.status === 'Late') badgeClass = 'badge-late';
+                    else if (log.status === 'Manual') badgeClass = 'badge-manual';
+                    else if (log.status === 'Pending') badgeClass = 'badge-pending';
+                    else if (log.status === 'Denied') badgeClass = 'badge-suspended';
+                    
+                    const multiple = log.scan_count > 1 ? `<span class="badge badge-multiple">x${log.scan_count}</span>` : '';
+                    
+                    return `<tr>
+                        <td>${escapeHtml(log.student_name)}</td>
+                        <td>${escapeHtml(log.reg_number || 'N/A')}</td>
+                        <td>${timeStr}</td>
+                        <td><span class="badge ${badgeClass}">${log.status}</span>${multiple}</td>
+                    </tr>`;
                 }).join('');
-
-                document.getElementById('pending-tenants').innerText = pending;
-
-            } catch (err) { console.error(err); }
+                
+                const pendingCount = data.filter(l => l.status === 'Pending').length;
+                const badge = document.getElementById('pending-badge');
+                if (pendingCount > 0) { badge.style.display = 'inline-block'; badge.innerText = pendingCount; }
+                else badge.style.display = 'none';
+                
+            } catch (err) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading data.</td></tr>';
+            }
         }
 
-        async function updateTenantStatus(tenantId, status) {
-            if(!confirm(`Are you sure you want to mark this school as ${status.toUpperCase()}?`)) return;
+        async function checkPendingCount() {
             try {
-                await fetch(`/api/tenants/${tenantId}/status`, {
+                const today = new Date().toISOString().split('T')[0];
+                const res = await fetch(`/api/logs?tenant_id=${currentTenant}&date=${today}`);
+                const data = await res.json();
+                const pendingCount = data.filter(l => l.status === 'Pending').length;
+                const badge = document.getElementById('pending-badge');
+                if (pendingCount > 0) { badge.style.display = 'inline-block'; badge.innerText = pendingCount; }
+                else badge.style.display = 'none';
+            } catch(e) { /* silent */ }
+        }
+
+        // ================================================================
+        //  PENDING APPROVALS
+        // ================================================================
+        async function fetchPending() {
+            const tbody = document.getElementById('pending-body');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr>';
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const res = await fetch(`/api/logs?tenant_id=${currentTenant}&date=${today}`);
+                const data = await res.json();
+                const pending = data.filter(l => l.status === 'Pending');
+                if (pending.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No pending requests.</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = pending.map(p => {
+                    const dateObj = new Date(p.scanned_at);
+                    const timeStr = dateObj.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    return `<tr>
+                        <td>${escapeHtml(p.student_name)}</td>
+                        <td>${escapeHtml(p.reg_number || 'N/A')}</td>
+                        <td>${timeStr}</td>
+                        <td><button class="btn btn-success btn-sm" onclick="approvePending(${p.fingerprint_id})">Approve</button></td>
+                    </tr>`;
+                }).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading.</td></tr>';
+            }
+        }
+
+        async function approvePending(fingerprintId) {
+            try {
+                const res = await fetch('/api/approve-pending', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status })
+                    body: JSON.stringify({ fingerprint_id: fingerprintId, admin_name: currentTenant, tenant_id: currentTenant })
                 });
-                fetchTenants();
-            } catch (err) { alert("Error updating status."); }
+                const data = await res.json();
+                if (data.success) {
+                    fetchPending();
+                    fetchLogs();
+                    checkPendingCount();
+                } else {
+                    alert("Could not approve request.");
+                }
+            } catch(e) { alert("Error approving."); }
+        }
+
+        // ================================================================
+        //  MEMBERS DIRECTORY
+        // ================================================================
+        async function fetchMembers() {
+            const tbody = document.getElementById('members-body');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr>';
+            try {
+                const res = await fetch(`/api/students?tenant_id=${currentTenant}`);
+                const data = await res.json();
+                membersData = data;
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No members yet. Click "+ Add New Member".</td></tr>';
+                    return;
+                }
+                tbody.innerHTML = data.map((s, i) => `<tr>
+                    <td>${escapeHtml(s.name)}</td>
+                    <td>${escapeHtml(s.reg_number || 'N/A')}</td>
+                    <td>${s.role || 'student'}</td>
+                    <td>
+                        <button class="btn btn-outline btn-sm" onclick="openEditModal(${i})">Edit</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteStudent(${s.fingerprint_id})">Delete</button>
+                    </td>
+                </tr>`).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading members.</td></tr>';
+            }
         }
 
         function openAddModal() {
             currentModalMode = 'add';
-            document.getElementById('modal-title').innerText = "Add New Member";
-            document.getElementById('modal-id').value = "";
+            document.getElementById('modal-title').innerText = 'Add New Member';
+            document.getElementById('modal-id').value = '';
             document.getElementById('modal-id').disabled = false;
-            document.getElementById('modal-name').value = "";
-            document.getElementById('modal-reg').value = "";
+            document.getElementById('modal-name').value = '';
+            document.getElementById('modal-reg').value = '';
             document.getElementById('student-modal').style.display = 'flex';
         }
 
-        function openEditModal(id, name, reg) {
+        function openEditModal(index) {
+            const s = membersData[index];
+            if (!s) return;
             currentModalMode = 'edit';
-            document.getElementById('modal-title').innerText = "Edit Member";
-            document.getElementById('modal-id').value = id;
+            document.getElementById('modal-title').innerText = 'Edit Member';
+            document.getElementById('modal-id').value = s.fingerprint_id;
             document.getElementById('modal-id').disabled = true;
-            document.getElementById('modal-name').value = name;
-            document.getElementById('modal-reg').value = reg;
+            document.getElementById('modal-name').value = s.name;
+            document.getElementById('modal-reg').value = s.reg_number || '';
             document.getElementById('student-modal').style.display = 'flex';
         }
 
         function closeModal() { document.getElementById('student-modal').style.display = 'none'; }
 
         async function saveStudent() {
-            const id = document.getElementById('modal-id').value;
-            const name = document.getElementById('modal-name').value;
-            const reg = document.getElementById('modal-reg').value;
-            const admin = document.getElementById('username').value; 
-
-            if (!id || !name || !reg) { alert("Please fill all fields."); return; }
-
-            const payload = { fingerprint_id: id, name: name, reg_number: reg, admin_name: admin, tenant_id: currentTenant };
-
+            const fingerprint_id = parseInt(document.getElementById('modal-id').value);
+            const name = document.getElementById('modal-name').value.trim();
+            const reg_number = document.getElementById('modal-reg').value.trim();
+            
+            if (!fingerprint_id || !name) { alert("Fingerprint ID and Name are required."); return; }
+            
             try {
+                let res;
                 if (currentModalMode === 'add') {
-                    await fetch('/api/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    res = await fetch('/api/students', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ fingerprint_id, name, reg_number, admin_name: currentTenant, tenant_id: currentTenant })
+                    });
                 } else {
-                    await fetch(`/api/students/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, reg_number: reg, admin_name: admin, tenant_id: currentTenant }) });
+                    res = await fetch(`/api/students/${fingerprint_id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, reg_number, admin_name: currentTenant, tenant_id: currentTenant })
+                    });
                 }
-                closeModal();
-                fetchMembers();
-            } catch (err) { alert("Error saving student."); }
-        }
-
-        async function checkPendingCount() {
-            try {
-                const today = new Date().toISOString().split('T')[0];
-                const response = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
-                const logs = await response.json();
-                const pendingCount = logs.filter(l => l.status === 'Pending').length;
-                
-                const badge = document.getElementById('pending-badge');
-                if (pendingCount > 0) {
-                    badge.innerText = pendingCount;
-                    badge.style.display = 'inline-block';
+                const data = await res.json();
+                if (data.success) {
+                    closeModal();
+                    fetchMembers();
                 } else {
-                    badge.style.display = 'none';
+                    alert("Could not save member. The Fingerprint ID may already exist.");
                 }
-            } catch (err) {}
+            } catch(e) { alert("Error saving member."); }
         }
 
-        async function fetchPending() {
-            const tbody = document.getElementById('pending-body');
+        async function deleteStudent(fingerprintId) {
+            if (!confirm("Move this member to Trash?")) return;
             try {
-                const today = new Date().toISOString().split('T')[0];
-                const response = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
-                const logs = await response.json();
-                const pending = logs.filter(l => l.status === 'Pending');
-
-                if (pending.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No pending requests right now.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = pending.map(log => {
-                    const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    return `<tr>
-                        <td><strong>${log.student_name}</strong></td>
-                        <td>${log.reg_number || log.fingerprint_id}</td>
-                        <td>${timeStr}</td>
-                        <td>
-                            <button class="btn btn-sm btn-success" onclick="approvePending(${log.fingerprint_id})">
-                                Approve
-                            </button>
-                        </td>
-                    </tr>`;
-                }).join('');
-            } catch (err) { console.error(err); }
-        }
-
-        async function approvePending(id) {
-            if(!confirm("Approve this student's manual attendance request?")) return;
-            const admin = document.getElementById('username').value;
-            try {
-                await fetch('/api/approve-pending', {
-                    method: 'PUT',
+                const res = await fetch(`/api/students/${fingerprintId}`, {
+                    method: 'DELETE',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fingerprint_id: id, admin_name: admin, tenant_id: currentTenant })
+                    body: JSON.stringify({ admin_name: currentTenant, tenant_id: currentTenant })
                 });
-                fetchPending();
-                checkPendingCount();
-            } catch (err) { alert("Error approving request."); }
+                const data = await res.json();
+                if (data.success) fetchMembers();
+                else alert("Could not delete member.");
+            } catch(e) { alert("Error deleting member."); }
         }
 
-        async function fetchLogs() {
-            const selectedDate = document.getElementById('date-picker').value;
-            const tbody = document.getElementById('log-body');
-            tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Fetching data...</td></tr>`;
-
-            try {
-                const response = await fetch(`/api/logs?date=${selectedDate}&tenant_id=${currentTenant}`);
-                logsData = await response.json();
-                
-                document.getElementById('total-scans').innerText = logsData.filter(l => l.status !== 'Pending').length;
-                const uniqueIds = new Set(logsData.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
-                document.getElementById('unique-members').innerText = uniqueIds.size;
-                document.getElementById('security-alerts').innerText = logsData.filter(l => l.status === 'Denied').length;
-
-                if (logsData.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No records for this date.</td></tr>`;
-                    return;
-                }
-
-                tbody.innerHTML = logsData.map(log => {
-                    const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', second:'2-digit'});
-                    let badgeClass = 'badge-granted';
-                    if (log.status === 'Denied') badgeClass = 'badge-denied';
-                    if (log.status === 'Manual') badgeClass = 'badge-manual';
-                    if (log.status === 'Late') badgeClass = 'badge-late';
-                    if (log.status === 'Pending') badgeClass = 'badge-pending';
-                    
-                    let warning = '';
-                    if (log.scan_count > 1) {
-                        warning = `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); cursor:help; margin-left: 5px;">⚠️</span>`;
-                        warning += `<span class="badge badge-multiple">Multiple</span>`;
-                    }
-                    
-                    const regNum = log.reg_number ? log.reg_number : `ID: ${log.fingerprint_id}`;
-                    
-                    return `<tr>
-                        <td><strong>${log.student_name}</strong> ${warning}</td>
-                        <td>${regNum}</td>
-                        <td>${timeStr}</td>
-                        <td><span class="badge ${badgeClass}">${log.status}</span></td>
-                    </tr>`;
-                }).join('');
-            } catch (err) { console.error(err); }
-        }
-
-        async function fetchMembers() {
-            const tbody = document.getElementById('members-body');
-            try {
-                const response = await fetch(`/api/students?tenant_id=${currentTenant}`);
-                const students = await response.json();
-                if (students.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No members found.</td></tr>`;
-                    return;
-                }
-                tbody.innerHTML = students.map(s => `
-                    <tr>
-                        <td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${s.role}</td>
-                        <td style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})">Delete</button>
-                        </td>
-                    </tr>
-                `).join('');
-            } catch (err) { console.error(err); }
-        }
-
-        async function deleteStudent(id) {
-            if(!confirm("Move this student to trash?")) return;
-            const admin = document.getElementById('username').value;
-            await fetch(`/api/students/${id}`, { 
-                method: 'DELETE', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ admin_name: admin, tenant_id: currentTenant }) 
-            });
-            fetchMembers();
-        }
-
+        // ================================================================
+        //  TRASH
+        // ================================================================
         async function fetchTrash() {
             const tbody = document.getElementById('trash-body');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr>';
             try {
-                const response = await fetch(`/api/trash?tenant_id=${currentTenant}`);
-                const trash = await response.json();
-                if (trash.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Trash is empty.</td></tr>`;
+                const res = await fetch(`/api/trash?tenant_id=${currentTenant}`);
+                const data = await res.json();
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Trash is empty.</td></tr>';
                     return;
                 }
-                tbody.innerHTML = trash.map(s => {
-                    const date = new Date(s.deleted_at).toLocaleDateString();
-                    return `<tr><td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${date}</td><td><button class="btn btn-sm btn-outline" onclick="restoreStudent(${s.fingerprint_id})">Restore</button></td></tr>`;
-                }).join('');
-            } catch (err) { console.error(err); }
+                tbody.innerHTML = data.map(s => `<tr>
+                    <td>${escapeHtml(s.name)}</td>
+                    <td>${escapeHtml(s.reg_number || 'N/A')}</td>
+                    <td>${new Date(s.deleted_at).toLocaleDateString()}</td>
+                    <td><button class="btn btn-success btn-sm" onclick="restoreStudent(${s.fingerprint_id})">Restore</button></td>
+                </tr>`).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading trash.</td></tr>';
+            }
         }
 
-        async function restoreStudent(id) {
-            const admin = document.getElementById('username').value;
-            await fetch(`/api/trash/${id}`, { 
-                method: 'PUT', 
-                headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ admin_name: admin, tenant_id: currentTenant }) 
-            });
-            fetchTrash();
+        async function restoreStudent(fingerprintId) {
+            try {
+                const res = await fetch(`/api/trash/${fingerprintId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ admin_name: currentTenant, tenant_id: currentTenant })
+                });
+                const data = await res.json();
+                if (data.success) fetchTrash();
+                else alert("Could not restore member.");
+            } catch(e) { alert("Error restoring member."); }
         }
 
+        // ================================================================
+        //  AUDIT LOGS
+        // ================================================================
         async function fetchAuditLogs() {
             const tbody = document.getElementById('audit-body');
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr>';
             try {
-                const response = await fetch(`/api/audit-logs?tenant_id=${currentTenant}`);
-                const logs = await response.json();
-                if (logs.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No logs.</td></tr>`;
+                const res = await fetch(`/api/audit-logs?tenant_id=${currentTenant}`);
+                const data = await res.json();
+                if (data.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No audit records.</td></tr>';
                     return;
                 }
-                tbody.innerHTML = logs.map(log => {
-                    const date = new Date(log.timestamp).toLocaleString();
-                    return `<tr>
-                        <td>${date}</td>
-                        <td><strong>${log.admin_name}</strong></td>
-                        <td><span class="badge" style="background: #f1f5f9; color: var(--text-main); border: 1px solid var(--border);">${log.action_type}</span></td>
-                        <td>${log.details}</td>
-                    </tr>`;
-                }).join('');
-            } catch (err) { console.error(err); }
+                tbody.innerHTML = data.map(a => `<tr>
+                    <td>${new Date(a.timestamp).toLocaleString()}</td>
+                    <td>${escapeHtml(a.admin_name || 'System')}</td>
+                    <td>${escapeHtml(a.action_type)}</td>
+                    <td>${escapeHtml(a.details || '')}</td>
+                </tr>`).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading audit logs.</td></tr>';
+            }
         }
 
-        setInterval(() => {
-            if (document.getElementById('app-screen').style.display === 'block' && currentTenant !== 'superadmin') {
-                checkPendingCount();
+        // ================================================================
+        //  ANALYTICS
+        // ================================================================
+        async function fetchAnalytics() {
+            try {
+                const date = document.getElementById('date-picker').value;
+                const [logsRes, trendRes] = await Promise.all([
+                    fetch(`/api/logs?tenant_id=${currentTenant}&date=${date}`),
+                    fetch(`/api/analytics/trend?tenant_id=${currentTenant}`)
+                ]);
+                const logs = await logsRes.json();
+                const trend = await trendRes.json();
+                cachedTodayLogs = logs;
+                cachedTrendData = trend;
+                
+                document.getElementById('ana-total-scans').innerText = logs.length;
+                document.getElementById('ana-unique-members').innerText = new Set(logs.map(l => l.fingerprint_id)).size;
+                document.getElementById('ana-security-alerts').innerText = logs.filter(l => l.status === 'Late').length;
+                
+                renderLineChart(trend, currentLineType);
+                renderDoughnutChart(logs, currentDoughnutType);
+                renderBarChart(trend, currentBarType);
+            } catch(e) { console.error(e); }
+        }
+
+        function updateChartType(kind) {
+            if (kind === 'line') {
+                currentLineType = document.getElementById('lineChartType').value;
+                renderLineChart(cachedTrendData, currentLineType);
+            } else if (kind === 'doughnut') {
+                currentDoughnutType = document.getElementById('doughnutChartType').value;
+                renderDoughnutChart(cachedTodayLogs, currentDoughnutType);
+            } else if (kind === 'bar') {
+                currentBarType = document.getElementById('barChartType').value;
+                renderBarChart(cachedTrendData, currentBarType);
             }
-        }, 10000);
+        }
+
+        function renderLineChart(trend, type) {
+            const ctx = document.getElementById('lineChart').getContext('2d');
+            if (lineChartInstance) lineChartInstance.destroy();
+            
+            const labels = (trend || []).map(t => {
+                const d = new Date(t.date);
+                return d.toLocaleDateString(undefined, {month:'short', day:'numeric'});
+            });
+            const values = (trend || []).map(t => parseInt(t.count));
+            
+            lineChartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Scans',
+                        data: values,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59,130,246,0.15)',
+                        fill: type === 'line',
+                        tension: 0.35,
+                        pointRadius: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        }
+
+        function renderDoughnutChart(logs, type) {
+            const ctx = document.getElementById('doughnutChart').getContext('2d');
+            if (doughnutChartInstance) doughnutChartInstance.destroy();
+            
+            const granted = (logs || []).filter(l => l.status === 'Granted').length;
+            const late = (logs || []).filter(l => l.status === 'Late').length;
+            const manual = (logs || []).filter(l => l.status === 'Manual').length;
+            const pending = (logs || []).filter(l => l.status === 'Pending').length;
+            
+            doughnutChartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels: ['On Time', 'Late', 'Manual', 'Pending'],
+                    datasets: [{
+                        data: [granted, late, manual, pending],
+                        backgroundColor: ['#10b981', '#ef4444', '#f59e0b', '#8b5cf6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, font: { size: 11 } } } }
+                }
+            });
+        }
+
+        function renderBarChart(trend, type) {
+            const ctx = document.getElementById('barChart').getContext('2d');
+            if (barChartInstance) barChartInstance.destroy();
+            
+            const labels = (trend || []).map(t => {
+                const d = new Date(t.date);
+                return d.toLocaleDateString(undefined, {month:'short', day:'numeric'});
+            });
+            const values = (trend || []).map(t => parseInt(t.count));
+            
+            barChartInstance = new Chart(ctx, {
+                type: type,
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Scans',
+                        data: values,
+                        backgroundColor: 'rgba(59,130,246,0.6)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            });
+        }
+
+        // ================================================================
+        //  SUPER ADMIN – MASTER CONTROL
+        // ================================================================
+        async function fetchSuperAdminStats() {
+            const tbody = document.getElementById('super-body');
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading schools...</td></tr>';
+            try {
+                const res = await fetch('/api/superadmin/stats');
+                const data = await res.json();
+                
+                if (!data.tenants) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading schools.</td></tr>';
+                    return;
+                }
+                
+                document.getElementById('total-tenants').innerText = data.tenants.length;
+                document.getElementById('total-students').innerText = data.globalStudents;
+                document.getElementById('total-global-scans').innerText = data.globalScans;
+                
+                if (data.tenants.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--dash-muted);">No schools registered yet.</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = data.tenants.map(t => {
+                    let badge = 'badge-pending';
+                    if (t.status === 'active') badge = 'badge-active';
+                    else if (t.status === 'suspended') badge = 'badge-suspended';
+                    
+                    const logo = t.logo_data
+                        ? `<img src="${t.logo_data}" style="width:24px;height:24px;border-radius:4px;object-fit:contain;vertical-align:middle;margin-right:8px;">`
+                        : '';
+                    
+                    let actions = '';
+                    if (t.status === 'pending') {
+                        actions = `
+                            <button class="btn btn-success btn-sm" onclick="updateTenantStatus('${t.tenant_id}', 'active')">Approve</button>
+                            <button class="btn btn-danger btn-sm" onclick="updateTenantStatus('${t.tenant_id}', 'suspended')">Reject</button>`;
+                    } else if (t.status === 'active') {
+                        actions = `<button class="btn btn-warning btn-sm" onclick="updateTenantStatus('${t.tenant_id}', 'suspended')">Suspend</button>`;
+                    } else if (t.status === 'suspended') {
+                        actions = `<button class="btn btn-success btn-sm" onclick="updateTenantStatus('${t.tenant_id}', 'active')">Reactivate</button>`;
+                    }
+                    
+                    return `<tr>
+                        <td>${logo}${escapeHtml(t.name)}</td>
+                        <td>${escapeHtml(t.tenant_id)}</td>
+                        <td>${t.student_count}</td>
+                        <td>${t.scan_count}</td>
+                        <td><span class="badge ${badge}">${t.status}</span></td>
+                        <td>${actions}</td>
+                    </tr>`;
+                }).join('');
+            } catch(e) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 40px; color: var(--dash-muted);">Error loading schools.</td></tr>';
+            }
+        }
+
+        async function updateTenantStatus(tenantId, status) {
+            try {
+                const res = await fetch(`/api/tenants/${tenantId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (data.success) fetchSuperAdminStats();
+                else alert("Could not update status.");
+            } catch(e) { alert("Error updating status."); }
+        }
+
+        // ================================================================
+        //  TENANT ONBOARDING MODAL
+        // ================================================================
+        function openTenantModal() { document.getElementById('tenant-modal').style.display = 'flex'; }
+        function closeTenantModal() { document.getElementById('tenant-modal').style.display = 'none'; }
+
+        async function saveTenant() {
+            const tenant_id = document.getElementById('new-tenant-id').value.trim().toLowerCase();
+            const name = document.getElementById('new-tenant-name').value.trim();
+            const logoInput = document.getElementById('new-tenant-logo');
+            
+            if (!tenant_id || !name) { alert("Tenant ID and School Name are required."); return; }
+            
+            let logo_data = null;
+            if (logoInput.files.length > 0) {
+                const file = logoInput.files[0];
+                logo_data = await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = e => resolve(e.target.result);
+                    reader.readAsDataURL(file);
+                });
+            }
+            
+            try {
+                const res = await fetch('/api/tenants', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id, name, logo_data })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("Application submitted. Await HQ approval.");
+                    closeTenantModal();
+                    document.getElementById('new-tenant-id').value = '';
+                    document.getElementById('new-tenant-name').value = '';
+                    document.getElementById('new-tenant-logo').value = '';
+                    fetchSuperAdminStats();
+                } else {
+                    alert(data.error || "Could not submit application. Tenant ID may already exist.");
+                }
+            } catch(e) { alert("Error submitting application."); }
+        }
+
+        // ================================================================
+        //  SETTINGS – PASSWORD & TIMES
+        // ================================================================
+        async function changePassword() {
+            const oldP = document.getElementById('current-pass').value;
+            const newP = document.getElementById('new-pass').value;
+            const confirmP = document.getElementById('confirm-pass').value;
+            
+            if (!oldP || !newP) { alert("Fill all fields."); return; }
+            if (newP !== confirmP) { alert("New passwords do not match."); return; }
+            
+            try {
+                const res = await fetch('/api/settings/password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id: currentTenant, old_password: oldP, new_password: newP })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("Password updated.");
+                    document.getElementById('current-pass').value = '';
+                    document.getElementById('new-pass').value = '';
+                    document.getElementById('confirm-pass').value = '';
+                } else {
+                    alert(data.error || "Could not update password.");
+                }
+            } catch(e) { alert("Error updating password."); }
+        }
+
+        async function saveTimes() {
+            const start_time = document.getElementById('start-time-input').value;
+            const late_time = document.getElementById('late-time-input').value;
+            const closing_time = document.getElementById('closing-time-input').value;
+            
+            if (!start_time || !late_time || !closing_time) { alert("Please set all times."); return; }
+            
+            try {
+                const res = await fetch('/api/settings/times', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id: currentTenant, start_time, late_time, closing_time })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("Timings saved.");
+                    currentStartTime = start_time;
+                    currentLateTime = late_time;
+                    currentClosingTime = closing_time;
+                } else {
+                    alert("Could not save timings.");
+                }
+            } catch(e) { alert("Error saving timings."); }
+        }
+
+        async function changeSuperPassword() {
+            const oldP = document.getElementById('sa-current-pass').value;
+            const newP = document.getElementById('sa-new-pass').value;
+            const confirmP = document.getElementById('sa-confirm-pass').value;
+            
+            if (!oldP || !newP) { alert("Fill all fields."); return; }
+            if (newP !== confirmP) { alert("New passwords do not match."); return; }
+            
+            try {
+                const res = await fetch('/api/settings/password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id: 'superadmin', old_password: oldP, new_password: newP })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert("Master password updated.");
+                    document.getElementById('sa-current-pass').value = '';
+                    document.getElementById('sa-new-pass').value = '';
+                    document.getElementById('sa-confirm-pass').value = '';
+                } else {
+                    alert(data.error || "Could not update master password.");
+                }
+            } catch(e) { alert("Error updating master password."); }
+        }
     </script>
 </body>
 </html>
