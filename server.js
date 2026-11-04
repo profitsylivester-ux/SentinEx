@@ -20,24 +20,47 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-// Helper: Write Audit Log with Tenant ID
 async function logAction(tenant_id, admin, action, target, details) {
   try {
     await pool.query(
       'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
       [tenant_id, admin, action, target, details]
     );
-  } catch (err) { console.error("Audit Log Error:", err); }
+  } catch (err) { console.error("Audit Error:", err); }
 }
 
-// 1. ESP32 Endpoint (Save Attendance)
+// --- TENANT MANAGEMENT (Super Admin) ---
+app.get('/api/tenants/:id', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tenants WHERE tenant_id = $1', [req.params.id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: "School not found" });
+    res.status(200).json(result.rows[0]);
+  } catch (error) { res.status(500).json({ success: false }); }
+});
+
+app.post('/api/tenants', async (req, res) => {
+  try {
+    const { tenant_id, name, logo_url } = req.body;
+    await pool.query(
+      'INSERT INTO tenants (tenant_id, name, logo_url) VALUES ($1, $2, $3)',
+      [tenant_id, name, logo_url]
+    );
+    res.status(200).json({ success: true });
+  } catch (error) { res.status(500).json({ success: false, error: "Tenant ID exists" }); }
+});
+
+app.get('/api/tenants', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM tenants ORDER BY created_at DESC');
+    res.status(200).json(result.rows);
+  } catch (error) { res.status(500).json({ success: false }); }
+});
+
+// --- ESP32 & ATTENDANCE ---
 app.post('/api/scan', async (req, res) => {
   try {
     const { fingerprint_id, status, tenant_id } = req.body;
-    
-    // If no tenant_id provided by hardware, default to sentinex
     const tid = tenant_id || 'sentinex';
-
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [fingerprint_id, tid]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
@@ -49,53 +72,37 @@ app.post('/api/scan', async (req, res) => {
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 2. Approve Pending Request
 app.put('/api/approve-pending', async (req, res) => {
   try {
     const { fingerprint_id, admin_name, tenant_id } = req.body;
-    
     const result = await pool.query(
-      `UPDATE attendance 
-       SET status = 'Manual' 
-       WHERE fingerprint_id = $1 AND tenant_id = $2 AND status = 'Pending' AND DATE(scanned_at) = CURRENT_DATE
-       RETURNING student_name`,
+      `UPDATE attendance SET status = 'Manual' WHERE fingerprint_id = $1 AND tenant_id = $2 AND status = 'Pending' AND DATE(scanned_at) = CURRENT_DATE RETURNING student_name`,
       [fingerprint_id, tenant_id]
     );
-
     if (result.rowCount > 0) {
-      const name = result.rows[0].student_name;
-      await logAction(tenant_id, admin_name, 'APPROVE_PENDING', fingerprint_id, `Approved manual request for ${name}.`);
+      await logAction(tenant_id, admin_name, 'APPROVE_PENDING', fingerprint_id, `Approved manual request.`);
       res.status(200).json({ success: true });
-    } else {
-      res.status(404).json({ success: false, message: "No pending request found." });
-    }
+    } else { res.status(404).json({ success: false }); }
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 3. Admin Login Audit
 app.post('/api/login-audit', async (req, res) => {
   const { admin_name, tenant_id } = req.body;
-  await logAction(tenant_id || 'sentinex', admin_name, 'LOGIN', 'System', 'Admin logged into the dashboard.');
+  await logAction(tenant_id || 'sentinex', admin_name, 'LOGIN', 'System', 'Admin logged in.');
   res.status(200).json({ success: true });
 });
 
-// 4. Get Audit Logs (Tenant Specific)
 app.get('/api/audit-logs', async (req, res) => {
   try {
     const { tenant_id } = req.query;
-    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
-
     const result = await pool.query('SELECT * FROM audit_logs WHERE tenant_id = $1 ORDER BY timestamp DESC LIMIT 100', [tenant_id]);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 5. Get Attendance Logs (Tenant Specific)
 app.get('/api/logs', async (req, res) => {
   try {
     const { date, tenant_id } = req.query; 
-    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
-
     let query = `
       SELECT a.*, s.reg_number,
       (SELECT COUNT(*) FROM attendance a2 WHERE a2.fingerprint_id = a.fingerprint_id AND a2.tenant_id = a.tenant_id AND DATE(a2.scanned_at) = DATE(a.scanned_at)) as scan_count
@@ -103,30 +110,21 @@ app.get('/api/logs', async (req, res) => {
       WHERE a.tenant_id = $1
     `;
     let values = [tenant_id];
-    
-    if (date) {
-      query += ` AND DATE(a.scanned_at) = $2`;
-      values.push(date);
-    }
+    if (date) { query += ` AND DATE(a.scanned_at) = $2`; values.push(date); }
     query += ` ORDER BY a.scanned_at DESC LIMIT 100`;
-    
     const result = await pool.query(query, values);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 6. Get All Active Students (Tenant Specific)
 app.get('/api/students', async (req, res) => {
   try {
     const { tenant_id } = req.query;
-    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
-
     const result = await pool.query('SELECT * FROM students WHERE tenant_id = $1 AND deleted_at IS NULL ORDER BY name ASC', [tenant_id]);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 7. ADD NEW STUDENT
 app.post('/api/students', async (req, res) => {
   try {
     const { fingerprint_id, name, reg_number, admin_name, tenant_id } = req.body;
@@ -136,58 +134,43 @@ app.post('/api/students', async (req, res) => {
     );
     await logAction(tenant_id, admin_name, 'ADD_STUDENT', reg_number, `Added student: ${name}`);
     res.status(200).json({ success: true });
-  } catch (error) { res.status(500).json({ success: false, error: "ID or Reg No exists." }); }
+  } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 8. EDIT STUDENT
 app.put('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { name, reg_number, admin_name, tenant_id } = req.body;
-    await pool.query(
-      'UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3 AND tenant_id = $4',
-      [name, reg_number, id, tenant_id]
-    );
-    await logAction(tenant_id, admin_name, 'EDIT_STUDENT', reg_number, `Updated details to Name: ${name}, Reg: ${reg_number}`);
+    await pool.query('UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3 AND tenant_id = $4', [name, reg_number, id, tenant_id]);
+    await logAction(tenant_id, admin_name, 'EDIT_STUDENT', reg_number, `Updated details.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 9. SOFT DELETE
 app.delete('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { admin_name, tenant_id } = req.body;
-    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
-    const name = student.rows.length > 0 ? student.rows[0].name : `Slot ${id}`;
-    
     await pool.query('UPDATE students SET deleted_at = NOW() WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
-    await logAction(tenant_id, admin_name, 'DELETE_STUDENT', id, `Moved student ${name} to Trash.`);
+    await logAction(tenant_id, admin_name, 'DELETE_STUDENT', id, `Moved to Trash.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 10. RESTORE FROM TRASH
 app.put('/api/trash/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { admin_name, tenant_id } = req.body;
-    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
-    const name = student.rows.length > 0 ? student.rows[0].name : `Slot ${id}`;
-
     await pool.query('UPDATE students SET deleted_at = NULL WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
-    await logAction(tenant_id, admin_name, 'RESTORE_STUDENT', id, `Restored student ${name}.`);
+    await logAction(tenant_id, admin_name, 'RESTORE_STUDENT', id, `Restored student.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// 11. Get Trash (Tenant Specific)
 app.get('/api/trash', async (req, res) => {
   try {
     const { tenant_id } = req.query;
-    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
-
-    const result = await pool.query('SELECT * FROM students WHERE tenant_id = $1 AND deleted_at IS NOT NULL ORDER BY deleted_at DESC', [tenant_id]);
+    const result = await pool.query('SELECT * FROM students WHERE tenant_id = $1 AND deleted_at IS NOT NULL', [tenant_id]);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
