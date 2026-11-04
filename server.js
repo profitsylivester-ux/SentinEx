@@ -20,12 +20,20 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
+async function logAction(tenant_id, admin, action, target, details) {
+  try {
+    await pool.query(
+      'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
+      [tenant_id, admin, action, target, details]
+    );
+  } catch (err) { console.error("Audit Error:", err); }
+}
+
 // --- AUTHENTICATION ---
 app.post('/api/login', async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // 1. Check Super Admin
     if (username.toLowerCase() === 'superadmin') {
       const adminPass = await pool.query("SELECT value FROM platform_settings WHERE key = 'superadmin_password'");
       if (adminPass.rows.length > 0 && password === adminPass.rows[0].value) {
@@ -34,14 +42,11 @@ app.post('/api/login', async (req, res) => {
       return res.status(401).json({ error: "Invalid Super Admin credentials." });
     }
 
-    // 2. Check Tenant (Username = Tenant ID)
     const tenantRes = await pool.query('SELECT * FROM tenants WHERE tenant_id = $1 AND admin_password = $2', [username.toLowerCase(), password]);
     
     if (tenantRes.rows.length > 0) {
       const t = tenantRes.rows[0];
-      if (t.status !== 'active') {
-        return res.status(403).json({ error: `Account is ${t.status}. Contact SentinEx HQ.` });
-      }
+      if (t.status !== 'active') return res.status(403).json({ error: `Account is ${t.status}. Contact SentinEx HQ.` });
       return res.json({ success: true, role: 'admin', tenant_id: t.tenant_id, name: t.name, logo: t.logo_data });
     }
 
@@ -68,20 +73,18 @@ app.put('/api/settings/password', async (req, res) => {
     if (tenant_id === 'superadmin') {
       const current = await pool.query("SELECT value FROM platform_settings WHERE key = 'superadmin_password'");
       if (current.rows[0].value !== old_password) return res.status(400).json({ error: "Incorrect old password." });
-      
       await pool.query("UPDATE platform_settings SET value = $1 WHERE key = 'superadmin_password'", [new_password]);
       return res.json({ success: true });
     } else {
       const current = await pool.query('SELECT admin_password FROM tenants WHERE tenant_id = $1', [tenant_id]);
       if (current.rows[0].admin_password !== old_password) return res.status(400).json({ error: "Incorrect old password." });
-      
       await pool.query('UPDATE tenants SET admin_password = $1 WHERE tenant_id = $2', [new_password, tenant_id]);
       return res.json({ success: true });
     }
   } catch (error) { res.status(500).json({ error: "Server error" }); }
 });
 
-// --- TENANT MANAGEMENT (Super Admin) ---
+// --- TENANT MANAGEMENT ---
 app.get('/api/tenants', async (req, res) => {
   try {
     const result = await pool.query('SELECT tenant_id, name, logo_data, status, created_at FROM tenants ORDER BY created_at DESC');
@@ -105,6 +108,21 @@ app.put('/api/tenants/:id/status', async (req, res) => {
     const { status } = req.body;
     await pool.query('UPDATE tenants SET status = $1 WHERE tenant_id = $2', [status, req.params.id]);
     res.status(200).json({ success: true });
+  } catch (error) { res.status(500).json({ success: false }); }
+});
+
+// --- ANALYTICS (7-Day Trend) ---
+app.get('/api/analytics/trend', async (req, res) => {
+  try {
+    const { tenant_id } = req.query;
+    const result = await pool.query(`
+      SELECT DATE(scanned_at) as date, COUNT(*) as count 
+      FROM attendance 
+      WHERE tenant_id = $1 AND status != 'Pending' AND scanned_at >= CURRENT_DATE - INTERVAL '6 days'
+      GROUP BY DATE(scanned_at) 
+      ORDER BY DATE(scanned_at) ASC
+    `, [tenant_id]);
+    res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
@@ -136,10 +154,7 @@ app.put('/api/approve-pending', async (req, res) => {
       [fingerprint_id, tenant_id]
     );
     if (result.rowCount > 0) {
-      await pool.query(
-        'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
-        [tenant_id, admin_name, 'APPROVE_PENDING', fingerprint_id, `Approved manual request.`]
-      );
+      await logAction(tenant_id, admin_name, 'APPROVE_PENDING', fingerprint_id, `Approved manual request.`);
       res.status(200).json({ success: true });
     } else { res.status(404).json({ success: false }); }
   } catch (error) { res.status(500).json({ success: false }); }
@@ -185,10 +200,7 @@ app.post('/api/students', async (req, res) => {
       'INSERT INTO students (tenant_id, fingerprint_id, name, reg_number, role) VALUES ($1, $2, $3, $4, $5)',
       [tenant_id, fingerprint_id, name, reg_number, 'student']
     );
-    await pool.query(
-      'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
-      [tenant_id, admin_name, 'ADD_STUDENT', reg_number, `Added student: ${name}`]
-    );
+    await logAction(tenant_id, admin_name, 'ADD_STUDENT', reg_number, `Added student: ${name}`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
@@ -198,10 +210,7 @@ app.put('/api/students/:id', async (req, res) => {
     const { id } = req.params;
     const { name, reg_number, admin_name, tenant_id } = req.body;
     await pool.query('UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3 AND tenant_id = $4', [name, reg_number, id, tenant_id]);
-    await pool.query(
-      'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
-      [tenant_id, admin_name, 'EDIT_STUDENT', reg_number, `Updated details.`]
-    );
+    await logAction(tenant_id, admin_name, 'EDIT_STUDENT', reg_number, `Updated details.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
@@ -211,10 +220,7 @@ app.delete('/api/students/:id', async (req, res) => {
     const { id } = req.params;
     const { admin_name, tenant_id } = req.body;
     await pool.query('UPDATE students SET deleted_at = NOW() WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
-    await pool.query(
-      'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
-      [tenant_id, admin_name, 'DELETE_STUDENT', id, `Moved to Trash.`]
-    );
+    await logAction(tenant_id, admin_name, 'DELETE_STUDENT', id, `Moved to Trash.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
@@ -224,10 +230,7 @@ app.put('/api/trash/:id', async (req, res) => {
     const { id } = req.params;
     const { admin_name, tenant_id } = req.body;
     await pool.query('UPDATE students SET deleted_at = NULL WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
-    await pool.query(
-      'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
-      [tenant_id, admin_name, 'RESTORE_STUDENT', id, `Restored student.`]
-    );
+    await logAction(tenant_id, admin_name, 'RESTORE_STUDENT', id, `Restored student.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });

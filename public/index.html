@@ -6,10 +6,13 @@
     <title>SentinEx | Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <style>
-        /* CSS remains exactly the same as the previous message */
         :root {
             --bg-color: #f6f5f2; --text-main: #111111; --text-muted: #555555;
             --card-bg: #ffffff; --border: #e5e5e5; --primary: #111111;
@@ -109,6 +112,8 @@
         .footer-col ul li a { color: #ddd; text-decoration: none; font-size: 15px; transition: color 0.2s; cursor: pointer; }
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
+        
+        /* DASHBOARD */
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
@@ -195,6 +200,7 @@
 </head>
 <body>
 
+    <!-- LANDING PAGE -->
     <div id="landing-page">
         <nav>
             <div class="logo-container" onclick="window.scrollTo(0,0)">
@@ -274,12 +280,13 @@
             </div>
         </section>
 
+        <!-- UPDATED: FAIDA IMAGE -->
         <section class="team-section" id="team">
             <h5>THE TEAM</h5>
             <h2 style="color:white;">The minds <em>behind it</em></h2>
             <div class="team-gallery">
                 <div class="team-card active" onclick="setActiveCard(this)">
-                    <img src="https://files.oaiusercontent.com/file-K1yX6t4Z9h3Q2w7V5s8N1?se=2024-10-29T12%3A00%3A00Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dfaida.jpg&sig=xyz" alt="Faida">
+                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" alt="Faida">
                     <div class="team-overlay">
                         <div class="collapsed-text">FAIDA</div>
                         <div class="expanded-text">
@@ -357,7 +364,6 @@
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
             <p>Enter your credentials to access the dashboard.</p>
-            
             <div class="form-group"><input type="text" id="username" placeholder="Organization ID / Username" value="sentinex"></div>
             <div class="form-group"><input type="password" id="password" placeholder="Password" value="1234"></div>
             <button class="btn btn-primary" style="width: 100%; margin-top: 8px; border-radius: 8px;" onclick="login()">Secure Login</button>
@@ -373,6 +379,9 @@
                 <div id="tenant-menu">
                     <div class="nav-item active" onclick="switchTab('dashboard', this)">
                         <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Dashboard</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('analytics', this)">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg><span>Analytics</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('pending', this)">
                         <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span>Pending Approvals</span><span class="badge-count" id="pending-badge">0</span>
@@ -408,7 +417,8 @@
             <main class="main-content">
                 <header class="topbar">
                     <h2 id="page-title">Dashboard</h2>
-                    <div id="topbar-actions">
+                    <div id="topbar-actions" style="display: flex; gap: 12px;">
+                        <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
                         <input type="date" id="date-picker" class="date-picker" onchange="fetchLogs()">
                     </div>
                 </header>
@@ -424,6 +434,20 @@
                             <thead><tr><th>Member Name</th><th>Reg Number</th><th>Time</th><th>Status</th></tr></thead>
                             <tbody id="log-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Fetching data...</td></tr></tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- NEW ANALYTICS TAB -->
+                <div id="view-analytics" class="view-container">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                        <div class="table-card" style="padding: 24px;">
+                            <h3 style="margin-bottom: 16px; font-size: 16px;">Today's Attendance</h3>
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+                        <div class="table-card" style="padding: 24px;">
+                            <h3 style="margin-bottom: 16px; font-size: 16px;">7-Day Trend</h3>
+                            <canvas id="barChart"></canvas>
+                        </div>
                     </div>
                 </div>
 
@@ -512,6 +536,7 @@
         </div>
     </div>
 
+    <!-- MODALS -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -540,6 +565,7 @@
     </div>
 
     <script>
+        // --- LANDING PAGE JS ---
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -573,9 +599,12 @@
             }
         }
 
+        // --- DASHBOARD JS ---
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
+        let doughnutChartInstance = null;
+        let barChartInstance = null;
 
         function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
         function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
@@ -622,7 +651,7 @@
                     } else {
                         document.getElementById('tenant-menu').style.display = 'block';
                         document.getElementById('super-admin-menu').style.display = 'none';
-                        document.getElementById('topbar-actions').style.display = 'block';
+                        document.getElementById('topbar-actions').style.display = 'flex';
                         
                         if(data.logo) document.getElementById('tenant-logo').src = data.logo;
                         document.getElementById('tenant-name').innerText = data.name;
@@ -655,22 +684,107 @@
             document.getElementById('view-' + tabId).classList.add('active');
             element.classList.add('active');
 
-            document.getElementById('topbar-actions').style.display = (tabId === 'dashboard') ? 'block' : 'none';
+            document.getElementById('topbar-actions').style.display = (tabId === 'dashboard') ? 'flex' : 'none';
 
             const titles = { 
-                'dashboard': 'Attendance Overview', 'pending': 'Pending Approvals',
-                'members': 'Members Directory', 'trash': 'Trash Bin', 
-                'audit': 'System Audit Logs', 'settings': 'Account Settings',
+                'dashboard': 'Attendance Overview', 'analytics': 'Data Analytics',
+                'pending': 'Pending Approvals', 'members': 'Members Directory', 
+                'trash': 'Trash Bin', 'audit': 'System Audit Logs', 'settings': 'Account Settings',
                 'super-dashboard': 'Master Control Panel', 'super-settings': 'Super Admin Settings'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
             if (tabId === 'dashboard') fetchLogs();
+            if (tabId === 'analytics') fetchAnalytics();
             if (tabId === 'pending') fetchPending();
             if (tabId === 'members') fetchMembers();
             if (tabId === 'trash') fetchTrash();
             if (tabId === 'audit') fetchAuditLogs();
             if (tabId === 'super-dashboard') fetchTenants();
+        }
+
+        // --- EXPORT CSV ---
+        function exportCSV() {
+            if (logsData.length === 0) { alert("No data to export for this date."); return; }
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Name,Registration Number,Time,Status\n";
+            
+            logsData.forEach(log => {
+                const timeStr = new Date(log.scanned_at).toLocaleTimeString();
+                const reg = log.reg_number || 'N/A';
+                csvContent += `"${log.student_name}","${reg}","${timeStr}","${log.status}"\n`;
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `attendance_${currentTenant}_${document.getElementById('date-picker').value}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // --- ANALYTICS CHARTS ---
+        async function fetchAnalytics() {
+            // Fetch today's data for the doughnut chart
+            const today = new Date().toISOString().split('T')[0];
+            try {
+                const resToday = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
+                const todayLogs = await resToday.json();
+                
+                const present = todayLogs.filter(l => l.status === 'Granted' || l.status === 'Manual').length;
+                const denied = todayLogs.filter(l => l.status === 'Denied').length;
+                const pending = todayLogs.filter(l => l.status === 'Pending').length;
+
+                // Render Doughnut
+                if (doughnutChartInstance) doughnutChartInstance.destroy();
+                const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+                doughnutChartInstance = new Chart(ctxDoughnut, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Present', 'Denied', 'Pending'],
+                        datasets: [{
+                            data: [present, denied, pending],
+                            backgroundColor: ['#059669', '#dc2626', '#d97706'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+                });
+
+                // Fetch 7-day trend
+                const resTrend = await fetch(`/api/analytics/trend?tenant_id=${currentTenant}`);
+                const trendData = await resTrend.json();
+                
+                // Fill missing dates with 0
+                const last7Days = [];
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const dateStr = d.toISOString().split('T')[0];
+                    const match = trendData.find(t => t.date.startsWith(dateStr));
+                    last7Days.push({ date: dateStr.slice(5), count: match ? parseInt(match.count) : 0 });
+                }
+
+                // Render Bar
+                if (barChartInstance) barChartInstance.destroy();
+                const ctxBar = document.getElementById('barChart').getContext('2d');
+                barChartInstance = new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: last7Days.map(d => d.date),
+                        datasets: [{
+                            label: 'Scans',
+                            data: last7Days.map(d => d.count),
+                            backgroundColor: '#0f172a',
+                            borderRadius: 4
+                        }]
+                    },
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
+                });
+
+            } catch (err) { console.error("Error loading analytics", err); }
         }
 
         async function changePassword() {
