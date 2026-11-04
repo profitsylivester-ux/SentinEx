@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <style>
+        /* CSS remains mostly the same, adding styles for the file input and status badges */
         :root {
             --bg-color: #f1f5f9; --sidebar-bg: #1e293b; --sidebar-hover: #334155;
             --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
@@ -36,18 +37,19 @@
         .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; }
         .form-group { margin-bottom: 16px; text-align: left; }
         .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
-        .form-group input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
-        .form-group input:disabled { background: #f1f5f9; cursor: not-allowed; color: var(--text-muted); }
+        .form-group input[type="text"], .form-group input[type="password"] { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+        .form-group input[type="file"] { width: 100%; padding: 8px; border: 1px dashed var(--border); border-radius: 8px; font-size: 14px; cursor: pointer; background: #f8fafc; }
         
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-secondary { background: #e2e8f0; color: var(--text-main); }
         .btn-danger { background: #fee2e2; color: var(--danger); }
+        .btn-warning { background: #fef3c7; color: var(--warning); }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
 
-        #login-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; justify-content: center; align-items: center; }
+        #login-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
@@ -86,10 +88,12 @@
         tr:hover td { background: #f8fafc; }
         
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; }
-        .badge-granted { background: #ecfdf5; color: var(--success); }
+        .badge-active { background: #ecfdf5; color: var(--success); }
+        .badge-pending { background: #fffbeb; color: var(--warning); }
+        .badge-suspended { background: #fef2f2; color: var(--danger); }
         .badge-denied { background: #fef2f2; color: var(--danger); }
+        .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
-        .badge-pending { background: #e0f2fe; color: #0284c7; }
     </style>
 </head>
 <body>
@@ -105,10 +109,11 @@
             <div class="form-group"><input type="password" id="password" value="1234" placeholder="Password"></div>
             <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="login()">Secure Login</button>
             <p style="font-size: 12px; margin-top: 15px; color: #888;">Super Admin? Use Org ID: 'superadmin' and User: 'superadmin'</p>
+            <p style="font-size: 14px; margin-top: 10px;">Don't have an account? <a href="#" onclick="openTenantModal()" style="color: var(--primary); font-weight: 600;">Register School</a></p>
         </div>
     </div>
 
-    <!-- ADD/EDIT MODAL -->
+    <!-- ADD/EDIT STUDENT MODAL -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -122,16 +127,20 @@
         </div>
     </div>
 
-    <!-- ADD TENANT MODAL -->
+    <!-- REGISTER TENANT MODAL -->
     <div id="tenant-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2>Register New School</h2>
+            <h2>Apply for System Access</h2>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Your application will be reviewed by SentinEx HQ.</p>
             <div class="form-group"><label>Tenant ID (e.g. harvard)</label><input type="text" id="new-tenant-id" placeholder="No spaces"></div>
             <div class="form-group"><label>School Name</label><input type="text" id="new-tenant-name" placeholder="e.g. Harvard University"></div>
-            <div class="form-group"><label>Logo URL (Paste image link)</label><input type="text" id="new-tenant-logo" placeholder="https://..."></div>
+            <div class="form-group">
+                <label>School Logo (Upload Image)</label>
+                <input type="file" id="new-tenant-logo" accept="image/*">
+            </div>
             <div style="display: flex; gap: 12px; margin-top: 32px;">
                 <button class="btn btn-secondary" style="flex: 1;" onclick="closeTenantModal()">Cancel</button>
-                <button class="btn btn-success" style="flex: 1;" onclick="saveTenant()">Register School</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="saveTenant()">Submit Application</button>
             </div>
         </div>
     </div>
@@ -140,7 +149,6 @@
     <div id="app-screen">
         <aside class="sidebar">
             <div class="sidebar-logo" id="sidebar-brand">
-                <!-- Logo and name will be injected dynamically here -->
                 <img id="tenant-logo" src="" alt="Logo">
                 <span id="tenant-name">SentinEx</span>
             </div>
@@ -166,10 +174,6 @@
                 <div class="nav-item" onclick="switchTab('audit', this)">
                     <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                     <span>Audit Logs</span>
-                </div>
-                <div class="nav-item" onclick="switchTab('help', this)">
-                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                    <span>User Manual</span>
                 </div>
             </div>
 
@@ -256,34 +260,20 @@
                 </div>
             </div>
 
-            <!-- MANUAL -->
-            <div id="view-help" class="view-container">
-                <div class="manual-card" style="background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px;">
-                    <h2 style="margin-bottom: 24px; font-weight: 600;">SentinEx System Manual</h2>
-                    <h3 style="margin-bottom: 10px;">1. Injured Student Workflow</h3>
-                    <ul style="margin-left: 20px; margin-bottom: 20px; color: var(--text-muted);">
-                        <li>The student presses <strong>*</strong> on the device keypad.</li>
-                        <li>They type their <strong>ID Number</strong> and press <strong>#</strong>.</li>
-                        <li>Check the <strong>Pending Approvals</strong> tab on this dashboard.</li>
-                        <li>Click <strong>Approve</strong> to mark them present for today.</li>
-                    </ul>
-                </div>
-            </div>
-
             <!-- SUPER ADMIN DASHBOARD -->
             <div id="view-super-dashboard" class="view-container">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
                     <div class="stats-grid" style="flex: 1; margin-bottom: 0;">
-                        <div class="stat-card"><div class="stat-title">Total Schools</div><div class="stat-value" id="total-tenants">0</div></div>
+                        <div class="stat-card"><div class="stat-title">Total Clients</div><div class="stat-value" id="total-tenants">0</div></div>
+                        <div class="stat-card"><div class="stat-title">Pending Approvals</div><div class="stat-value" id="pending-tenants" style="color: var(--warning);">0</div></div>
                     </div>
-                    <button class="btn btn-primary" style="height: fit-content; align-self: center;" onclick="openTenantModal()">+ Register School</button>
                 </div>
                 
                 <div class="table-card" style="margin-top: 24px;">
                     <table>
-                        <thead><tr><th>Logo</th><th>School Name</th><th>Tenant ID</th><th>Status</th></tr></thead>
+                        <thead><tr><th>Logo</th><th>School Name</th><th>Tenant ID</th><th>Status</th><th>Actions</th></tr></thead>
                         <tbody id="super-body">
-                            <tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading schools...</td></tr>
+                            <tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading schools...</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -301,7 +291,7 @@
             document.getElementById('date-picker').value = today.toISOString().split('T')[0];
         }
 
-        // --- FIXED LOGIN LOGIC ---
+        // --- LOGIN LOGIC ---
         async function login() {
             const tenantInput = document.getElementById('tenant-id').value.trim().toLowerCase();
             const user = document.getElementById('username').value;
@@ -315,6 +305,27 @@
             if (isSuperAdmin || isRegularTenant) {
                 currentTenant = tenantInput;
                 
+                // Fetch Tenant Status first before letting them in
+                if (!isSuperAdmin) {
+                    try {
+                        const res = await fetch(`/api/tenants/${currentTenant}`);
+                        if (!res.ok) { alert("Organization ID not found."); return; }
+                        const tenantData = await res.json();
+                        
+                        if (tenantData.status === 'pending') {
+                            alert("Your account is pending approval by SentinEx HQ. Please wait.");
+                            return;
+                        }
+                        if (tenantData.status === 'suspended' || tenantData.status === 'rejected') {
+                            alert("Your account has been suspended or rejected. Contact SentinEx HQ.");
+                            return;
+                        }
+                    } catch (err) {
+                        alert("Error verifying account.");
+                        return;
+                    }
+                }
+
                 document.getElementById('login-modal').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
                 setDefaultDate();
@@ -324,7 +335,6 @@
                     document.getElementById('super-admin-menu').style.display = 'block';
                     document.getElementById('topbar-actions').style.display = 'none';
                     
-                    // Change Logo to Master Control
                     document.getElementById('tenant-logo').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23dc2626"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="white" text-anchor="middle">M</text></svg>';
                     document.getElementById('tenant-name').innerText = "Master Admin";
                     
@@ -335,11 +345,10 @@
                     document.getElementById('super-admin-menu').style.display = 'none';
                     document.getElementById('topbar-actions').style.display = 'block';
                     
-                    // Fetch School Logo
                     fetch(`/api/tenants/${currentTenant}`)
                         .then(res => res.json())
                         .then(data => {
-                            if(data.logo_url) document.getElementById('tenant-logo').src = data.logo_url;
+                            if(data.logo_data) document.getElementById('tenant-logo').src = data.logo_data;
                             if(data.name) document.getElementById('tenant-name').innerText = data.name;
                         });
 
@@ -353,7 +362,7 @@
                     body: JSON.stringify({ admin_name: user, tenant_id: currentTenant })
                 });
             } else { 
-                alert("Invalid credentials. For Super Admin, use 'superadmin' for both Org ID and Username."); 
+                alert("Invalid credentials."); 
             }
         }
 
@@ -374,7 +383,7 @@
             const titles = { 
                 'dashboard': 'Attendance Overview', 'pending': 'Pending Approvals',
                 'members': 'Members Directory', 'trash': 'Trash Bin', 
-                'audit': 'System Audit Logs', 'help': 'User Manual',
+                'audit': 'System Audit Logs',
                 'super-dashboard': 'Master Control Panel'
             };
             document.getElementById('page-title').innerText = titles[tabId];
@@ -387,7 +396,7 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
-        // --- TENANT MANAGEMENT ---
+        // --- TENANT REGISTRATION & APPROVAL ---
         function openTenantModal() {
             document.getElementById('new-tenant-id').value = "";
             document.getElementById('new-tenant-name').value = "";
@@ -397,22 +406,37 @@
 
         function closeTenantModal() { document.getElementById('tenant-modal').style.display = 'none'; }
 
+        // Convert uploaded file to Base64
+        function getBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
         async function saveTenant() {
             const id = document.getElementById('new-tenant-id').value.trim().toLowerCase();
             const name = document.getElementById('new-tenant-name').value;
-            const logo = document.getElementById('new-tenant-logo').value;
+            const logoFile = document.getElementById('new-tenant-logo').files[0];
 
             if(!id || !name) { alert("ID and Name are required."); return; }
+
+            let logoBase64 = null;
+            if (logoFile) {
+                logoBase64 = await getBase64(logoFile);
+            }
 
             try {
                 await fetch('/api/tenants', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: id, name: name, logo_url: logo })
+                    body: JSON.stringify({ tenant_id: id, name: name, logo_data: logoBase64 })
                 });
                 closeTenantModal();
-                fetchTenants();
-            } catch (err) { alert("Error saving school."); }
+                alert("Application submitted! You will be notified once approved by SentinEx HQ.");
+            } catch (err) { alert("Error submitting application."); }
         }
 
         async function fetchTenants() {
@@ -421,17 +445,58 @@
                 const response = await fetch('/api/tenants');
                 const tenants = await response.json();
                 
+                let pending = 0;
                 document.getElementById('total-tenants').innerText = tenants.length;
 
-                tbody.innerHTML = tenants.map(t => `
+                tbody.innerHTML = tenants.map(t => {
+                    let statusBadge = '';
+                    let actionButtons = '';
+
+                    if (t.tenant_id === 'sentinex') {
+                        statusBadge = `<span class="badge badge-active">Platform Owner</span>`;
+                        actionButtons = `<span style="color:var(--text-muted); font-size:12px;">N/A</span>`;
+                    } else {
+                        if (t.status === 'pending') { pending++; statusBadge = `<span class="badge badge-pending">Pending</span>`; }
+                        else if (t.status === 'active') { statusBadge = `<span class="badge badge-active">Active</span>`; }
+                        else { statusBadge = `<span class="badge badge-suspended">${t.status}</span>`; }
+
+                        if (t.status !== 'active') {
+                            actionButtons += `<button class="btn btn-sm btn-success" onclick="updateTenantStatus('${t.tenant_id}', 'active')">Approve</button> `;
+                        }
+                        if (t.status !== 'suspended' && t.status !== 'rejected') {
+                            actionButtons += `<button class="btn btn-sm btn-warning" onclick="updateTenantStatus('${t.tenant_id}', 'suspended')">Suspend</button> `;
+                        }
+                        actionButtons += `<button class="btn btn-sm btn-danger" onclick="updateTenantStatus('${t.tenant_id}', 'rejected')">Reject</button>`;
+                    }
+
+                    const logo = t.logo_data || 'https://cdn-icons-png.flaticon.com/512/3064/3064197.png';
+
+                    return `
                     <tr>
-                        <td><img src="${t.logo_url || 'https://cdn-icons-png.flaticon.com/512/3064/3064197.png'}" style="width: 30px; height: 30px; border-radius: 4px;"></td>
+                        <td><img src="${logo}" style="width: 32px; height: 32px; border-radius: 6px; object-fit: contain;"></td>
                         <td><strong>${t.name}</strong></td>
                         <td>${t.tenant_id}</td>
-                        <td><span class="badge badge-granted">Active</span></td>
+                        <td>${statusBadge}</td>
+                        <td style="display: flex; gap: 8px;">${actionButtons}</td>
                     </tr>
-                `).join('');
+                    `;
+                }).join('');
+
+                document.getElementById('pending-tenants').innerText = pending;
+
             } catch (err) { console.error(err); }
+        }
+
+        async function updateTenantStatus(tenantId, status) {
+            if(!confirm(`Are you sure you want to mark this school as ${status.toUpperCase()}?`)) return;
+            try {
+                await fetch(`/api/tenants/${tenantId}/status`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                fetchTenants();
+            } catch (err) { alert("Error updating status."); }
         }
 
         // --- STUDENT MANAGEMENT ---

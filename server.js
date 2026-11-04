@@ -4,8 +4,8 @@ const { Pool } = require('pg');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors({ limit: '10mb' })); // Increase limit for base64 images
+app.use(express.json({ limit: '10mb' }));
 
 app.use(express.static('public', {
   setHeaders: (res, path) => {
@@ -40,10 +40,11 @@ app.get('/api/tenants/:id', async (req, res) => {
 
 app.post('/api/tenants', async (req, res) => {
   try {
-    const { tenant_id, name, logo_url } = req.body;
+    const { tenant_id, name, logo_data } = req.body;
+    // New schools default to 'pending'
     await pool.query(
-      'INSERT INTO tenants (tenant_id, name, logo_url) VALUES ($1, $2, $3)',
-      [tenant_id, name, logo_url]
+      "INSERT INTO tenants (tenant_id, name, logo_data, status) VALUES ($1, $2, $3, 'pending')",
+      [tenant_id, name, logo_data]
     );
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false, error: "Tenant ID exists" }); }
@@ -56,11 +57,26 @@ app.get('/api/tenants', async (req, res) => {
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+app.put('/api/tenants/:id/status', async (req, res) => {
+  try {
+    const { status } = req.body;
+    await pool.query('UPDATE tenants SET status = $1 WHERE tenant_id = $2', [status, req.params.id]);
+    res.status(200).json({ success: true });
+  } catch (error) { res.status(500).json({ success: false }); }
+});
+
 // --- ESP32 & ATTENDANCE ---
 app.post('/api/scan', async (req, res) => {
   try {
     const { fingerprint_id, status, tenant_id } = req.body;
     const tid = tenant_id || 'sentinex';
+    
+    // Check if tenant is active
+    const tenantCheck = await pool.query('SELECT status FROM tenants WHERE tenant_id = $1', [tid]);
+    if (tenantCheck.rows.length > 0 && tenantCheck.rows[0].status !== 'active') {
+      return res.status(403).json({ success: false, error: "Tenant suspended" });
+    }
+
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [fingerprint_id, tid]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
