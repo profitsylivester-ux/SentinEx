@@ -58,7 +58,7 @@
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
         
-        /* FAQ - RESTORED ALL 5 */
+        /* FAQ */
         .faq-section { padding: 80px 5%; background: var(--bg-color); border-top: 1px solid var(--border); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-container h2 { text-align: center; margin-bottom: 40px; font-size: 2.5rem; }
@@ -125,11 +125,14 @@
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
+        
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .badge-count { background: var(--danger); color: white; font-size: 11px; border-radius: 10px; padding: 2px 6px; margin-left: auto; font-weight: 600; display: none; }
+        
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--dash-border); }
         .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; color: var(--text-main); }
+        
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
         .btn-success { background: var(--success); color: white; }
         .btn-secondary { background: #e2e8f0; color: var(--dash-text); }
@@ -138,16 +141,28 @@
         .btn-outline { background: transparent; border: 1px solid var(--dash-border); color: var(--dash-text); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
         
+        /* LOGIN MODAL */
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; color: var(--text-main); }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         .login-card .form-group input { font-family: 'Inter', sans-serif; }
         
+        /* PASSWORD EYE FIX */
+        .password-wrapper { position: relative; }
+        .password-wrapper input { padding-right: 40px !important; }
+        .password-toggle { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: center; }
+        .password-toggle svg { width: 20px; height: 20px; }
+        
+        /* DASHBOARD SIDEBAR (Restored) */
         .dashboard-layout { display: flex; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
         .sidebar-logo img { width: 32px; height: 32px; border-radius: 6px; background: white; object-fit: contain; }
+        
+        /* This class was missing and caused the sidebar to break */
+        .dash-nav { display: flex; flex-direction: column; flex: 1; }
+        
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--sidebar-text); border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 14px; font-weight: 500; }
         .nav-item:hover { background: var(--sidebar-hover); color: #ffffff; }
         .nav-item.active { background: var(--sidebar-hover); color: var(--sidebar-active); font-weight: 600; }
@@ -163,7 +178,28 @@
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
         
-        /* ANALYTICS PAGE - ENTERPRISE DESIGN */
+        /* DASHBOARD CARDS & TABLES */
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
+        .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+        .stat-title { font-size: 13px; color: var(--dash-muted); font-weight: 500; margin-bottom: 8px; }
+        .stat-value { font-size: 32px; font-weight: 600; line-height: 1; }
+        
+        .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--dash-border); font-size: 14px; }
+        th { background: #f8fafc; color: var(--dash-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #f8fafc; }
+        
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; }
+        .badge-active { background: #ecfdf5; color: var(--success); }
+        .badge-pending { background: #fffbeb; color: var(--warning); }
+        .badge-suspended { background: #fef2f2; color: var(--danger); }
+        .badge-denied { background: #fef2f2; color: var(--danger); }
+        .badge-granted { background: #ecfdf5; color: var(--success); }
+        .badge-manual { background: #fffbeb; color: var(--warning); }
+        
+        /* ENTERPRISE ANALYTICS */
         .analytics-grid-top { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-bottom: 24px; }
         .analytics-grid-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         
@@ -176,7 +212,7 @@
         
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .chart-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; }
-        .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: #f8fafc; }
+        .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: #f8fafc; cursor: pointer; font-weight: 500; color: var(--text-main); }
         
         .chart-container-large { height: 250px; width: 100%; }
         .chart-container-small { height: 200px; width: 100%; display: flex; justify-content: center; }
@@ -203,7 +239,7 @@
             .dashboard-layout { flex-direction: column; }
             .sidebar { width: 100%; height: auto; flex-direction: row; flex-wrap: wrap; align-items: center; justify-content: space-between; padding: 10px; }
             .sidebar-logo { padding: 10px; border: none; }
-            .dash-nav { display: flex; flex-direction: row; overflow-x: auto; padding: 10px; gap: 10px; width: 100%; }
+            .dash-nav { flex-direction: row; overflow-x: auto; padding: 10px; gap: 10px; width: 100%; flex: none; }
             .nav-item { white-space: nowrap; padding: 8px 12px; font-size: 14px; }
             .dash-topbar h2 { font-size: 2rem; }
             .analytics-grid-top { grid-template-columns: 1fr; }
@@ -274,7 +310,6 @@
             </div>
         </section>
 
-        <!-- FAQ - FULLY RESTORED -->
         <section class="faq-section" id="faq">
             <div class="faq-container">
                 <h2>Frequently asked</h2>
@@ -395,23 +430,37 @@
         </footer>
     </div>
 
+    <!-- LOGIN MODAL -->
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
             <p>Enter your credentials to access the dashboard.</p>
+            
             <div class="form-group"><input type="text" id="username" placeholder="Organization ID / Username" value="sentinex"></div>
-            <div class="form-group"><input type="password" id="password" placeholder="Password" value="1234"></div>
+            
+            <div class="form-group password-wrapper">
+                <input type="password" id="password" placeholder="Password" value="1234">
+                <span class="password-toggle" onclick="togglePasswordVisibility()">
+                    <!-- Eye Open -->
+                    <svg id="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    <!-- Eye Closed -->
+                    <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                </span>
+            </div>
+            
             <button class="btn btn-primary" style="width: 100%; margin-top: 8px; border-radius: 8px;" onclick="login()">Secure Login</button>
             <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;">Cancel</button>
         </div>
     </div>
 
+    <!-- DASHBOARD -->
     <div id="app-screen">
         <div class="dashboard-layout">
             <aside class="sidebar">
                 <div class="sidebar-logo" id="sidebar-brand"><img id="tenant-logo" src="" alt="Logo"><span id="tenant-name">SentinEx</span></div>
                 
-                <div id="tenant-menu">
+                <!-- RESTORED: dash-nav class for proper layout -->
+                <div class="dash-nav" id="tenant-menu">
                     <div class="nav-item active" onclick="switchTab('dashboard', this)">
                         <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Dashboard</span>
                     </div>
@@ -435,7 +484,7 @@
                     </div>
                 </div>
 
-                <div id="super-admin-menu" style="display: none;">
+                <div class="dash-nav" id="super-admin-menu" style="display: none;">
                     <div class="nav-item active" onclick="switchTab('super-dashboard', this)">
                         <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Master Control</span>
                     </div>
@@ -472,10 +521,9 @@
                     </div>
                 </div>
 
-                <!-- NEW ANALYTICS TAB - ENTERPRISE DESIGN -->
+                <!-- ENTERPRISE ANALYTICS TAB WITH DROPDOWNS -->
                 <div id="view-analytics" class="view-container">
                     <div class="analytics-grid-top">
-                        <!-- Summary Card -->
                         <div class="analytic-card">
                             <div class="summary-title">Total Collected</div>
                             <div class="summary-val" id="ana-total-scans">0</div>
@@ -492,11 +540,15 @@
                             </div>
                         </div>
 
-                        <!-- Main Line Chart -->
                         <div class="analytic-card">
                             <div class="chart-header">
                                 <div class="chart-title">Received (Last 7 Days)</div>
-                                <select class="chart-select"><option>All Scans</option></select>
+                                <!-- DROPDOWN FOR CHART TYPE -->
+                                <select id="lineChartType" class="chart-select" onchange="updateChartType('line')">
+                                    <option value="line">Line Chart</option>
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="radar">Radar Chart</option>
+                                </select>
                             </div>
                             <div class="chart-container-large">
                                 <canvas id="lineChart"></canvas>
@@ -505,20 +557,29 @@
                     </div>
 
                     <div class="analytics-grid-bottom">
-                        <!-- Doughnut Chart -->
                         <div class="analytic-card">
                             <div class="chart-header">
                                 <div class="chart-title">Structure</div>
+                                <!-- DROPDOWN FOR DOUGHNUT -->
+                                <select id="doughnutChartType" class="chart-select" onchange="updateChartType('doughnut')">
+                                    <option value="doughnut">Doughnut</option>
+                                    <option value="pie">Pie Chart</option>
+                                    <option value="polarArea">Polar Area</option>
+                                </select>
                             </div>
                             <div class="chart-container-small">
                                 <canvas id="doughnutChart"></canvas>
                             </div>
                         </div>
 
-                        <!-- Bar Chart -->
                         <div class="analytic-card">
                             <div class="chart-header">
                                 <div class="chart-title">Scans vs Alerts (Last 7 Days)</div>
+                                <!-- DROPDOWN FOR BAR -->
+                                <select id="barChartType" class="chart-select" onchange="updateChartType('bar')">
+                                    <option value="bar">Bar Chart</option>
+                                    <option value="line">Line Chart</option>
+                                </select>
                             </div>
                             <div class="chart-container-large" style="height: 180px;">
                                 <canvas id="barChart"></canvas>
@@ -641,6 +702,23 @@
     </div>
 
     <script>
+        // --- PASSWORD TOGGLE ---
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeOpen = document.getElementById('eye-open');
+            const eyeClosed = document.getElementById('eye-closed');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeOpen.style.display = 'none';
+                eyeClosed.style.display = 'block';
+            } else {
+                passwordInput.type = 'password';
+                eyeOpen.style.display = 'block';
+                eyeClosed.style.display = 'none';
+            }
+        }
+
         // --- LANDING PAGE JS ---
         function toggleFaq(element) {
             const item = element.parentElement;
@@ -679,9 +757,15 @@
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
+        
+        // Chart Instances
         let lineChartInstance = null;
         let doughnutChartInstance = null;
         let barChartInstance = null;
+
+        // Chart Data Cache
+        let cachedTodayLogs = null;
+        let cachedTrendData = null;
 
         function openLogin() { document.getElementById('login-modal').style.display = 'flex'; }
         function closeLogin() { document.getElementById('login-modal').style.display = 'none'; }
@@ -717,7 +801,7 @@
 
                     if (currentTenant === 'superadmin') {
                         document.getElementById('tenant-menu').style.display = 'none';
-                        document.getElementById('super-admin-menu').style.display = 'block';
+                        document.getElementById('super-admin-menu').style.display = 'flex'; // Restored flex
                         document.getElementById('topbar-actions').style.display = 'none';
                         
                         document.getElementById('tenant-logo').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23dc2626"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="white" text-anchor="middle">M</text></svg>';
@@ -726,7 +810,7 @@
                         switchTab('super-dashboard', document.querySelector('#super-admin-menu .nav-item'));
                         fetchTenants();
                     } else {
-                        document.getElementById('tenant-menu').style.display = 'block';
+                        document.getElementById('tenant-menu').style.display = 'flex'; // Restored flex
                         document.getElementById('super-admin-menu').style.display = 'none';
                         document.getElementById('topbar-actions').style.display = 'flex';
                         
@@ -801,98 +885,109 @@
             document.body.removeChild(link);
         }
 
-        // --- NEW ENTERPRISE ANALYTICS CHARTS ---
         async function fetchAnalytics() {
             const today = new Date().toISOString().split('T')[0];
             try {
-                // 1. Fetch Today's Data for Summary & Doughnut
                 const resToday = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
-                const todayLogs = await resToday.json();
+                cachedTodayLogs = await resToday.json();
                 
-                document.getElementById('ana-total-scans').innerText = todayLogs.filter(l => l.status !== 'Pending').length;
-                const uniqueIds = new Set(todayLogs.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
+                document.getElementById('ana-total-scans').innerText = cachedTodayLogs.filter(l => l.status !== 'Pending').length;
+                const uniqueIds = new Set(cachedTodayLogs.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
                 document.getElementById('ana-unique-members').innerText = uniqueIds.size;
-                document.getElementById('ana-security-alerts').innerText = todayLogs.filter(l => l.status === 'Denied').length;
+                document.getElementById('ana-security-alerts').innerText = cachedTodayLogs.filter(l => l.status === 'Denied').length;
 
-                const present = todayLogs.filter(l => l.status === 'Granted' || l.status === 'Manual').length;
-                const denied = todayLogs.filter(l => l.status === 'Denied').length;
-
-                // Render Doughnut
-                if (doughnutChartInstance) doughnutChartInstance.destroy();
-                const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
-                doughnutChartInstance = new Chart(ctxDoughnut, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['Present', 'Denied'],
-                        datasets: [{
-                            data: [present, denied],
-                            backgroundColor: ['#3b82f6', '#f59e0b'], // Blue & Orange like screenshot
-                            borderWidth: 0,
-                            cutout: '80%'
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
-                });
-
-                // 2. Fetch 7-Day Trend for Line and Bar Charts
                 const resTrend = await fetch(`/api/analytics/trend?tenant_id=${currentTenant}`);
-                const trendData = await resTrend.json();
-                
-                const last7Days = [];
-                for (let i = 6; i >= 0; i--) {
-                    const d = new Date();
-                    d.setDate(d.getDate() - i);
-                    const dateStr = d.toISOString().split('T')[0];
-                    const match = trendData.find(t => t.date.startsWith(dateStr));
-                    last7Days.push({ date: dateStr.slice(5), count: match ? parseInt(match.count) : 0 });
-                }
+                cachedTrendData = await resTrend.json();
 
-                // Render Line Chart (Smooth Curve with Gradient)
-                if (lineChartInstance) lineChartInstance.destroy();
-                const ctxLine = document.getElementById('lineChart').getContext('2d');
-                const gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
-                gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
-                gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
-
-                lineChartInstance = new Chart(ctxLine, {
-                    type: 'line',
-                    data: {
-                        labels: last7Days.map(d => d.date),
-                        datasets: [{
-                            label: 'Scans',
-                            data: last7Days.map(d => d.count),
-                            borderColor: '#3b82f6',
-                            backgroundColor: gradient,
-                            borderWidth: 3,
-                            tension: 0.4, // Smooth curve
-                            fill: true,
-                            pointBackgroundColor: '#3b82f6',
-                            pointRadius: 4
-                        }]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { border: { display: false }, beginAtZero: true } } }
-                });
-
-                // Render Bar Chart (Grouped)
-                if (barChartInstance) barChartInstance.destroy();
-                const ctxBar = document.getElementById('barChart').getContext('2d');
-                barChartInstance = new Chart(ctxBar, {
-                    type: 'bar',
-                    data: {
-                        labels: last7Days.map(d => d.date),
-                        datasets: [
-                            {
-                                label: 'Granted',
-                                data: last7Days.map(d => d.count), // Simplified: using total count for granted
-                                backgroundColor: '#3b82f6',
-                                borderRadius: 4
-                            }
-                        ]
-                    },
-                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } } }
-                });
-
+                renderCharts();
             } catch (err) { console.error("Error loading analytics", err); }
+        }
+
+        function renderCharts() {
+            if (!cachedTodayLogs || !cachedTrendData) return;
+
+            const present = cachedTodayLogs.filter(l => l.status === 'Granted' || l.status === 'Manual').length;
+            const denied = cachedTodayLogs.filter(l => l.status === 'Denied').length;
+
+            const last7Days = [];
+            for (let i = 6; i >= 0; i--) {
+                const d = new Date();
+                d.setDate(d.getDate() - i);
+                const dateStr = d.toISOString().split('T')[0];
+                const match = cachedTrendData.find(t => t.date.startsWith(dateStr));
+                last7Days.push({ date: dateStr.slice(5), count: match ? parseInt(match.count) : 0 });
+            }
+
+            // Get selected types from dropdowns
+            const lineType = document.getElementById('lineChartType').value;
+            const doughnutType = document.getElementById('doughnutChartType').value;
+            const barType = document.getElementById('barChartType').value;
+
+            // 1. Line Chart (or selected type)
+            if (lineChartInstance) lineChartInstance.destroy();
+            const ctxLine = document.getElementById('lineChart').getContext('2d');
+            const gradient = ctxLine.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(59, 130, 246, 0.2)');
+            gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+            lineChartInstance = new Chart(ctxLine, {
+                type: lineType,
+                data: {
+                    labels: last7Days.map(d => d.date),
+                    datasets: [{
+                        label: 'Scans',
+                        data: last7Days.map(d => d.count),
+                        borderColor: '#3b82f6',
+                        backgroundColor: lineType === 'line' ? gradient : '#3b82f6',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: lineType === 'line',
+                        pointBackgroundColor: '#3b82f6',
+                        pointRadius: 4
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { border: { display: false }, beginAtZero: true } } }
+            });
+
+            // 2. Doughnut Chart (or selected type)
+            if (doughnutChartInstance) doughnutChartInstance.destroy();
+            const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+            doughnutChartInstance = new Chart(ctxDoughnut, {
+                type: doughnutType,
+                data: {
+                    labels: ['Present', 'Denied'],
+                    datasets: [{
+                        data: [present, denied],
+                        backgroundColor: ['#3b82f6', '#f59e0b'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: doughnutType === 'doughnut' ? '70%' : '0%', plugins: { legend: { position: 'right' } } }
+            });
+
+            // 3. Bar Chart (or selected type)
+            if (barChartInstance) barChartInstance.destroy();
+            const ctxBar = document.getElementById('barChart').getContext('2d');
+            barChartInstance = new Chart(ctxBar, {
+                type: barType,
+                data: {
+                    labels: last7Days.map(d => d.date),
+                    datasets: [
+                        {
+                            label: 'Total Scans',
+                            data: last7Days.map(d => d.count),
+                            backgroundColor: '#3b82f6',
+                            borderRadius: 4
+                        }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'top' } }, scales: { x: { grid: { display: false } }, y: { beginAtZero: true } } }
+            });
+        }
+
+        // Function to trigger re-render when dropdown changes
+        function updateChartType(chartName) {
+            renderCharts();
         }
 
         async function changePassword() {
