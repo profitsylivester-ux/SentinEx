@@ -10,19 +10,11 @@
     
     <style>
         :root {
-            --bg-color: #f1f5f9;
-            --sidebar-bg: #1e293b;
-            --sidebar-hover: #334155;
-            --sidebar-text: #94a3b8;
-            --sidebar-active: #ffffff;
-            --text-main: #0f172a; 
-            --text-muted: #64748b;
-            --card-bg: #ffffff; 
-            --border: #e2e8f0; 
-            --primary: #0f172a;
-            --success: #059669; 
-            --danger: #dc2626; 
-            --warning: #d97706;
+            --bg-color: #f1f5f9; --sidebar-bg: #1e293b; --sidebar-hover: #334155;
+            --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
+            --text-main: #0f172a; --text-muted: #64748b;
+            --card-bg: #ffffff; --border: #e2e8f0; --primary: #0f172a;
+            --success: #059669; --danger: #dc2626; --warning: #d97706;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -33,13 +25,13 @@
         
         h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; }
         em { font-family: 'Playfair Display', serif; font-style: italic; }
-
         #app-screen, #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
 
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .badge-count { background: var(--danger); color: white; font-size: 11px; border-radius: 10px; padding: 2px 6px; margin-left: auto; font-weight: 600; display: none; }
 
+        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
         .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; }
@@ -57,11 +49,13 @@
         .btn-sm { padding: 6px 12px; font-size: 12px; }
         .btn-sm svg { width: 14px; height: 14px; }
 
+        /* Login */
         #login-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; justify-content: center; align-items: center; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         
+        /* App Layout */
         #app-screen { display: none; width: 100%; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
@@ -75,6 +69,7 @@
         .nav-item.danger:hover { background: rgba(248, 113, 113, 0.1); }
         .nav-item.danger .nav-icon { stroke: #f87171; }
 
+        /* Main Content */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--border); }
         .topbar h2 { font-size: 1.25rem; font-weight: 600; }
@@ -83,6 +78,7 @@
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
 
+        /* Cards & Tables */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
         .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
@@ -100,25 +96,24 @@
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
         .badge-pending { background: #e0f2fe; color: #0284c7; }
-
-        .manual-card { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px; line-height: 1.7; box-shadow: var(--shadow-sm); }
-        .manual-card h3 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; }
-        .manual-card p, .manual-card li { color: var(--text-muted); font-size: 14px; }
-        .manual-card ul { padding-left: 20px; margin-bottom: 16px; }
     </style>
 </head>
 <body>
 
+    <!-- LOGIN MODAL -->
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
             <p>Enter your credentials to access the dashboard.</p>
+            
+            <div class="form-group"><input type="text" id="tenant-id" placeholder="Organization ID (e.g., sentinex)" value="sentinex"></div>
             <div class="form-group"><input type="text" id="username" value="SentinEx" placeholder="Username"></div>
             <div class="form-group"><input type="password" id="password" value="1234" placeholder="Password"></div>
             <button class="btn btn-primary" style="width: 100%; margin-top: 8px;" onclick="login()">Secure Login</button>
         </div>
     </div>
 
+    <!-- ADD/EDIT MODAL -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -132,6 +127,7 @@
         </div>
     </div>
 
+    <!-- MAIN APP -->
     <div id="app-screen">
         <aside class="sidebar">
             <div class="sidebar-logo">
@@ -139,31 +135,43 @@
                 <span>SentinEx</span>
             </div>
             
-            <div class="nav-item active" onclick="switchTab('dashboard', this)">
-                <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                <span>Dashboard</span>
+            <!-- Standard Tenant Menu -->
+            <div id="tenant-menu">
+                <div class="nav-item active" onclick="switchTab('dashboard', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('pending', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    <span>Pending Approvals</span>
+                    <span class="badge-count" id="pending-badge">0</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('members', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Members Directory</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('trash', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <span>Trash Bin</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('audit', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Audit Logs</span>
+                </div>
+                <div class="nav-item" onclick="switchTab('help', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                    <span>User Manual</span>
+                </div>
             </div>
-            <div class="nav-item" onclick="switchTab('pending', this)">
-                <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <span>Pending Approvals</span>
-                <span class="badge-count" id="pending-badge">0</span>
+
+            <!-- Super Admin Menu -->
+            <div id="super-admin-menu" style="display: none;">
+                <div class="nav-item active" onclick="switchTab('super-dashboard', this)">
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                    <span>Master Control</span>
+                </div>
             </div>
-            <div class="nav-item" onclick="switchTab('members', this)">
-                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                <span>Members Directory</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('trash', this)">
-                <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                <span>Trash Bin</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('audit', this)">
-                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                <span>Audit Logs</span>
-            </div>
-            <div class="nav-item" onclick="switchTab('help', this)">
-                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
-                <span>User Manual</span>
-            </div>
+
             <div class="nav-item danger" onclick="logout()">
                 <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                 <span>Logout</span>
@@ -178,7 +186,7 @@
                 </div>
             </header>
 
-            <!-- DASHBOARD -->
+            <!-- STANDARD DASHBOARD -->
             <div id="view-dashboard" class="view-container active">
                 <div class="stats-grid">
                     <div class="stat-card"><div class="stat-title">Total Scans</div><div class="stat-value" id="total-scans">0</div></div>
@@ -195,7 +203,7 @@
 
             <!-- PENDING APPROVALS -->
             <div id="view-pending" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Students who pressed '*' on the device due to an injured finger. Review and approve them here.</p>
+                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Students who requested manual entry.</p>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Member Name</th><th>Reg Number</th><th>Request Time</th><th>Actions</th></tr></thead>
@@ -231,7 +239,7 @@
 
             <!-- AUDIT LOGS -->
             <div id="view-audit" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Immutable security evidence. Cannot be deleted.</p>
+                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Immutable security evidence.</p>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Details</th></tr></thead>
@@ -242,15 +250,37 @@
 
             <!-- MANUAL -->
             <div id="view-help" class="view-container">
-                <div class="manual-card">
+                <div class="manual-card" style="background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px;">
                     <h2 style="margin-bottom: 24px; font-weight: 600;">SentinEx System Manual</h2>
-                    <h3>1. Injured Student Workflow</h3>
-                    <ul>
+                    <h3 style="margin-bottom: 10px;">1. Injured Student Workflow</h3>
+                    <ul style="margin-left: 20px; margin-bottom: 20px; color: var(--text-muted);">
                         <li>The student presses <strong>*</strong> on the device keypad.</li>
                         <li>They type their <strong>ID Number</strong> and press <strong>#</strong>.</li>
                         <li>Check the <strong>Pending Approvals</strong> tab on this dashboard.</li>
                         <li>Click <strong>Approve</strong> to mark them present for today.</li>
                     </ul>
+                </div>
+            </div>
+
+            <!-- SUPER ADMIN DASHBOARD -->
+            <div id="view-super-dashboard" class="view-container">
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-title">Total Schools</div><div class="stat-value">1</div></div>
+                    <div class="stat-card"><div class="stat-title">Active Devices</div><div class="stat-value">1</div></div>
+                    <div class="stat-card"><div class="stat-title">System Health</div><div class="stat-value" style="color: var(--success);">100%</div></div>
+                </div>
+                <div class="table-card">
+                    <table>
+                        <thead><tr><th>Organization ID</th><th>School Name</th><th>Status</th><th>Actions</th></tr></thead>
+                        <tbody id="super-body">
+                            <tr>
+                                <td><strong>sentinex</strong></td>
+                                <td>Ohio University</td>
+                                <td><span class="badge badge-granted">Active</span></td>
+                                <td><button class="btn btn-sm btn-outline">Manage</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </main>
@@ -259,6 +289,7 @@
     <script>
         let logsData = [];
         let currentModalMode = 'add';
+        let currentTenant = 'sentinex'; // Default
 
         function setDefaultDate() {
             const today = new Date();
@@ -266,18 +297,37 @@
         }
 
         async function login() {
+            const tenantInput = document.getElementById('tenant-id').value.trim().toLowerCase();
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
+
+            if (!tenantInput) { alert("Organization ID is required."); return; }
+
             if (user === 'SentinEx' && pass === '1234') {
+                currentTenant = tenantInput;
+                
                 document.getElementById('login-modal').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
                 setDefaultDate();
-                fetchLogs();
-                checkPendingCount(); // Start checking for pending requests
+
+                // Check if Super Admin
+                if (currentTenant === 'superadmin') {
+                    document.getElementById('tenant-menu').style.display = 'none';
+                    document.getElementById('super-admin-menu').style.display = 'block';
+                    document.getElementById('topbar-actions').style.display = 'none';
+                    switchTab('super-dashboard', document.querySelector('#super-admin-menu .nav-item'));
+                } else {
+                    document.getElementById('tenant-menu').style.display = 'block';
+                    document.getElementById('super-admin-menu').style.display = 'none';
+                    document.getElementById('topbar-actions').style.display = 'block';
+                    fetchLogs();
+                    checkPendingCount();
+                }
+
                 fetch('/api/login-audit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ admin_name: user })
+                    body: JSON.stringify({ admin_name: user, tenant_id: currentTenant })
                 });
             } else { alert("Invalid credentials"); }
         }
@@ -299,7 +349,8 @@
             const titles = { 
                 'dashboard': 'Attendance Overview', 'pending': 'Pending Approvals',
                 'members': 'Members Directory', 'trash': 'Trash Bin', 
-                'audit': 'System Audit Logs', 'help': 'User Manual'
+                'audit': 'System Audit Logs', 'help': 'User Manual',
+                'super-dashboard': 'Super Admin Control Panel'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
@@ -340,23 +391,23 @@
 
             if (!id || !name || !reg) { alert("Please fill all fields."); return; }
 
-            const payload = { fingerprint_id: id, name: name, reg_number: reg, admin_name: admin };
+            const payload = { fingerprint_id: id, name: name, reg_number: reg, admin_name: admin, tenant_id: currentTenant };
 
             try {
                 if (currentModalMode === 'add') {
                     await fetch('/api/students', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                 } else {
-                    await fetch(`/api/students/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, reg_number: reg, admin_name: admin }) });
+                    await fetch(`/api/students/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, reg_number: reg, admin_name: admin, tenant_id: currentTenant }) });
                 }
                 closeModal();
                 fetchMembers();
             } catch (err) { alert("Error saving student."); }
         }
 
-        // --- PENDING APPROVALS LOGIC ---
         async function checkPendingCount() {
             try {
-                const response = await fetch(`/api/logs?date=${new Date().toISOString().split('T')[0]}`);
+                const today = new Date().toISOString().split('T')[0];
+                const response = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
                 const logs = await response.json();
                 const pendingCount = logs.filter(l => l.status === 'Pending').length;
                 
@@ -374,7 +425,7 @@
             const tbody = document.getElementById('pending-body');
             try {
                 const today = new Date().toISOString().split('T')[0];
-                const response = await fetch(`/api/logs?date=${today}`);
+                const response = await fetch(`/api/logs?date=${today}&tenant_id=${currentTenant}`);
                 const logs = await response.json();
                 const pending = logs.filter(l => l.status === 'Pending');
 
@@ -391,7 +442,7 @@
                         <td>${timeStr}</td>
                         <td>
                             <button class="btn btn-sm btn-success" onclick="approvePending(${log.fingerprint_id})">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Approve
+                                Approve
                             </button>
                         </td>
                     </tr>`;
@@ -405,7 +456,7 @@
                 await fetch('/api/approve-pending', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fingerprint_id: id, admin_name: "SentinEx" })
+                    body: JSON.stringify({ fingerprint_id: id, admin_name: "SentinEx", tenant_id: currentTenant })
                 });
                 fetchPending();
                 checkPendingCount();
@@ -418,10 +469,10 @@
             tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Fetching data...</td></tr>`;
 
             try {
-                const response = await fetch(`/api/logs?date=${selectedDate}`);
+                const response = await fetch(`/api/logs?date=${selectedDate}&tenant_id=${currentTenant}`);
                 logsData = await response.json();
                 
-                document.getElementById('total-scans').innerText = logsData.filter(l => l.status !== 'Pending').length; // Exclude pending from total
+                document.getElementById('total-scans').innerText = logsData.filter(l => l.status !== 'Pending').length;
                 const uniqueIds = new Set(logsData.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
                 document.getElementById('unique-members').innerText = uniqueIds.size;
                 document.getElementById('security-alerts').innerText = logsData.filter(l => l.status === 'Denied').length;
@@ -448,7 +499,7 @@
         async function fetchMembers() {
             const tbody = document.getElementById('members-body');
             try {
-                const response = await fetch('/api/students');
+                const response = await fetch(`/api/students?tenant_id=${currentTenant}`);
                 const students = await response.json();
                 if (students.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">No members found.</td></tr>`;
@@ -458,12 +509,8 @@
                     <tr>
                         <td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${s.role}</td>
                         <td style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit
-                            </button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})">Delete</button>
                         </td>
                     </tr>
                 `).join('');
@@ -472,14 +519,18 @@
 
         async function deleteStudent(id) {
             if(!confirm("Move this student to trash?")) return;
-            await fetch(`/api/students/${id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ admin_name: "SentinEx" }) });
+            await fetch(`/api/students/${id}`, { 
+                method: 'DELETE', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ admin_name: "SentinEx", tenant_id: currentTenant }) 
+            });
             fetchMembers();
         }
 
         async function fetchTrash() {
             const tbody = document.getElementById('trash-body');
             try {
-                const response = await fetch('/api/trash');
+                const response = await fetch(`/api/trash?tenant_id=${currentTenant}`);
                 const trash = await response.json();
                 if (trash.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Trash is empty.</td></tr>`;
@@ -493,14 +544,18 @@
         }
 
         async function restoreStudent(id) {
-            await fetch(`/api/trash/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ admin_name: "SentinEx" }) });
+            await fetch(`/api/trash/${id}`, { 
+                method: 'PUT', 
+                headers: { 'Content-Type': 'application/json' }, 
+                body: JSON.stringify({ admin_name: "SentinEx", tenant_id: currentTenant }) 
+            });
             fetchTrash();
         }
 
         async function fetchAuditLogs() {
             const tbody = document.getElementById('audit-body');
             try {
-                const response = await fetch('/api/audit-logs');
+                const response = await fetch(`/api/audit-logs?tenant_id=${currentTenant}`);
                 const logs = await response.json();
                 if (logs.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">No logs.</td></tr>`;
@@ -518,9 +573,8 @@
             } catch (err) { console.error(err); }
         }
 
-        // Check for pending requests every 10 seconds
         setInterval(() => {
-            if (document.getElementById('app-screen').style.display === 'flex') {
+            if (document.getElementById('app-screen').style.display === 'flex' && currentTenant !== 'superadmin') {
                 checkPendingCount();
             }
         }, 10000);
