@@ -6,15 +6,15 @@
     <title>SentinEx | Admin Dashboard</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
-    <!-- Google Material Symbols (Professional Icons) -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    
-    <!-- Google Fonts: Inter, Poppins, and Playfair Display -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #f8fafc; /* Softer background for the main area */
+            --bg-color: #f1f5f9;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --sidebar-text: #94a3b8;
+            --sidebar-active: #ffffff;
             --text-main: #0f172a; 
             --text-muted: #64748b;
             --card-bg: #ffffff; 
@@ -23,8 +23,6 @@
             --success: #059669; 
             --danger: #dc2626; 
             --warning: #d97706;
-            --sidebar-bg: #ffffff;
-            --sidebar-hover: #f1f5f9;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -33,33 +31,25 @@
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         
-        /* LANDING PAGE TYPOGRAPHY */
         h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; }
         em { font-family: 'Playfair Display', serif; font-style: italic; }
 
-        /* DASHBOARD TYPOGRAPHY (Poppins) */
         #app-screen, #app-screen * {
-            font-family: 'Poppins', sans-serif !important;
+            font-family: 'Poppins', sans-serif;
         }
-        #app-screen h1, #app-screen h2, #app-screen h3 { font-family: 'Poppins', sans-serif !important; font-weight: 600 !important; letter-spacing: -0.5px; }
+        #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
 
-        /* --- MATERIAL ICONS STYLING --- */
-        .material-symbols-outlined {
-            font-size: 20px;
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        /* SVGs */
+        .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-        /* MODALS */
+        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
-        .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; color: var(--text-main); }
+        .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; }
         .form-group { margin-bottom: 16px; text-align: left; }
         .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .form-group input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; }
-        .form-group input:focus { border-color: var(--text-main); }
+        .form-group input:focus { border-color: var(--primary); }
         .form-group input:disabled { background: #f1f5f9; cursor: not-allowed; color: var(--text-muted); }
         
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
@@ -71,49 +61,47 @@
         .btn-secondary:hover { background: #cbd5e1; }
         .btn-danger { background: #fee2e2; color: var(--danger); }
         .btn-danger:hover { background: #fca5a5; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline:hover { background: #f8fafc; border-color: var(--text-main); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
-        .btn-sm .material-symbols-outlined { font-size: 16px; }
+        .btn-sm svg { width: 14px; height: 14px; }
 
-        /* LOGIN */
+        /* Login */
         #login-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; justify-content: center; align-items: center; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         
-        /* APP LAYOUT */
+        /* App Layout */
         #app-screen { display: none; width: 100%; height: 100vh; }
         
-        /* Sidebar - WHITE THEME */
-        .sidebar { width: 260px; background: var(--sidebar-bg); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
-        .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: var(--text-main); }
+        /* Dark Professional Sidebar */
+        .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
+        .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
         .sidebar-logo svg { width: 28px; height: 28px; }
         
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--text-muted); border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 14px; font-weight: 500; }
-        .nav-item .material-symbols-outlined { color: var(--text-muted); transition: color 0.2s; }
-        .nav-item:hover { background: var(--sidebar-hover); color: var(--text-main); }
-        .nav-item:hover .material-symbols-outlined { color: var(--text-main); }
-        
-        .nav-item.active { background: var(--sidebar-hover); color: var(--text-main); font-weight: 600; }
-        .nav-item.active .material-symbols-outlined { color: var(--text-main); font-variation-settings: 'FILL' 1; }
-        
-        .nav-item.danger { color: var(--danger); margin-top: auto; }
-        .nav-item.danger .material-symbols-outlined { color: var(--danger); }
-        .nav-item.danger:hover { background: #fef2f2; }
+        .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--sidebar-text); border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 14px; font-weight: 500; }
+        .nav-item:hover { background: var(--sidebar-hover); color: #ffffff; }
+        .nav-item.active { background: var(--sidebar-hover); color: var(--sidebar-active); font-weight: 600; }
+        .nav-item.active .nav-icon { stroke: #ffffff; }
+        .nav-item.danger { color: #f87171; margin-top: auto; }
+        .nav-item.danger:hover { background: rgba(248, 113, 113, 0.1); }
+        .nav-item.danger .nav-icon { stroke: #f87171; }
 
         /* Main Content */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--border); }
         .topbar h2 { font-size: 1.25rem; font-weight: 600; }
-        .date-picker { padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; color: var(--text-main); font-weight: 500; }
+        .date-picker { padding: 8px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; font-weight: 500; }
 
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
 
-        /* Cards */
+        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
         .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
-        .stat-value { font-size: 32px; font-weight: 600; line-height: 1; color: var(--text-main); }
+        .stat-value { font-size: 32px; font-weight: 600; line-height: 1; }
 
         /* Tables */
         .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; }
@@ -128,16 +116,14 @@
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
 
-        /* Manual */
         .manual-card { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px; line-height: 1.7; box-shadow: var(--shadow-sm); }
-        .manual-card h3 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; color: var(--text-main); }
+        .manual-card h3 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; }
         .manual-card p, .manual-card li { color: var(--text-muted); font-size: 14px; }
         .manual-card ul { padding-left: 20px; margin-bottom: 16px; }
     </style>
 </head>
 <body>
 
-    <!-- LOGIN MODAL -->
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
@@ -148,7 +134,6 @@
         </div>
     </div>
 
-    <!-- ADD/EDIT MODAL -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -162,31 +147,36 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="app-screen">
         <aside class="sidebar">
             <div class="sidebar-logo">
-                <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#0f172a"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="white" text-anchor="middle">S</text></svg>
+                <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="#1e293b" text-anchor="middle">S</text></svg>
                 <span>SentinEx</span>
             </div>
             
             <div class="nav-item active" onclick="switchTab('dashboard', this)">
-                <span class="material-symbols-outlined">dashboard</span> <span>Dashboard</span>
+                <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                <span>Dashboard</span>
             </div>
             <div class="nav-item" onclick="switchTab('members', this)">
-                <span class="material-symbols-outlined">group</span> <span>Members Directory</span>
+                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Members Directory</span>
             </div>
             <div class="nav-item" onclick="switchTab('trash', this)">
-                <span class="material-symbols-outlined">delete</span> <span>Trash Bin</span>
+                <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>Trash Bin</span>
             </div>
             <div class="nav-item" onclick="switchTab('audit', this)">
-                <span class="material-symbols-outlined">shield</span> <span>Audit Logs</span>
+                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Audit Logs</span>
             </div>
             <div class="nav-item" onclick="switchTab('help', this)">
-                <span class="material-symbols-outlined">menu_book</span> <span>User Manual</span>
+                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                <span>User Manual</span>
             </div>
             <div class="nav-item danger" onclick="logout()">
-                <span class="material-symbols-outlined">logout</span> <span>Logout</span>
+                <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                <span>Logout</span>
             </div>
         </aside>
 
@@ -198,21 +188,11 @@
                 </div>
             </header>
 
-            <!-- DASHBOARD -->
             <div id="view-dashboard" class="view-container active">
                 <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-title">Total Scans</div>
-                        <div class="stat-value" id="total-scans">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Unique Members</div>
-                        <div class="stat-value" id="unique-members">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-title">Security Alerts</div>
-                        <div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div>
-                    </div>
+                    <div class="stat-card"><div class="stat-title">Total Scans</div><div class="stat-value" id="total-scans">0</div></div>
+                    <div class="stat-card"><div class="stat-title">Unique Members</div><div class="stat-value" id="unique-members">0</div></div>
+                    <div class="stat-card"><div class="stat-title">Security Alerts</div><div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div></div>
                 </div>
                 <div class="table-card">
                     <table>
@@ -222,60 +202,52 @@
                 </div>
             </div>
 
-            <!-- MEMBERS DIRECTORY -->
             <div id="view-members" class="view-container">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
-                    <p style="color: var(--text-muted); font-size: 14px; align-self: center;">Manage all registered students here.</p>
-                    <button class="btn btn-primary" onclick="openAddModal()"><span class="material-symbols-outlined">add</span> Add New Member</button>
+                    <p style="color: var(--text-muted); font-size: 14px; align-self: center;">Manage registered students. Injured? Use "Mark Present".</p>
+                    <button class="btn btn-primary" onclick="openAddModal()">+ Add New Member</button>
                 </div>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Name</th><th>Reg Number</th><th>Role</th><th>Actions</th></tr></thead>
-                        <tbody id="members-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading members...</td></tr></tbody>
+                        <tbody id="members-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading...</td></tr></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- TRASH BIN -->
             <div id="view-trash" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Deleted members are stored here. Restore them if deleted by mistake.</p>
+                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Deleted members are stored here.</p>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Name</th><th>Reg Number</th><th>Deleted On</th><th>Actions</th></tr></thead>
-                        <tbody id="trash-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading trash...</td></tr></tbody>
+                        <tbody id="trash-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading...</td></tr></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- AUDIT LOGS -->
             <div id="view-audit" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">These logs are immutable and cannot be deleted for security evidence.</p>
+                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Immutable security evidence. Cannot be deleted.</p>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Details</th></tr></thead>
-                        <tbody id="audit-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading logs...</td></tr></tbody>
+                        <tbody id="audit-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">Loading...</td></tr></tbody>
                     </table>
                 </div>
             </div>
 
-            <!-- HELP / MANUAL -->
             <div id="view-help" class="view-container">
                 <div class="manual-card">
                     <h2 style="margin-bottom: 24px; font-weight: 600;">SentinEx System Manual</h2>
-                    <h3>1. Hardware Overview</h3>
+                    <h3>1. Injured Student Workflow</h3>
                     <ul>
-                        <li><strong>Normal Scan:</strong> Student places finger on the AS608 sensor. LCD shows "Welcome" and data syncs to the cloud.</li>
-                        <li><strong>Injured Finger:</strong> Manual entry via keypad is disabled for security. Use the Web Dashboard to mark them present manually.</li>
-                        <li><strong>Power Saving:</strong> Hold the physical button for 1 second to sleep. Press again to wake up.</li>
+                        <li>If a student cannot scan their finger, go to the <strong>Members Directory</strong>.</li>
+                        <li>Find the student's name and click the <strong>"Mark Present"</strong> button.</li>
+                        <li>The system will log them as "Manual" for today's date.</li>
                     </ul>
-                    <h3>2. Managing Members (Admin Only)</h3>
+                    <h3>2. Managing Members</h3>
                     <ul>
-                        <li><strong>Add Member:</strong> Go to Members Directory, click "Add New Member". Enter Name, Reg No, and Fingerprint ID (Slot).</li>
-                        <li><strong>Edit/Delete:</strong> Manage students easily. Deletes go to the Trash Bin for safety.</li>
-                    </ul>
-                    <h3>3. Audit Logs</h3>
-                    <ul>
-                        <li>Every action taken in this dashboard is permanently recorded in the Audit Logs. This ensures accountability and prevents insider fraud.</li>
+                        <li><strong>Add:</strong> Click "+ Add New Member" to assign a Fingerprint ID and Reg No.</li>
+                        <li><strong>Edit/Delete:</strong> Update details or move students to the Trash Bin safely.</li>
                     </ul>
                 </div>
             </div>
@@ -376,6 +348,20 @@
             } catch (err) { alert("Error saving student."); }
         }
 
+        // NEW: Mark Present Manually (Injured Finger)
+        async function markPresent(id, name) {
+            if(!confirm(`Mark ${name} as present for today? (Manual Entry)`)) return;
+            try {
+                await fetch('/api/manual-scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fingerprint_id: id, admin_name: "SentinEx" })
+                });
+                alert(`${name} has been marked present.`);
+                fetchMembers(); // Refresh view if needed
+            } catch (err) { alert("Error marking present."); }
+        }
+
         async function fetchLogs() {
             const selectedDate = document.getElementById('date-picker').value;
             const tbody = document.getElementById('log-body');
@@ -398,7 +384,7 @@
                 tbody.innerHTML = logsData.map(log => {
                     const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     let badgeClass = log.status === 'Denied' ? 'badge-denied' : (log.status === 'Manual' ? 'badge-manual' : 'badge-granted');
-                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); margin-left: 6px; cursor:help; vertical-align: middle;"><span class="material-symbols-outlined" style="font-size: 16px;">warning</span></span>` : '';
+                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); margin-left: 6px; cursor:help;">⚠️</span>` : '';
                     const regNum = log.reg_number ? log.reg_number : `ID: ${log.fingerprint_id}`;
                     return `<tr><td><strong>${log.student_name}</strong> ${warning}</td><td>${regNum}</td><td>${timeStr}</td><td><span class="badge ${badgeClass}">${log.status}</span></td></tr>`;
                 }).join('');
@@ -418,8 +404,15 @@
                     <tr>
                         <td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${s.role}</td>
                         <td style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')"><span class="material-symbols-outlined">edit</span> Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})"><span class="material-symbols-outlined">delete</span></button>
+                            <button class="btn btn-sm btn-success" onclick="markPresent(${s.fingerprint_id}, '${s.name}')" title="Injured? Mark Present">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Present
+                            </button>
+                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit
+                            </button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                            </button>
                         </td>
                     </tr>
                 `).join('');
@@ -428,11 +421,7 @@
 
         async function deleteStudent(id) {
             if(!confirm("Move this student to trash?")) return;
-            await fetch(`/api/students/${id}`, { 
-                method: 'DELETE',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ admin_name: "SentinEx" })
-            });
+            await fetch(`/api/students/${id}`, { method: 'DELETE', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ admin_name: "SentinEx" }) });
             fetchMembers();
         }
 
@@ -447,17 +436,13 @@
                 }
                 tbody.innerHTML = trash.map(s => {
                     const date = new Date(s.deleted_at).toLocaleDateString();
-                    return `<tr><td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${date}</td><td><button class="btn btn-sm btn-success" onclick="restoreStudent(${s.fingerprint_id})"><span class="material-symbols-outlined">restore</span> Restore</button></td></tr>`;
+                    return `<tr><td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${date}</td><td><button class="btn btn-sm btn-outline" onclick="restoreStudent(${s.fingerprint_id})">Restore</button></td></tr>`;
                 }).join('');
             } catch (err) { console.error(err); }
         }
 
         async function restoreStudent(id) {
-            await fetch(`/api/trash/${id}`, { 
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ admin_name: "SentinEx" })
-            });
+            await fetch(`/api/trash/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ admin_name: "SentinEx" }) });
             fetchTrash();
         }
 
@@ -467,7 +452,7 @@
                 const response = await fetch('/api/audit-logs');
                 const logs = await response.json();
                 if (logs.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">No audit logs found.</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">No logs.</td></tr>`;
                     return;
                 }
                 tbody.innerHTML = logs.map(log => {
