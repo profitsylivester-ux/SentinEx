@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        /* ALL PREVIOUS CSS REMAINS EXACTLY THE SAME */
+        /* LIGHT THEME (Default) */
         :root {
             --bg-color: #f6f5f2; --text-main: #111111; --text-muted: #555555;
             --card-bg: #ffffff; --border: #e5e5e5; --primary: #111111;
@@ -20,22 +20,43 @@
             --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
             --dash-text: #0f172a; --dash-muted: #64748b; --dash-border: #e2e8f0;
         }
+
+        /* DARK THEME OVERRIDES */
+        [data-theme="dark"] {
+            --bg-color: #0f172a; --text-main: #f8fafc; --text-muted: #94a3b8;
+            --card-bg: #1e293b; --border: #334155; --primary: #3b82f6;
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --dash-bg: #0f172a; --sidebar-bg: #020617; --sidebar-hover: #1e293b;
+            --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
+            --dash-text: #f8fafc; --dash-muted: #94a3b8; --dash-border: #334155;
+        }
+
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; transition: background-color 0.3s, color 0.3s; }
         h1, h2, h3, h4, h5, h6, th { font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: -0.5px; }
         em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; }
         p, a, div, span, td, button, input, textarea, select, label { font-family: 'Inter', sans-serif; }
+        
         .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; cursor: pointer; }
         .logo-svg { width: 32px; height: 32px; border-radius: 6px; }
         
+        /* TOP CONTROLS */
+        .top-controls { display: flex; gap: 12px; align-items: center; }
+        .icon-btn { background: transparent; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; color: var(--text-main); }
+        .icon-btn:hover { background: var(--card-bg); }
+        .lang-select { padding: 8px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; background: var(--card-bg); color: var(--text-main); cursor: pointer; font-family: 'Inter', sans-serif; font-weight: 500; }
+
+        /* LANDING PAGE */
         #landing-page { display: block; }
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
+        [data-theme="dark"] nav { background: rgba(15, 23, 42, 0.95); }
+        
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
         .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
         .nav-links a:hover { color: var(--text-main); }
-        .nav-actions { display: flex; gap: 12px; align-items: center; }
         .btn-primary { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; border: none; }
         .btn-primary:hover { transform: translateY(-2px); }
+        
         .hero { display: grid; grid-template-columns: 1fr 1fr; padding: 80px 5%; gap: 40px; align-items: center; min-height: 80vh; }
         .hero-text h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
         .hero-text h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 30px; }
@@ -47,11 +68,12 @@
         .img-2 { width: 45%; top: 20px; right: 0; height: 220px; }
         .img-3 { width: 40%; bottom: 0; right: 5%; height: 250px; }
         .img-4 { width: 35%; bottom: 40px; left: 10%; height: 180px; }
+        
         .section { padding: 80px 5%; border-top: 1px solid var(--border); }
         .section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
         .section h2 { font-size: 3rem; margin-bottom: 40px; }
         .section-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: all 0.3s; }
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
         
@@ -66,6 +88,7 @@
         .faq-item.active .faq-icon { transform: rotate(180deg); }
         
         .team-section { padding: 80px 5%; background: #111111; border-top: 1px solid #222; }
+        [data-theme="dark"] .team-section { background: #020617; border-color: #1e293b; }
         .team-section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 600; }
         .team-section h2 { font-size: 3rem; margin-bottom: 40px; color: white; }
         .team-gallery { display: flex; gap: 16px; height: 500px; width: 100%; overflow: hidden; }
@@ -87,13 +110,13 @@
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
         .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
-        .info-icon { background: white; padding: 12px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .info-icon { background: var(--card-bg); padding: 12px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .info-text h6 { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 4px; font-family: 'Inter'; font-weight: 600; }
         .info-text p { margin: 0; font-size: 16px; color: var(--text-main); font-weight: 500; }
         .contact-card { background: var(--card-bg); padding: 40px; border-radius: 16px; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .form-group { margin-bottom: 20px; text-align: left; }
         .form-group label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; background: #fafafa; outline: none; transition: border 0.2s; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; background: var(--bg-color); color: var(--text-main); outline: none; transition: border 0.2s; }
         .form-group input:focus, .form-group textarea:focus { border-color: var(--primary); }
         .form-group textarea { resize: vertical; height: 120px; }
         .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
@@ -101,6 +124,7 @@
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
         
         footer { background: #111111; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
+        [data-theme="dark"] footer { background: #020617; border-color: #1e293b; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
         .footer-brand p { color: #888; font-size: 15px; max-width: 300px; margin-bottom: 20px; }
@@ -116,7 +140,8 @@
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
         
-        #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
+        /* DASHBOARD */
+        #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); transition: background-color 0.3s; }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
         
@@ -125,7 +150,7 @@
         
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--dash-border); }
-        .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; color: var(--text-main); }
+        .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; color: var(--dash-text); }
         
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
         .btn-success { background: var(--success); color: white; }
@@ -136,10 +161,10 @@
         .btn-sm { padding: 6px 12px; font-size: 12px; }
         
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
+        [data-theme="dark"] #login-modal { background: rgba(15, 23, 42, 0.95); }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; color: var(--text-main); }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
-        .login-card .form-group input { font-family: 'Inter', sans-serif; }
         
         .password-wrapper { position: relative; }
         .password-wrapper input { padding-right: 40px !important; }
@@ -147,7 +172,7 @@
         .password-toggle svg { width: 20px; height: 20px; }
         
         .dashboard-layout { display: flex; height: 100vh; }
-        .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
+        .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; transition: background-color 0.3s; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
         .sidebar-logo img { width: 32px; height: 32px; border-radius: 6px; background: white; object-fit: contain; }
         .dash-nav { display: flex; flex-direction: column; flex: 1; }
@@ -160,23 +185,24 @@
         .nav-item.danger .nav-icon { stroke: #f87171; }
         
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--dash-border); }
+        .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--dash-border); transition: background-color 0.3s; }
         .topbar h2 { font-size: 1.25rem; font-weight: 600; }
-        .date-picker { padding: 8px 16px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; outline: none; font-weight: 500; font-family: 'Inter', sans-serif; }
+        .date-picker { padding: 8px 16px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; outline: none; font-weight: 500; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-main); }
+        
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
         
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
-        .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
+        .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); transition: background-color 0.3s; }
         .stat-title { font-size: 13px; color: var(--dash-muted); font-weight: 500; margin-bottom: 8px; }
         .stat-value { font-size: 32px; font-weight: 600; line-height: 1; }
         
-        .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); overflow: hidden; }
+        .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); overflow: hidden; transition: background-color 0.3s; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--dash-border); font-size: 14px; }
-        th { background: #f8fafc; color: var(--dash-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+        th { background: var(--bg-color); color: var(--dash-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         tr:last-child td { border-bottom: none; }
-        tr:hover td { background: #f8fafc; }
+        tr:hover td { background: var(--bg-color); }
         
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; }
         .badge-active { background: #ecfdf5; color: var(--success); }
@@ -189,7 +215,7 @@
         
         .analytics-grid-top { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-bottom: 24px; }
         .analytics-grid-bottom { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-        .analytic-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--dash-border); padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .analytic-card { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--dash-border); padding: 24px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: background-color 0.3s; }
         .summary-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; margin-bottom: 16px; }
         .summary-val { font-size: 36px; font-weight: 700; color: var(--text-main); margin-bottom: 24px; letter-spacing: -1px; }
         .summary-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; border-top: 1px solid var(--dash-border); padding-top: 16px; }
@@ -197,12 +223,11 @@
         .summary-subval { font-size: 20px; font-weight: 600; color: var(--text-main); }
         .chart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .chart-title { font-size: 14px; color: var(--dash-muted); font-weight: 500; }
-        .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: #f8fafc; cursor: pointer; font-weight: 500; color: var(--text-main); }
+        .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: var(--bg-color); cursor: pointer; font-weight: 500; color: var(--text-main); }
         .chart-container-large { height: 250px; width: 100%; }
         .chart-container-small { height: 200px; width: 100%; display: flex; justify-content: center; }
         
-        /* MANUAL STYLES */
-        .manual-card { background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--dash-border); max-width: 800px; line-height: 1.8; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .manual-card { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--dash-border); max-width: 800px; line-height: 1.8; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: background-color 0.3s; }
         .manual-card h3 { margin-top: 30px; margin-bottom: 10px; font-weight: 600; color: var(--text-main); font-size: 18px; }
         .manual-card h3:first-child { margin-top: 0; }
         .manual-card p, .manual-card li { color: var(--dash-muted); font-size: 14px; }
@@ -212,7 +237,7 @@
         @media (max-width: 900px) {
             nav { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
-            .nav-actions { width: 100%; justify-content: center; }
+            .top-controls { width: 100%; justify-content: center; }
             .hero { grid-template-columns: 1fr; text-align: center; padding: 40px 5%; }
             .hero-text h1 { font-size: 2.5rem; }
             .hero-images { display: none; }
@@ -249,24 +274,32 @@
                 <span>SentinEx</span>
             </div>
             <div class="nav-links">
-                <a href="#about">About</a>
-                <a href="#services">Services</a>
-                <a href="#work">Work</a>
-                <a href="#faq">FAQ</a>
-                <a href="#team">Team</a>
-                <a href="#contact">Contact</a>
+                <a href="#about" data-en="About" data-sw="Kuhusu">About</a>
+                <a href="#services" data-en="Services" data-sw="Huduma">Services</a>
+                <a href="#work" data-en="Work" data-sw="Kazi">Work</a>
+                <a href="#faq" data-en="FAQ" data-sw="Maswali">FAQ</a>
+                <a href="#team" data-en="Team" data-sw="Timu">Team</a>
+                <a href="#contact" data-en="Contact" data-sw="Mawasiliano">Contact</a>
             </div>
-            <div class="nav-actions">
-                <button class="btn-primary" onclick="openLogin()">Client Portal &rarr;</button>
+            <div class="top-controls">
+                <button class="icon-btn" onclick="toggleTheme()" id="theme-toggle">🌙</button>
+                <select class="lang-select" onchange="changeLanguage(this.value)">
+                    <option value="en">🇬🇧 EN</option>
+                    <option value="sw">🇹🇿 SW</option>
+                    <option value="fr">🇫🇷 FR</option>
+                    <option value="zh">🇨🇳 ZH</option>
+                    <option value="ar">🇸🇦 AR</option>
+                </select>
+                <button class="btn-primary" onclick="openLogin()" data-en="Client Portal &rarr;" data-sw="Tovuti ya Mteja &rarr;">Client Portal &rarr;</button>
             </div>
         </nav>
 
         <section class="hero" id="about">
             <div class="hero-text">
-                <h5>ABOUT SENTINEX</h5>
-                <h1>Secure attendance systems built for <em>local institutions</em></h1>
-                <p>We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline.</p>
-                <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Work with us &rarr;</button>
+                <h5 data-en="ABOUT SENTINEX" data-sw="KUHUSU SENTINEX">ABOUT SENTINEX</h5>
+                <h1 data-en="Secure attendance systems built for <em>local institutions</em>" data-sw="Mifumo salama ya mahudhurio iliyoundwa kwa ajili ya <em>taasisi za ndani</em>">Secure attendance systems built for <em>local institutions</em></h1>
+                <p data-en="We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline." data-sw="Tunabuni na kutekeleza vifaa vya kibaiometriki na dashibodi za wingu kutoka Kigamboni, Kiswani. Mifumo yetu husaidia shule na ofisi kusimamia mahudhurio na udhibiti wa ufikiaji kwa uhakika, hata mtandao unapokatika.">We design and deploy biometric hardware and cloud dashboards from Kigamboni, Kiswani. Our systems help schools and offices manage attendance and access control reliably, even when the internet goes offline.</p>
+                <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})" data-en="Work with us &rarr;" data-sw="Fanya kazi nasi &rarr;">Work with us &rarr;</button>
             </div>
             <div class="hero-images">
                 <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team">
@@ -277,103 +310,103 @@
         </section>
 
         <section class="section" id="services" style="background: #eae8e1;">
-            <h5>OUR SERVICES</h5>
-            <h2>What we <em>deliver</em></h2>
+            <h5 data-en="OUR SERVICES" data-sw="HUDUMA ZETU">OUR SERVICES</h5>
+            <h2 data-en="What we <em>deliver</em>" data-sw="Tunachotoa <em>huduma</em>">What we <em>deliver</em></h2>
             <div class="section-grid">
-                <div class="card"><h3>Biometric Hardware</h3><p>Custom fingerprint terminals built for high-traffic environments.</p></div>
-                <div class="card"><h3>Cloud Dashboards</h3><p>Real-time multi-tenant web applications to monitor security and attendance.</p></div>
-                <div class="card"><h3>System Integration</h3><p>Connecting legacy software with modern IoT edge devices.</p></div>
+                <div class="card"><h3 data-en="Biometric Hardware" data-sw="Vifaa vya Kibaiometriki">Biometric Hardware</h3><p data-en="Custom fingerprint terminals built for high-traffic environments." data-sw="Vifaa maalum vya kuchanganua alama za vidole kwa mazingira yenye watu wengi.">Custom fingerprint terminals built for high-traffic environments.</p></div>
+                <div class="card"><h3 data-en="Cloud Dashboards" data-sw="Dashibodi za Wingu">Cloud Dashboards</h3><p data-en="Real-time multi-tenant web applications to monitor security and attendance." data-sw="Programu za wavuti za wakati halisi kufuatilia usalama na mahudhurio.">Real-time multi-tenant web applications to monitor security and attendance.</p></div>
+                <div class="card"><h3 data-en="System Integration" data-sw="Muunganisho wa Mfumo">System Integration</h3><p data-en="Connecting legacy software with modern IoT edge devices." data-sw="Kuunganisha programu za zamani na vifaa vya kisasa vya IoT.">Connecting legacy software with modern IoT edge devices.</p></div>
             </div>
         </section>
 
         <section class="section" id="work">
-            <h5>OUR WORK</h5>
-            <h2>Recent <em>deployments</em></h2>
+            <h5 data-en="OUR WORK" data-sw="KAZI ZETU">OUR WORK</h5>
+            <h2 data-en="Recent <em>deployments</em>" data-sw="Utekelezaji wa <em>hivi karibuni</em>">Recent <em>deployments</em></h2>
             <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Campus">
-                    <div style="padding: 20px;"><h3>Ohio University</h3><p>Deployed 12 biometric terminals across 4 faculties.</p></div>
+                    <div style="padding: 20px;"><h3 data-en="Ohio University" data-sw="Chuo Kikuu cha Ohio">Ohio University</h3><p data-en="Deployed 12 biometric terminals across 4 faculties." data-sw="Tuliweka vifaa 12 vya kibaiometriki katika vitivo 4.">Deployed 12 biometric terminals across 4 faculties.</p></div>
                 </div>
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Office">
-                    <div style="padding: 20px;"><h3>TechHub Dar</h3><p>Access control system for 500+ members.</p></div>
+                    <div style="padding: 20px;"><h3 data-en="TechHub Dar" data-sw="TechHub Dar">TechHub Dar</h3><p data-en="Access control system for 500+ members." data-sw="Mfumo wa udhibiti wa ufikiaji kwa wanachama 500+.">Access control system for 500+ members.</p></div>
                 </div>
             </div>
         </section>
 
         <section class="faq-section" id="faq">
             <div class="faq-container">
-                <h2>Frequently asked</h2>
+                <h2 data-en="Frequently asked" data-sw="Maswali Yanayoulizwa">Frequently asked</h2>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>How does the offline mode work?</span>
+                        <span data-en="How does the offline mode work?" data-sw="Je, hali ya nje ya mtandao inafanyaje kazi?">How does the offline mode work?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once restored, it syncs to the cloud.</div>
+                    <div class="faq-answer" data-en="Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once restored, it syncs to the cloud." data-sw="Kifaa chetu cha ESP32 huhifadhi nakala zote za alama za vidole kwenye kadi ya SD ikiwa mtandao unakatika. Mara muunganisho unaporejeshwa, husawazisha na wingu.">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once restored, it syncs to the cloud.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Can it integrate with our existing database?</span>
+                        <span data-en="Can it integrate with our existing database?" data-sw="Je, inaweza kuunganishwa na hifadhidata yetu iliyopo?">Can it integrate with our existing database?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Yes. Because our backend uses PostgreSQL and a REST API, we can easily export logs to CSV.</div>
+                    <div class="faq-answer" data-en="Yes. Because our backend uses PostgreSQL and a REST API, we can easily export logs to CSV." data-sw="Ndiyo. Kwa sababu backend yetu inatumia PostgreSQL na REST API, tunaweza kuhamisha kumbukumbu kwenda CSV.">Yes. Because our backend uses PostgreSQL and a REST API, we can easily export logs to CSV.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Is the hardware included?</span>
+                        <span data-en="Is the hardware included?" data-sw="Je, vifaa vinajumuishwa?">Is the hardware included?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Yes. When you partner with SentinEx, we provide the full package: the terminal, power supply, enclosure, and cloud setup.</div>
+                    <div class="faq-answer" data-en="Yes. When you partner with SentinEx, we provide the full package: the terminal, power supply, enclosure, and cloud setup." data-sw="Ndiyo. Unaposhirikiana na SentinEx, tunatoa kifurushi kamili: kifaa, umeme, kifuniko, na usanidi wa wingu.">Yes. When you partner with SentinEx, we provide the full package: the terminal, power supply, enclosure, and cloud setup.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>How long does installation take?</span>
+                        <span data-en="How long does installation take?" data-sw="Usanidi unachukua muda gani?">How long does installation take?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">A standard deployment for a single office or classroom takes less than 2 hours. A full campus takes 2 days.</div>
+                    <div class="faq-answer" data-en="A standard deployment for a single office or classroom takes less than 2 hours. A full campus takes 2 days." data-sw="Usanidi wa kawaida kwa ofisi moja au darasa huchukua chini ya masaa 2. Kwa chuo kizima huchukua siku 2.">A standard deployment for a single office or classroom takes less than 2 hours. A full campus takes 2 days.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>How secure is the biometric data?</span>
+                        <span data-en="How secure is the biometric data?" data-sw="Data ya kibaiometriki iko salama vipi?">How secure is the biometric data?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Extremely secure. The AS608 sensor does not store images. It converts your fingerprint into a mathematical template (hash).</div>
+                    <div class="faq-answer" data-en="Extremely secure. The AS608 sensor does not store images. It converts your fingerprint into a mathematical template (hash)." data-sw="Salama sana. Sensor ya AS608 haihifadhi picha. Inabadilisha alama yako kuwa kiolezo cha hisabati (hash).">Extremely secure. The AS608 sensor does not store images. It converts your fingerprint into a mathematical template (hash).</div>
                 </div>
             </div>
         </section>
 
         <section class="team-section" id="team">
-            <h5>THE TEAM</h5>
-            <h2 style="color:white;">The minds <em>behind it</em></h2>
+            <h5 data-en="THE TEAM" data-sw="TIMU YETU">THE TEAM</h5>
+            <h2 style="color:white;" data-en="The minds <em>behind it</em>" data-sw="Wanafikiri <em>nyuma yake</em>">The minds <em>behind it</em></h2>
             <div class="team-gallery">
                 <div class="team-card active" onclick="setActiveCard(this)">
                     <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600" alt="Faida">
                     <div class="team-overlay">
-                        <div class="collapsed-text">FAIDA</div>
+                        <div class="collapsed-text" data-en="FAIDA" data-sw="FAIDA">FAIDA</div>
                         <div class="expanded-text">
-                            <h3>Faida</h3><p class="role">CEO & Founder</p>
-                            <p class="bio">Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania.</p>
-                            <a href="https://faida-sylivester.vercel.app/" target="_blank">View Profile &rarr;</a>
+                            <h3>Faida</h3><p class="role" data-en="CEO & Founder" data-sw="Mkurugenzi Mtendaji">CEO & Founder</p>
+                            <p class="bio" data-en="Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania." data-sw="Kuongoza SentinEx kwa maono ya kuleta usalama wa kibaiometriki kwa taasisi za ndani nchini Tanzania.">Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania.</p>
+                            <a href="https://faida-sylivester.vercel.app/" target="_blank" data-en="View Profile &rarr;" data-sw="Tazama Wasifu &rarr;">View Profile &rarr;</a>
                         </div>
                     </div>
                 </div>
                 <div class="team-card" onclick="setActiveCard(this)">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Lameck">
                     <div class="team-overlay">
-                        <div class="collapsed-text">LAMECK</div>
+                        <div class="collapsed-text" data-en="LAMECK" data-sw="LAMECK">LAMECK</div>
                         <div class="expanded-text">
-                            <h3>Lameck</h3><p class="role">Hardware Architect</p>
-                            <p class="bio">Designing the physical circuits and enclosures that make our devices durable and reliable.</p>
+                            <h3>Lameck</h3><p class="role" data-en="Hardware Architect" data-sw="Mbunifu wa Vifaa">Hardware Architect</p>
+                            <p class="bio" data-en="Designing the physical circuits and enclosures that make our devices durable and reliable." data-sw="Kubuni mizunguko ya kimwili na vifuniko vinavyofanya vifaa vyetu kuwa vya kudumu.">Designing the physical circuits and enclosures that make our devices durable and reliable.</p>
                         </div>
                     </div>
                 </div>
                 <div class="team-card" onclick="setActiveCard(this)">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Fedelika">
                     <div class="team-overlay">
-                        <div class="collapsed-text">FEDELIKA</div>
+                        <div class="collapsed-text" data-en="FEDELIKA" data-sw="FEDELIKA">FEDELIKA</div>
                         <div class="expanded-text">
-                            <h3>Fedelika</h3><p class="role">Software Developer</p>
-                            <p class="bio">Building the cloud backend and the interfaces that connect our hardware to the internet.</p>
+                            <h3>Fedelika</h3><p class="role" data-en="Software Developer" data-sw="Msanidi Programu">Software Developer</p>
+                            <p class="bio" data-en="Building the cloud backend and the interfaces that connect our hardware to the internet." data-sw="Kujenga backend ya wingu na interface zinazounganisha vifaa vyetu na mtandao.">Building the cloud backend and the interfaces that connect our hardware to the internet.</p>
                         </div>
                     </div>
                 </div>
@@ -382,24 +415,24 @@
 
         <section class="section contact" id="contact">
             <div class="contact-info">
-                <h5>GET IN TOUCH</h5>
-                <h2>Back African <em>engineering</em></h2>
-                <p>Write to us about partnerships, deployment, or custom hardware requests.</p>
-                <div class="info-item"><div class="info-icon">📍</div><div class="info-text"><h6>LOCATION</h6><p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p></div></div>
-                <div class="info-item"><div class="info-icon">📞</div><div class="info-text"><h6>PHONE</h6><p>0748743673</p></div></div>
-                <div class="info-item"><div class="info-icon">✉️</div><div class="info-text"><h6>EMAIL</h6><p>SentinExappliances@gmail.com</p></div></div>
+                <h5 data-en="GET IN TOUCH" data-sw="WASILIANA NASI">GET IN TOUCH</h5>
+                <h2 data-en="Back African <em>engineering</em>" data-sw="Saidia <em>uhandisi wa Afrika</em>">Back African <em>engineering</em></h2>
+                <p data-en="Write to us about partnerships, deployment, or custom hardware requests." data-sw="Tuandikie kuhusu ubia, utekelezaji, au maombi maalum ya vifaa.">Write to us about partnerships, deployment, or custom hardware requests.</p>
+                <div class="info-item"><div class="info-icon">📍</div><div class="info-text"><h6 data-en="LOCATION" data-sw="MAHALI">LOCATION</h6><p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p></div></div>
+                <div class="info-item"><div class="info-icon">📞</div><div class="info-text"><h6 data-en="PHONE" data-sw="SIMU">PHONE</h6><p>0748743673</p></div></div>
+                <div class="info-item"><div class="info-icon">✉️</div><div class="info-text"><h6 data-en="EMAIL" data-sw="BARUA PEPE">EMAIL</h6><p>SentinExappliances@gmail.com</p></div></div>
                 <div class="map-container">
-                    <button class="map-toggle" onclick="toggleMap()" id="map-btn">Switch to Plain</button>
+                    <button class="map-toggle" onclick="toggleMap()" id="map-btn" data-en="Switch to Plain" data-sw="Badilisha Ramani">Switch to Plain</button>
                     <iframe id="google-map" src="https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
                 </div>
             </div>
             <div class="contact-card">
                 <form onsubmit="event.preventDefault(); alert('Message sent!');">
-                    <div class="form-group"><label>NAME</label><input type="text" placeholder="Your full name" required></div>
-                    <div class="form-group"><label>EMAIL</label><input type="email" placeholder="you@institution.org" required></div>
-                    <div class="form-group"><label>INTEREST</label><select><option>Partnership</option><option>Device Deployment</option></select></div>
-                    <div class="form-group"><label>MESSAGE</label><textarea placeholder="What would you like to work on?"></textarea></div>
-                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Send message &rarr;</button>
+                    <div class="form-group"><label data-en="NAME" data-sw="JINA">NAME</label><input type="text" placeholder="Your full name" required></div>
+                    <div class="form-group"><label data-en="EMAIL" data-sw="BARUA PEPE">EMAIL</label><input type="email" placeholder="you@institution.org" required></div>
+                    <div class="form-group"><label data-en="INTEREST" data-sw="NIA">INTEREST</label><select><option data-en="Partnership" data-sw="Ubia">Partnership</option><option data-en="Device Deployment" data-sw="Utekelezaji wa Vifaa">Device Deployment</option></select></div>
+                    <div class="form-group"><label data-en="MESSAGE" data-sw="UJUMBE">MESSAGE</label><textarea placeholder="What would you like to work on?"></textarea></div>
+                    <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;" data-en="Send message &rarr;" data-sw="Tuma ujumbe &rarr;">Send message &rarr;</button>
                 </form>
             </div>
         </section>
@@ -408,23 +441,23 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <div class="logo"><svg class="logo-svg" viewBox="0 0 100 100" style="width: 28px; height: 28px;"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg> SentinEx Appliances</div>
-                    <p>A local IoT engineering lab building secure biometric systems for African institutions.</p>
+                    <p data-en="A local IoT engineering lab building secure biometric systems for African institutions." data-sw="Maabara ya uhandisi wa IoT ya ndani inayounda mifumo salama ya kibaiometriki kwa taasisi za Kiafrika.">A local IoT engineering lab building secure biometric systems for African institutions.</p>
                     <div class="address">Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</div>
                     <a href="mailto:SentinExappliances@gmail.com" class="email">SentinExappliances@gmail.com</a>
                     <div class="footer-socials"><a href="#">💻</a><a href="#">💼</a><a href="#">📸</a></div>
                 </div>
-                <div class="footer-col"><h4>THE PLATFORM</h4><ul><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#work">Work</a></li><li><a href="#team">Team</a></li></ul></div>
-                <div class="footer-col"><h4>SYSTEM</h4><ul><li><a onclick="openLogin()" style="cursor:pointer;">Dashboard</a></li><li><a href="#">Hardware</a></li></ul></div>
-                <div class="footer-col"><h4>SUPPORT</h4><ul><li><a href="#contact">Contact</a></li><li><a href="#faq">FAQ</a></li></ul></div>
+                <div class="footer-col"><h4 data-en="THE PLATFORM" data-sw="JUKWAA">THE PLATFORM</h4><ul><li><a href="#about" data-en="About" data-sw="Kuhusu">About</a></li><li><a href="#services" data-en="Services" data-sw="Huduma">Services</a></li><li><a href="#work" data-en="Work" data-sw="Kazi">Work</a></li><li><a href="#team" data-en="Team" data-sw="Timu">Team</a></li></ul></div>
+                <div class="footer-col"><h4 data-en="SYSTEM" data-sw="MFUMO">SYSTEM</h4><ul><li><a onclick="openLogin()" style="cursor:pointer;" data-en="Dashboard" data-sw="Dashibodi">Dashboard</a></li><li><a href="#" data-en="Hardware" data-sw="Vifaa">Hardware</a></li></ul></div>
+                <div class="footer-col"><h4 data-en="SUPPORT" data-sw="MSAADA">SUPPORT</h4><ul><li><a href="#contact" data-en="Contact" data-sw="Mawasiliano">Contact</a></li><li><a href="#faq" data-en="FAQ" data-sw="Maswali">FAQ</a></li></ul></div>
             </div>
-            <div class="footer-bottom"><div>&copy; 2026 SentinEx Appliances. All rights reserved.</div></div>
+            <div class="footer-bottom"><div data-en="&copy; 2026 SentinEx Appliances. All rights reserved." data-sw="&copy; 2026 SentinEx Appliances. Haki zote zimehifadhiwa.">&copy; 2026 SentinEx Appliances. All rights reserved.</div></div>
         </footer>
     </div>
 
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
-            <p>Enter your credentials to access the dashboard.</p>
+            <p data-en="Enter your credentials to access the dashboard." data-sw="Weka sifa zako kufikia dashibodi.">Enter your credentials to access the dashboard.</p>
             <div class="form-group"><input type="text" id="username" placeholder="Organization ID / Username" value="sentinex"></div>
             <div class="form-group password-wrapper">
                 <input type="password" id="password" placeholder="Password" value="1234">
@@ -433,8 +466,8 @@
                     <svg id="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
                 </span>
             </div>
-            <button class="btn btn-primary" style="width: 100%; margin-top: 8px; border-radius: 8px;" onclick="login()">Secure Login</button>
-            <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;">Cancel</button>
+            <button class="btn btn-primary" style="width: 100%; margin-top: 8px; border-radius: 8px;" onclick="login()" data-en="Secure Login" data-sw="Ingia kwa Usalama">Secure Login</button>
+            <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;" data-en="Cancel" data-sw="Ghairi">Cancel</button>
         </div>
     </div>
 
@@ -445,67 +478,87 @@
                 
                 <div class="dash-nav" id="tenant-menu">
                     <div class="nav-item active" onclick="switchTab('dashboard', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Dashboard</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span data-en="Dashboard" data-sw="Dashibodi">Dashboard</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('analytics', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg><span>Analytics</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg><span data-en="Analytics" data-sw="Takwimu">Analytics</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('pending', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span>Pending Approvals</span><span class="badge-count" id="pending-badge">0</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span data-en="Pending Approvals" data-sw="Kuidhinisha">Pending Approvals</span><span class="badge-count" id="pending-badge">0</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('members', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Members Directory</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span data-en="Members Directory" data-sw="Orodha ya Wanachama">Members Directory</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('trash', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><span>Trash Bin</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><span data-en="Trash Bin" data-sw="Chakavu">Trash Bin</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('audit', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Audit Logs</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span data-en="Audit Logs" data-sw="Kumbukumbu">Audit Logs</span>
                     </div>
-                    <div class="nav-item" onclick="switchTab('settings', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span>
-                    </div>
+                    
+                    <!-- USER MANUAL LINK -->
                     <div class="nav-item" onclick="switchTab('help', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>User Manual</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span data-en="User Manual" data-sw="Mwongozo">User Manual</span>
+                    </div>
+                    
+                    <div class="nav-item" onclick="switchTab('settings', this)">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span data-en="Settings" data-sw="Mipangilio">Settings</span>
                     </div>
                 </div>
 
                 <div class="dash-nav" id="super-admin-menu" style="display: none;">
                     <div class="nav-item active" onclick="switchTab('super-dashboard', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Master Control</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span data-en="Master Control" data-sw="Udhibiti Mkuu">Master Control</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('super-settings', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span data-en="Settings" data-sw="Mipangilio">Settings</span>
                     </div>
                 </div>
 
                 <div class="nav-item danger" onclick="logout()">
-                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Logout</span>
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span data-en="Logout" data-sw="Toka">Logout</span>
                 </div>
             </aside>
 
             <main class="main-content">
                 <header class="topbar">
-                    <h2 id="page-title">Dashboard</h2>
-                    <div id="topbar-actions" style="display: flex; gap: 12px;">
-                        <!-- NEW: SYNC OFFLINE CSV BUTTON -->
-                        <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="syncOfflineData(this)">
-                        <button class="btn btn-outline" onclick="document.getElementById('csv-file-input').click()">Upload Offline CSV</button>
+                    <h2 id="page-title" data-en="Dashboard" data-sw="Dashibodi">Dashboard</h2>
+                    <div id="topbar-actions" style="display: flex; gap: 12px; align-items: center;">
                         
-                        <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
+                        <!-- DASHBOARD CONTROLS -->
+                        <button class="icon-btn" onclick="toggleTheme()" id="dash-theme-toggle">🌙</button>
+                        <select class="lang-select" onchange="changeLanguage(this.value)" id="dash-lang-select">
+                            <option value="en">🇬🇧 EN</option>
+                            <option value="sw">🇹🇿 SW</option>
+                            <option value="fr">🇫🇷 FR</option>
+                            <option value="zh">🇨🇳 ZH</option>
+                            <option value="ar">🇸🇦 AR</option>
+                        </select>
+                        
+                        <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="syncOfflineData(this)">
+                        <button class="btn btn-outline" onclick="document.getElementById('csv-file-input').click()" data-en="Upload Offline CSV" data-sw="Pakia CSV">Upload Offline CSV</button>
+                        
+                        <button class="btn btn-outline" onclick="exportCSV()" data-en="Export CSV" data-sw="Pakua CSV">Export CSV</button>
                         <input type="date" id="date-picker" class="date-picker" onchange="fetchLogs()">
                     </div>
                 </header>
 
                 <div id="view-dashboard" class="view-container active">
                     <div class="stats-grid">
-                        <div class="stat-card"><div class="stat-title">Total Scans</div><div class="stat-value" id="total-scans">0</div></div>
-                        <div class="stat-card"><div class="stat-title">Unique Members</div><div class="stat-value" id="unique-members">0</div></div>
-                        <div class="stat-card"><div class="stat-title">Security Alerts</div><div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div></div>
+                        <div class="stat-card"><div class="stat-title" data-en="Total Scans" data-sw="Jumla ya Skana">Total Scans</div><div class="stat-value" id="total-scans">0</div></div>
+                        <div class="stat-card"><div class="stat-title" data-en="Unique Members" data-sw="Wanachama Pekee">Unique Members</div><div class="stat-value" id="unique-members">0</div></div>
+                        <div class="stat-card"><div class="stat-title" data-en="Security Alerts" data-sw="Tahadhari za Usalama">Security Alerts</div><div class="stat-value" id="security-alerts" style="color: var(--danger);">0</div></div>
                     </div>
                     <div class="table-card">
                         <table>
-                            <thead><tr><th>Member Name</th><th>Reg Number</th><th>Time</th><th>Status</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th data-en="Member Name" data-sw="Jina la Mwanachama">Member Name</th>
+                                    <th data-en="Reg Number" data-sw="Namba ya Usajili">Reg Number</th>
+                                    <th data-en="Time" data-sw="Muda">Time</th>
+                                    <th data-en="Status" data-sw="Hali">Status</th>
+                                </tr>
+                            </thead>
                             <tbody id="log-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Fetching data...</td></tr></tbody>
                         </table>
                     </div>
@@ -514,16 +567,16 @@
                 <div id="view-analytics" class="view-container">
                     <div class="analytics-grid-top">
                         <div class="analytic-card">
-                            <div class="summary-title">Total Collected</div>
+                            <div class="summary-title" data-en="Total Collected" data-sw="Jumla Iliyokusanywa">Total Collected</div>
                             <div class="summary-val" id="ana-total-scans">0</div>
                             
                             <div class="summary-split">
                                 <div>
-                                    <div class="summary-subtitle">Unique Members</div>
+                                    <div class="summary-subtitle" data-en="Unique Members" data-sw="Wanachama Pekee">Unique Members</div>
                                     <div class="summary-subval" id="ana-unique-members">0</div>
                                 </div>
                                 <div>
-                                    <div class="summary-subtitle">Security Alerts</div>
+                                    <div class="summary-subtitle" data-en="Security Alerts" data-sw="Tahadhari za Usalama">Security Alerts</div>
                                     <div class="summary-subval" id="ana-security-alerts" style="color: var(--danger);">0</div>
                                 </div>
                             </div>
@@ -531,7 +584,7 @@
 
                         <div class="analytic-card">
                             <div class="chart-header">
-                                <div class="chart-title">Received (Last 7 Days)</div>
+                                <div class="chart-title" data-en="Received (Last 7 Days)" data-sw="Imepokelewa (Siku 7)">Received (Last 7 Days)</div>
                                 <select id="lineChartType" class="chart-select" onchange="updateChartType('line')">
                                     <option value="line">Line Chart</option>
                                     <option value="bar">Bar Chart</option>
@@ -547,7 +600,7 @@
                     <div class="analytics-grid-bottom">
                         <div class="analytic-card">
                             <div class="chart-header">
-                                <div class="chart-title">Structure</div>
+                                <div class="chart-title" data-en="Structure" data-sw="Muundo">Structure</div>
                                 <select id="doughnutChartType" class="chart-select" onchange="updateChartType('doughnut')">
                                     <option value="doughnut">Doughnut</option>
                                     <option value="pie">Pie Chart</option>
@@ -561,7 +614,7 @@
 
                         <div class="analytic-card">
                             <div class="chart-header">
-                                <div class="chart-title">Scans vs Alerts (Last 7 Days)</div>
+                                <div class="chart-title" data-en="Scans vs Alerts (Last 7 Days)" data-sw="Skana vs Tahadhari (Siku 7)">Scans vs Alerts (Last 7 Days)</div>
                                 <select id="barChartType" class="chart-select" onchange="updateChartType('bar')">
                                     <option value="bar">Bar Chart</option>
                                     <option value="line">Line Chart</option>
@@ -575,10 +628,17 @@
                 </div>
 
                 <div id="view-pending" class="view-container">
-                    <p style="color: var(--dash-muted); margin-bottom: 24px; font-size: 14px;">Students who requested manual entry.</p>
+                    <p style="color: var(--dash-muted); margin-bottom: 24px; font-size: 14px;" data-en="Students who requested manual entry." data-sw="Wanafunzi waliomba kuingizwa kwa mkono.">Students who requested manual entry.</p>
                     <div class="table-card">
                         <table>
-                            <thead><tr><th>Member Name</th><th>Reg Number</th><th>Request Time</th><th>Actions</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th data-en="Member Name" data-sw="Jina la Mwanachama">Member Name</th>
+                                    <th data-en="Reg Number" data-sw="Namba ya Usajili">Reg Number</th>
+                                    <th data-en="Request Time" data-sw="Muda wa Ombi">Request Time</th>
+                                    <th data-en="Actions" data-sw="Vitendo">Actions</th>
+                                </tr>
+                            </thead>
                             <tbody id="pending-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">No pending requests.</td></tr></tbody>
                         </table>
                     </div>
@@ -586,117 +646,146 @@
 
                 <div id="view-members" class="view-container">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
-                        <p style="color: var(--dash-muted); font-size: 14px; align-self: center;">Manage registered students.</p>
-                        <button class="btn btn-primary" onclick="openAddModal()">+ Add New Member</button>
+                        <p style="color: var(--dash-muted); font-size: 14px; align-self: center;" data-en="Manage registered students." data-sw="Simamia wanafunzi waliosajiliwa.">Manage registered students.</p>
+                        <button class="btn btn-primary" onclick="openAddModal()" data-en="+ Add New Member" data-sw="+ Ongeza Mwanachama">+ Add New Member</button>
                     </div>
                     <div class="table-card">
                         <table>
-                            <thead><tr><th>Name</th><th>Reg Number</th><th>Role</th><th>Actions</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th data-en="Name" data-sw="Jina">Name</th>
+                                    <th data-en="Reg Number" data-sw="Namba ya Usajili">Reg Number</th>
+                                    <th data-en="Role" data-sw="Jukumu">Role</th>
+                                    <th data-en="Actions" data-sw="Vitendo">Actions</th>
+                                </tr>
+                            </thead>
                             <tbody id="members-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="view-trash" class="view-container">
-                    <p style="color: var(--dash-muted); margin-bottom: 24px; font-size: 14px;">Deleted members are stored here.</p>
+                    <p style="color: var(--dash-muted); margin-bottom: 24px; font-size: 14px;" data-en="Deleted members are stored here." data-sw="Wanachama waliofutwa wamehifadhiwa hapa.">Deleted members are stored here.</p>
                     <div class="table-card">
                         <table>
-                            <thead><tr><th>Name</th><th>Reg Number</th><th>Deleted On</th><th>Actions</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th data-en="Name" data-sw="Jina">Name</th>
+                                    <th data-en="Reg Number" data-sw="Namba ya Usajili">Reg Number</th>
+                                    <th data-en="Deleted On" data-sw="Ilifutwa">Deleted On</th>
+                                    <th data-en="Actions" data-sw="Vitendo">Actions</th>
+                                </tr>
+                            </thead>
                             <tbody id="trash-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
 
                 <div id="view-audit" class="view-container">
-                    <p style="color: var(--dash-muted); margin-bottom: 24px; font-size: 14px;">Immutable security evidence.</p>
+                    <p style="color: var(--dash-muted); margin-bottom: 24px; font-size: 14px;" data-en="Immutable security evidence." data-sw="Ushahidi wa usalama usiobadilika.">Immutable security evidence.</p>
                     <div class="table-card">
                         <table>
-                            <thead><tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Details</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th data-en="Timestamp" data-sw="Muda">Timestamp</th>
+                                    <th data-en="Admin" data-sw="Msimamizi">Admin</th>
+                                    <th data-en="Action" data-sw="Kitendo">Action</th>
+                                    <th data-en="Details" data-sw="Maelezo">Details</th>
+                                </tr>
+                            </thead>
                             <tbody id="audit-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading...</td></tr></tbody>
                         </table>
                     </div>
                 </div>
 
-                <div id="view-settings" class="view-container">
-                    <h2 style="margin-bottom: 24px; font-weight: 600;">Account Settings</h2>
-                    <div class="table-card" style="padding: 32px; max-width: 500px;">
-                        <h3 style="margin-bottom: 16px; font-size: 18px;">Change Password</h3>
-                        <div class="form-group"><label>Current Password</label><input type="password" id="current-pass" placeholder="Enter current password"></div>
-                        <div class="form-group"><label>New Password</label><input type="password" id="new-pass" placeholder="Enter new password"></div>
-                        <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirm-pass" placeholder="Confirm new password"></div>
-                        <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
-                    </div>
+                <!-- USER MANUAL VIEW -->
+                <div id="view-help" class="view-container">
+                    <div class="manual-card">
+                        <h2 style="margin-bottom: 24px; font-weight: 600;" data-en="SentinEx System Manual" data-sw="Mwongozo wa Mfumo wa SentinEx">SentinEx System Manual</h2>
+                        
+                        <h3 data-en="1. Hardware Overview" data-sw="1. Muhtasari wa Vifaa">1. Hardware Overview</h3>
+                        <ul>
+                            <li data-en="<strong>Normal Scan:</strong> Place your finger on the sensor. The device beeps and the LCD shows your name. The data is instantly synced to this cloud dashboard." data-sw="<strong>Skana ya Kawaida:</strong> Weka kidole chako kwenye kihisi. Kifaa hulia na LCD inaonyesha jina lako. Data inasawazishwa papo hapo kwenye dashibodi hii ya wingu."><strong>Normal Scan:</strong> Place your finger on the sensor. The device beeps and the LCD shows your name. The data is instantly synced to this cloud dashboard.</li>
+                            <li data-en="<strong>Injured Finger:</strong> If your finger cannot be read, press the <strong>* (star)</strong> key on the keypad. Type your Assigned ID (e.g., 3) and press <strong>#</strong>. This sends a Pending Request to the Admin." data-sw="<strong>Kidole Kilichojeruhiwa:</strong> Ikiwa kidole chako hakiwezi kusomwa, bonyeza kitufe cha <strong>* (nyota)</strong>. Andika Kitambulisho chako (k.m., 3) na ubonyeze <strong>#</strong>. Hii inatuma Ombi kwa Msimamizi."><strong>Injured Finger:</strong> If your finger cannot be read, press the <strong>* (star)</strong> key on the keypad. Type your Assigned ID (e.g., 3) and press <strong>#</strong>. This sends a Pending Request to the Admin.</li>
+                            <li data-en="<strong>Power Saving:</strong> The system runs on a schedule. It shuts down at Closing Time and wakes up at Start Time automatically. You can also press and hold the physical power button for 1 second to sleep it manually." data-sw="<strong>Kuweka Akiba ya Umeme:</strong> Mfumo hufanya kazi kwa ratiba. Huzima wakati wa Kufunga na kuamka wakati wa Kuanza kiotomatiki."><strong>Power Saving:</strong> The system runs on a schedule. It shuts down at Closing Time and wakes up at Start Time automatically. You can also press and hold the physical power button for 1 second to sleep it manually.</li>
+                        </ul>
 
-                    <div class="table-card" style="padding: 32px; max-width: 500px; margin-top: 24px;">
-                        <h3 style="margin-bottom: 16px; font-size: 18px;">Attendance Timings</h3>
-                        
-                        <div class="form-group">
-                            <label>Start Time (24h format)</label>
-                            <input type="time" id="start-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
-                        </div>
-                        <div class="form-group">
-                            <label>Late Time (24h format)</label>
-                            <input type="time" id="late-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
-                        </div>
-                        <div class="form-group">
-                            <label>Closing Time (24h format)</label>
-                            <input type="time" id="closing-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px;">
-                        </div>
-                        
-                        <button class="btn btn-primary" onclick="saveTimes()">Save Timings</button>
+                        <h3 data-en="2. Syncing Offline Data (SD Card)" data-sw="2. Kusawazisha Data ya Nje ya Mtandao">2. Syncing Offline Data (SD Card)</h3>
+                        <ul>
+                            <li data-en="If the internet goes down, the device saves all scans to the built-in SD card." data-sw="Ikiwa mtandao unakatika, kifaa huhifadhi skana zote kwenye kadi ya SD iliyojengwa.">If the internet goes down, the device saves all scans to the built-in SD card.</li>
+                            <li data-en="When the internet is restored, take the SD card out, plug it into your PC, and open the <code>attendance.csv</code> file." data-sw="Mtandao unaporejeshwa, toa kadi ya SD, iunganishe kwenye PC yako, na ufungue faili la <code>attendance.csv</code>.">When the internet is restored, take the SD card out, plug it into your PC, and open the <code>attendance.csv</code> file.</li>
+                            <li data-en="Click the <strong>Upload Offline CSV</strong> button on this dashboard and select the file. The system will automatically parse the data and save it to the cloud." data-sw="Bonyeza kitufe cha <strong>Pakia CSV</strong> kwenye dashibodi hii na uchague faili. Mfumo utachambua data kiotomatiki na kuihifadhi kwenye wingu.">Click the <strong>Upload Offline CSV</strong> button on this dashboard and select the file. The system will automatically parse the data and save it to the cloud.</li>
+                        </ul>
+
+                        <h3 data-en="3. Managing Members" data-sw="3. Kusimamia Wanachama">3. Managing Members</h3>
+                        <ul>
+                            <li data-en="<strong>Add Member:</strong> Go to the Members Directory and click '+ Add New Member'. Enter their Full Name, Registration Number, and Fingerprint ID slot (1-150)." data-sw="<strong>Ongeza Mwanachama:</strong> Nenda kwenye Orodha ya Wanachama na ubonyeze '+ Ongeza Mwanachama'. Ingiza Jina Kamili, Namba ya Usajili, na Kitambulisho cha Kidole (1-150)."><strong>Add Member:</strong> Go to the Members Directory and click '+ Add New Member'. Enter their Full Name, Registration Number, and Fingerprint ID slot (1-150).</li>
+                            <li data-en="<strong>Edit/Delete:</strong> Click 'Edit' to fix typos. Click 'Delete' to move a student to the Trash Bin. You can restore them from the Trash Bin if needed." data-sw="<strong>Hariri/Futa:</strong> Bonyeza 'Hariri' kurekebisha makosa. Bonyeza 'Futa' kuhamisha mwanafunzi kwenye Chakavu. Unaweza kuwarejesha kutoka Chakavu."><strong>Edit/Delete:</strong> Click 'Edit' to fix typos. Click 'Delete' to move a student to the Trash Bin. You can restore them from the Trash Bin if needed.</li>
+                        </ul>
+
+                        <h3 data-en="4. Attendance & Time Settings" data-sw="4. Mipangilio ya Mahudhurio na Muda">4. Attendance & Time Settings</h3>
+                        <ul>
+                            <li data-en="Go to the <strong>Settings</strong> tab to configure your school's schedule." data-sw="Nenda kwenye kichupo cha <strong>Mipangilio</strong> kusanidi ratiba ya shule yako.">Go to the <strong>Settings</strong> tab to configure your school's schedule.</li>
+                            <li data-en="<strong>Start Time:</strong> Scans before this time will be denied." data-sw="<strong>Muda wa Kuanza:</strong> Skana kabla ya muda huu zitakataliwa."><strong>Start Time:</strong> Scans before this time will be denied.</li>
+                            <li data-en="<strong>Late Time:</strong> Scans after this time will be marked as 'Late' (Red badge)." data-sw="<strong>Muda wa Kuchelewa:</strong> Skana baada ya muda huu zitawekwa alama ya 'Umechelewa' (Beji Nyekundu)."><strong>Late Time:</strong> Scans after this time will be marked as 'Late' (Red badge).</li>
+                            <li data-en="<strong>Closing Time:</strong> Scans after this time will be denied." data-sw="<strong>Muda wa Kufunga:</strong> Skana baada ya muda huu zitakataliwa."><strong>Closing Time:</strong> Scans after this time will be denied.</li>
+                        </ul>
+
+                        <h3 data-en="5. Audit Logs" data-sw="5. Kumbukumbu">5. Audit Logs</h3>
+                        <ul>
+                            <li data-en="Every action you take (Adding students, changing settings, deleting records) is permanently recorded here. This ensures transparency and prevents internal fraud." data-sw="Kila hatua unayochukua (Kuongeza wanafunzi, kubadilisha mipangilio, kufuta kumbukumbu) imerekodiwa hapa kabisa. Hii inahakikisha uwazi na kuzuia udanganyifu wa ndani.">Every action you take (Adding students, changing settings, deleting records) is permanently recorded here. This ensures transparency and prevents internal fraud.</li>
+                        </ul>
                     </div>
                 </div>
 
-                <!-- NEW: COMPLETE USER MANUAL -->
-                <div id="view-help" class="view-container">
-                    <div class="manual-card">
-                        <h2 style="margin-bottom: 24px; font-weight: 600;">SentinEx System Manual</h2>
+                <div id="view-settings" class="view-container">
+                    <h2 style="margin-bottom: 24px; font-weight: 600;" data-en="Account Settings" data-sw="Mipangilio ya Akaunti">Account Settings</h2>
+                    <div class="table-card" style="padding: 32px; max-width: 500px;">
+                        <h3 style="margin-bottom: 16px; font-size: 18px;" data-en="Change Password" data-sw="Badilisha Nywila">Change Password</h3>
+                        <div class="form-group"><label data-en="Current Password" data-sw="Nywila ya Sasa">Current Password</label><input type="password" id="current-pass" placeholder="Enter current password"></div>
+                        <div class="form-group"><label data-en="New Password" data-sw="Nywila Mpya">New Password</label><input type="password" id="new-pass" placeholder="Enter new password"></div>
+                        <div class="form-group"><label data-en="Confirm New Password" data-sw="Thibitisha Nywila Mpya">Confirm New Password</label><input type="password" id="confirm-pass" placeholder="Confirm new password"></div>
+                        <button class="btn btn-primary" onclick="changePassword()" data-en="Update Password" data-sw="Sasisha Nywila">Update Password</button>
+                    </div>
+
+                    <div class="table-card" style="padding: 32px; max-width: 500px; margin-top: 24px;">
+                        <h3 style="margin-bottom: 16px; font-size: 18px;" data-en="Attendance Timings" data-sw="Muda wa Mahudhurio">Attendance Timings</h3>
                         
-                        <h3>1. Hardware Overview</h3>
-                        <ul>
-                            <li><strong>Normal Scan:</strong> Place your finger on the sensor. The device beeps and the LCD shows your name. The data is instantly synced to this cloud dashboard.</li>
-                            <li><strong>Injured Finger:</strong> If your finger cannot be read, press the <strong>* (star)</strong> key on the keypad. Type your Assigned ID (e.g., 3) and press <strong>#</strong>. This sends a "Pending Request" to the Admin.</li>
-                            <li><strong>Power Saving:</strong> The system runs on a schedule. It shuts down at Closing Time and wakes up at Start Time automatically. You can also press and hold the physical power button for 1 second to sleep it manually.</li>
-                        </ul>
-
-                        <h3>2. Syncing Offline Data (SD Card)</h3>
-                        <ul>
-                            <li>If the internet goes down, the device saves all scans to the built-in SD card.</li>
-                            <li>When the internet is restored, you can sync the data. Take the SD card out of the device, plug it into your PC, and open the <code>attendance.csv</code> file.</li>
-                            <li>Click the <strong>"Upload Offline CSV"</strong> button on this dashboard and select the file. The system will automatically parse the data and save it to the cloud.</li>
-                        </ul>
-
-                        <h3>3. Managing Members</h3>
-                        <ul>
-                            <li><strong>Add Member:</strong> Go to the Members Directory and click "+ Add New Member". Enter their Full Name, Registration Number, and the Fingerprint ID slot (1-150).</li>
-                            <li><strong>Edit/Delete:</strong> Click "Edit" to fix typos. Click "Delete" to move a student to the Trash Bin. You can restore them from the Trash Bin if needed.</li>
-                        </ul>
-
-                        <h3>4. Attendance & Time Settings</h3>
-                        <ul>
-                            <li>Go to the <strong>Settings</strong> tab to configure your school's schedule.</li>
-                            <li><strong>Start Time:</strong> Scans before this time will be denied.</li>
-                            <li><strong>Late Time:</strong> Scans after this time will be marked as "Late" (Red badge).</li>
-                            <li><strong>Closing Time:</strong> Scans after this time will be denied.</li>
-                        </ul>
-
-                        <h3>5. Audit Logs</h3>
-                        <ul>
-                            <li>Every action you take (Adding students, changing settings, deleting records) is permanently recorded here. This ensures transparency and prevents internal fraud.</li>
-                        </ul>
+                        <div class="form-group">
+                            <label data-en="Start Time (24h format)" data-sw="Muda wa Kuanza">Start Time (24h format)</label>
+                            <input type="time" id="start-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; background: var(--bg-color); color: var(--text-main);">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Late Time (24h format)" data-sw="Muda wa Kuchelewa">Late Time (24h format)</label>
+                            <input type="time" id="late-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; background: var(--bg-color); color: var(--text-main);">
+                        </div>
+                        <div class="form-group">
+                            <label data-en="Closing Time (24h format)" data-sw="Muda wa Kufunga">Closing Time (24h format)</label>
+                            <input type="time" id="closing-time-input" style="width: 100%; padding: 12px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; background: var(--bg-color); color: var(--text-main);">
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="saveTimes()" data-en="Save Timings" data-sw="Hifadhi Muda">Save Timings</button>
                     </div>
                 </div>
 
                 <div id="view-super-dashboard" class="view-container">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
                         <div class="stats-grid" style="flex: 1; margin-bottom: 0;">
-                            <div class="stat-card"><div class="stat-title">Total Clients</div><div class="stat-value" id="total-tenants">0</div></div>
-                            <div class="stat-card"><div class="stat-title">Pending Approvals</div><div class="stat-value" id="pending-tenants" style="color: var(--warning);">0</div></div>
+                            <div class="stat-card"><div class="stat-title" data-en="Total Clients" data-sw="Wateja Wote">Total Clients</div><div class="stat-value" id="total-tenants">0</div></div>
+                            <div class="stat-card"><div class="stat-title" data-en="Pending Approvals" data-sw="Kuidhinisha">Pending Approvals</div><div class="stat-value" id="pending-tenants" style="color: var(--warning);">0</div></div>
                         </div>
                     </div>
                     <div class="table-card" style="margin-top: 24px;">
                         <table>
-                            <thead><tr><th>Logo</th><th>School Name</th><th>Tenant ID</th><th>Status</th><th>Actions</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th data-en="Logo" data-sw="Nembo">Logo</th>
+                                    <th data-en="School Name" data-sw="Jina la Shule">School Name</th>
+                                    <th data-en="Tenant ID" data-sw="Kitambulisho">Tenant ID</th>
+                                    <th data-en="Status" data-sw="Hali">Status</th>
+                                    <th data-en="Actions" data-sw="Vitendo">Actions</th>
+                                </tr>
+                            </thead>
                             <tbody id="super-body">
                                 <tr><td colspan="5" style="text-align:center; padding: 40px; color: var(--dash-muted);">Loading schools...</td></tr>
                             </tbody>
@@ -705,13 +794,13 @@
                 </div>
 
                 <div id="view-super-settings" class="view-container">
-                    <h2 style="margin-bottom: 24px; font-weight: 600;">Super Admin Settings</h2>
+                    <h2 style="margin-bottom: 24px; font-weight: 600;" data-en="Super Admin Settings" data-sw="Mipangilio ya Msimamizi Mkuu">Super Admin Settings</h2>
                     <div class="table-card" style="padding: 32px; max-width: 500px;">
-                        <h3 style="margin-bottom: 16px; font-size: 18px;">Change Master Password</h3>
-                        <div class="form-group"><label>Current Password</label><input type="password" id="sa-current-pass" placeholder="Enter current password"></div>
-                        <div class="form-group"><label>New Password</label><input type="password" id="sa-new-pass" placeholder="Enter new password"></div>
-                        <div class="form-group"><label>Confirm New Password</label><input type="password" id="sa-confirm-pass" placeholder="Confirm new password"></div>
-                        <button class="btn btn-primary" onclick="changeSuperPassword()">Update Master Password</button>
+                        <h3 style="margin-bottom: 16px; font-size: 18px;" data-en="Change Master Password" data-sw="Badilisha Nywila Kuu">Change Master Password</h3>
+                        <div class="form-group"><label data-en="Current Password" data-sw="Nywila ya Sasa">Current Password</label><input type="password" id="sa-current-pass" placeholder="Enter current password"></div>
+                        <div class="form-group"><label data-en="New Password" data-sw="Nywila Mpya">New Password</label><input type="password" id="sa-new-pass" placeholder="Enter new password"></div>
+                        <div class="form-group"><label data-en="Confirm New Password" data-sw="Thibitisha Nywila Mpya">Confirm New Password</label><input type="password" id="sa-confirm-pass" placeholder="Confirm new password"></div>
+                        <button class="btn btn-primary" onclick="changeSuperPassword()" data-en="Update Master Password" data-sw="Sasisha Nywila Kuu">Update Master Password</button>
                     </div>
                 </div>
             </main>
@@ -720,48 +809,98 @@
 
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2 id="modal-title">Add New Member</h2>
-            <div class="form-group"><label>Fingerprint ID (Slot 1-150)</label><input type="number" id="modal-id" placeholder="e.g. 4"></div>
-            <div class="form-group"><label>Full Name</label><input type="text" id="modal-name" placeholder="e.g. John Doe"></div>
-            <div class="form-group"><label>Registration Number</label><input type="text" id="modal-reg" placeholder="e.g. 2024-04-001"></div>
+            <h2 id="modal-title" data-en="Add New Member" data-sw="Ongeza Mwanachama">Add New Member</h2>
+            <div class="form-group"><label data-en="Fingerprint ID (Slot 1-150)" data-sw="Kitambulisho cha Kidole">Fingerprint ID (Slot 1-150)</label><input type="number" id="modal-id" placeholder="e.g. 4"></div>
+            <div class="form-group"><label data-en="Full Name" data-sw="Jina Kamili">Full Name</label><input type="text" id="modal-name" placeholder="e.g. John Doe"></div>
+            <div class="form-group"><label data-en="Registration Number" data-sw="Namba ya Usajili">Registration Number</label><input type="text" id="modal-reg" placeholder="e.g. 2024-04-001"></div>
             <div style="display: flex; gap: 12px; margin-top: 32px;">
-                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal()">Cancel</button>
-                <button class="btn btn-success" style="flex: 1;" onclick="saveStudent()">Save Member</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal()" data-en="Cancel" data-sw="Ghairi">Cancel</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="saveStudent()" data-en="Save Member" data-sw="Hifadhi Mwanachama">Save Member</button>
             </div>
         </div>
     </div>
 
     <div id="tenant-modal" class="modal-overlay">
         <div class="modal-card">
-            <h2>Apply for System Access</h2>
-            <p style="font-size: 13px; color: var(--dash-muted); margin-bottom: 20px;">Your application will be reviewed by SentinEx HQ.</p>
-            <div class="form-group"><label>Tenant ID (e.g. harvard)</label><input type="text" id="new-tenant-id" placeholder="No spaces"></div>
-            <div class="form-group"><label>School Name</label><input type="text" id="new-tenant-name" placeholder="e.g. Harvard University"></div>
-            <div class="form-group"><label>School Logo (Upload Image)</label><input type="file" id="new-tenant-logo" accept="image/*"></div>
+            <h2 data-en="Apply for System Access" data-sw="Omba Ufikiaji wa Mfumo">Apply for System Access</h2>
+            <p style="font-size: 13px; color: var(--dash-muted); margin-bottom: 20px;" data-en="Your application will be reviewed by SentinEx HQ." data-sw="Ombi lako litapitiwa na makao makuu ya SentinEx.">Your application will be reviewed by SentinEx HQ.</p>
+            <div class="form-group"><label data-en="Tenant ID (e.g. harvard)" data-sw="Kitambulisho cha Taasisi">Tenant ID (e.g. harvard)</label><input type="text" id="new-tenant-id" placeholder="No spaces"></div>
+            <div class="form-group"><label data-en="School Name" data-sw="Jina la Shule">School Name</label><input type="text" id="new-tenant-name" placeholder="e.g. Harvard University"></div>
+            <div class="form-group"><label data-en="School Logo (Upload Image)" data-sw="Nembo ya Shule">School Logo (Upload Image)</label><input type="file" id="new-tenant-logo" accept="image/*"></div>
             <div style="display: flex; gap: 12px; margin-top: 32px;">
-                <button class="btn btn-secondary" style="flex: 1;" onclick="closeTenantModal()">Cancel</button>
-                <button class="btn btn-success" style="flex: 1;" onclick="saveTenant()">Submit Application</button>
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeTenantModal()" data-en="Cancel" data-sw="Ghairi">Cancel</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="saveTenant()" data-en="Submit Application" data-sw="Wasilisha Ombi">Submit Application</button>
             </div>
         </div>
     </div>
 
     <script>
-        function togglePasswordVisibility() {
-            const passwordInput = document.getElementById('password');
-            const eyeOpen = document.getElementById('eye-open');
-            const eyeClosed = document.getElementById('eye-closed');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                eyeOpen.style.display = 'none';
-                eyeClosed.style.display = 'block';
-            } else {
-                passwordInput.type = 'password';
-                eyeOpen.style.display = 'block';
-                eyeClosed.style.display = 'none';
-            }
+        // --- THEME TOGGLE ---
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            
+            // Update all toggle icons
+            const icons = document.querySelectorAll('.icon-btn');
+            icons.forEach(btn => {
+                btn.innerText = newTheme === 'dark' ? '☀️' : '🌙';
+            });
         }
 
+        // --- LANGUAGE SYSTEM ---
+        const translations = {
+            'en': {},
+            'sw': {},
+            'fr': {
+                "Dashboard": "Tableau de bord", "Analytics": "Analytique", "Pending Approvals": "Approbations en attente",
+                "Members Directory": "Annuaire des membres", "Trash Bin": "Corbeille", "Audit Logs": "Journaux d'audit",
+                "User Manual": "Manuel d'utilisation", "Settings": "Paramètres", "Logout": "Déconnexion",
+                "Total Scans": "Total des scans", "Unique Members": "Membres uniques", "Security Alerts": "Alertes de sécurité",
+                "Member Name": "Nom du membre", "Reg Number": "Numéro d'enregistrement", "Time": "Heure", "Status": "Statut",
+                "Export CSV": "Exporter CSV", "Upload Offline CSV": "Importer CSV", "Client Portal &rarr;": "Portail Client &rarr;",
+                "About": "À Propos", "Services": "Services", "Work": "Travail", "FAQ": "FAQ", "Team": "Équipe", "Contact": "Contact"
+            },
+            'zh': {
+                "Dashboard": "仪表板", "Analytics": "分析", "Pending Approvals": "待批准",
+                "Members Directory": "成员目录", "Trash Bin": "回收站", "Audit Logs": "审计日志",
+                "User Manual": "用户手册", "Settings": "设置", "Logout": "登出",
+                "Total Scans": "总扫描数", "Unique Members": "独立成员", "Security Alerts": "安全警报",
+                "Member Name": "成员姓名", "Reg Number": "注册号", "Time": "时间", "Status": "状态",
+                "Export CSV": "导出 CSV", "Upload Offline CSV": "上传离线 CSV", "Client Portal &rarr;": "客户门户 &rarr;",
+                "About": "关于", "Services": "服务", "Work": "工作", "FAQ": "常见问题", "Team": "团队", "Contact": "联系我们"
+            },
+            'ar': {
+                "Dashboard": "لوحة القيادة", "Analytics": "تحليلات", "Pending Approvals": "الموافقات المعلقة",
+                "Members Directory": "دليل الأعضاء", "Trash Bin": "سلة المهملات", "Audit Logs": "سجلات التدقيق",
+                "User Manual": "دليل المستخدم", "Settings": "الإعدادات", "Logout": "تسجيل الخروج",
+                "Total Scans": "إجمالي المسح", "Unique Members": "أعضاء فريدون", "Security Alerts": "تنبيهات أمنية",
+                "Member Name": "اسم العضو", "Reg Number": "رقم التسجيل", "Time": "الوقت", "Status": "الحالة",
+                "Export CSV": "تصدير CSV", "Upload Offline CSV": "تحميل CSV", "Client Portal &rarr;": "بوابة العميل &rarr;",
+                "About": "من نحن", "Services": "خدماتنا", "Work": "أعمالنا", "FAQ": "الأسئلة الشائعة", "Team": "فريقنا", "Contact": "اتصل بنا"
+            }
+        };
+
+        function changeLanguage(lang) {
+            // Sync both dropdowns
+            document.querySelectorAll('.lang-select').forEach(sel => sel.value = lang);
+
+            // Translate all elements with data-en or data-sw
+            document.querySelectorAll('[data-en]').forEach(el => {
+                const originalEn = el.getAttribute('data-en');
+                if (lang === 'en') {
+                    el.innerHTML = originalEn;
+                } else if (lang === 'sw') {
+                    const swText = el.getAttribute('data-sw');
+                    if(swText) el.innerHTML = swText;
+                } else if (translations[lang] && translations[lang][originalEn]) {
+                    el.innerHTML = translations[lang][originalEn];
+                }
+            });
+        }
+
+        // --- LANDING PAGE JS ---
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -795,6 +934,7 @@
             }
         }
 
+        // --- DASHBOARD JS ---
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
@@ -897,10 +1037,10 @@
             document.getElementById('topbar-actions').style.display = (tabId === 'dashboard') ? 'flex' : 'none';
 
             const titles = { 
-                'dashboard': 'Attendance Overview', 'analytics': 'Data Analytics',
+                'dashboard': 'Dashboard', 'analytics': 'Analytics',
                 'pending': 'Pending Approvals', 'members': 'Members Directory', 
-                'trash': 'Trash Bin', 'audit': 'System Audit Logs', 'settings': 'Account Settings',
-                'help': 'User Manual', 'super-dashboard': 'Master Control Panel', 'super-settings': 'Super Admin Settings'
+                'trash': 'Trash Bin', 'audit': 'Audit Logs', 'help': 'User Manual', 'settings': 'Settings',
+                'super-dashboard': 'Master Control Panel', 'super-settings': 'Super Admin Settings'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
@@ -940,7 +1080,6 @@
             document.body.removeChild(link);
         }
 
-        // --- NEW: SYNC OFFLINE DATA ---
         async function syncOfflineData(input) {
             if (!input.files || input.files.length === 0) return;
             
@@ -984,7 +1123,7 @@
             };
             
             reader.readAsText(file);
-            input.value = ""; // Reset input
+            input.value = ""; 
         }
 
         async function saveTimes() {
