@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
+        /* ALL PREVIOUS CSS REMAINS EXACTLY THE SAME */
         :root {
             --bg-color: #f6f5f2; --text-main: #111111; --text-muted: #555555;
             --card-bg: #ffffff; --border: #e5e5e5; --primary: #111111;
@@ -183,8 +184,6 @@
         .badge-suspended { background: #fef2f2; color: var(--danger); }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
-        
-        /* NEW: RED LATE BADGE & PURPLE MULTIPLE BADGE */
         .badge-late { background: #fef2f2; color: #dc2626; border: 1px solid #fca5a5; }
         .badge-multiple { background: #faf5ff; color: #9333ea; border: 1px solid #d8b4fe; margin-left: 6px; }
         
@@ -201,6 +200,14 @@
         .chart-select { padding: 6px 12px; border: 1px solid var(--dash-border); border-radius: 6px; font-size: 12px; outline: none; background: #f8fafc; cursor: pointer; font-weight: 500; color: var(--text-main); }
         .chart-container-large { height: 250px; width: 100%; }
         .chart-container-small { height: 200px; width: 100%; display: flex; justify-content: center; }
+        
+        /* MANUAL STYLES */
+        .manual-card { background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--dash-border); max-width: 800px; line-height: 1.8; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .manual-card h3 { margin-top: 30px; margin-bottom: 10px; font-weight: 600; color: var(--text-main); font-size: 18px; }
+        .manual-card h3:first-child { margin-top: 0; }
+        .manual-card p, .manual-card li { color: var(--dash-muted); font-size: 14px; }
+        .manual-card ul { padding-left: 20px; margin-bottom: 20px; }
+        .manual-card strong { color: var(--text-main); }
         
         @media (max-width: 900px) {
             nav { flex-direction: column; gap: 15px; padding: 15px; }
@@ -458,6 +465,9 @@
                     <div class="nav-item" onclick="switchTab('settings', this)">
                         <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span>
                     </div>
+                    <div class="nav-item" onclick="switchTab('help', this)">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg><span>User Manual</span>
+                    </div>
                 </div>
 
                 <div class="dash-nav" id="super-admin-menu" style="display: none;">
@@ -478,6 +488,10 @@
                 <header class="topbar">
                     <h2 id="page-title">Dashboard</h2>
                     <div id="topbar-actions" style="display: flex; gap: 12px;">
+                        <!-- NEW: SYNC OFFLINE CSV BUTTON -->
+                        <input type="file" id="csv-file-input" accept=".csv" style="display: none;" onchange="syncOfflineData(this)">
+                        <button class="btn btn-outline" onclick="document.getElementById('csv-file-input').click()">Upload Offline CSV</button>
+                        
                         <button class="btn btn-outline" onclick="exportCSV()">Export CSV</button>
                         <input type="date" id="date-picker" class="date-picker" onchange="fetchLogs()">
                     </div>
@@ -613,7 +627,6 @@
                         <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
                     </div>
 
-                    <!-- NEW: ATTENDANCE TIMINGS -->
                     <div class="table-card" style="padding: 32px; max-width: 500px; margin-top: 24px;">
                         <h3 style="margin-bottom: 16px; font-size: 18px;">Attendance Timings</h3>
                         
@@ -631,6 +644,46 @@
                         </div>
                         
                         <button class="btn btn-primary" onclick="saveTimes()">Save Timings</button>
+                    </div>
+                </div>
+
+                <!-- NEW: COMPLETE USER MANUAL -->
+                <div id="view-help" class="view-container">
+                    <div class="manual-card">
+                        <h2 style="margin-bottom: 24px; font-weight: 600;">SentinEx System Manual</h2>
+                        
+                        <h3>1. Hardware Overview</h3>
+                        <ul>
+                            <li><strong>Normal Scan:</strong> Place your finger on the sensor. The device beeps and the LCD shows your name. The data is instantly synced to this cloud dashboard.</li>
+                            <li><strong>Injured Finger:</strong> If your finger cannot be read, press the <strong>* (star)</strong> key on the keypad. Type your Assigned ID (e.g., 3) and press <strong>#</strong>. This sends a "Pending Request" to the Admin.</li>
+                            <li><strong>Power Saving:</strong> The system runs on a schedule. It shuts down at Closing Time and wakes up at Start Time automatically. You can also press and hold the physical power button for 1 second to sleep it manually.</li>
+                        </ul>
+
+                        <h3>2. Syncing Offline Data (SD Card)</h3>
+                        <ul>
+                            <li>If the internet goes down, the device saves all scans to the built-in SD card.</li>
+                            <li>When the internet is restored, you can sync the data. Take the SD card out of the device, plug it into your PC, and open the <code>attendance.csv</code> file.</li>
+                            <li>Click the <strong>"Upload Offline CSV"</strong> button on this dashboard and select the file. The system will automatically parse the data and save it to the cloud.</li>
+                        </ul>
+
+                        <h3>3. Managing Members</h3>
+                        <ul>
+                            <li><strong>Add Member:</strong> Go to the Members Directory and click "+ Add New Member". Enter their Full Name, Registration Number, and the Fingerprint ID slot (1-150).</li>
+                            <li><strong>Edit/Delete:</strong> Click "Edit" to fix typos. Click "Delete" to move a student to the Trash Bin. You can restore them from the Trash Bin if needed.</li>
+                        </ul>
+
+                        <h3>4. Attendance & Time Settings</h3>
+                        <ul>
+                            <li>Go to the <strong>Settings</strong> tab to configure your school's schedule.</li>
+                            <li><strong>Start Time:</strong> Scans before this time will be denied.</li>
+                            <li><strong>Late Time:</strong> Scans after this time will be marked as "Late" (Red badge).</li>
+                            <li><strong>Closing Time:</strong> Scans after this time will be denied.</li>
+                        </ul>
+
+                        <h3>5. Audit Logs</h3>
+                        <ul>
+                            <li>Every action you take (Adding students, changing settings, deleting records) is permanently recorded here. This ensures transparency and prevents internal fraud.</li>
+                        </ul>
                     </div>
                 </div>
 
@@ -809,7 +862,6 @@
                         if(data.logo) document.getElementById('tenant-logo').src = data.logo;
                         document.getElementById('tenant-name').innerText = data.name;
                         
-                        // Set the Time input values
                         document.getElementById('start-time-input').value = currentStartTime;
                         document.getElementById('late-time-input').value = currentLateTime;
                         document.getElementById('closing-time-input').value = currentClosingTime;
@@ -848,7 +900,7 @@
                 'dashboard': 'Attendance Overview', 'analytics': 'Data Analytics',
                 'pending': 'Pending Approvals', 'members': 'Members Directory', 
                 'trash': 'Trash Bin', 'audit': 'System Audit Logs', 'settings': 'Account Settings',
-                'super-dashboard': 'Master Control Panel', 'super-settings': 'Super Admin Settings'
+                'help': 'User Manual', 'super-dashboard': 'Master Control Panel', 'super-settings': 'Super Admin Settings'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
@@ -861,7 +913,6 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
-        // --- FIXED CSV EXPORT (Split Date and Time) ---
         function exportCSV() {
             if (logsData.length === 0) { alert("No data to export for this date."); return; }
             
@@ -870,17 +921,12 @@
             
             logsData.forEach(log => {
                 const dateObj = new Date(log.scanned_at);
-                
-                // Format Date: YYYY-MM-DD
                 const dateStr = dateObj.getFullYear() + '-' + 
                                 String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
                                 String(dateObj.getDate()).padStart(2, '0');
-                                
-                // Format Time: HH:mm:ss (24h)
                 const timeStr = String(dateObj.getHours()).padStart(2, '0') + ':' + 
                                 String(dateObj.getMinutes()).padStart(2, '0') + ':' + 
                                 String(dateObj.getSeconds()).padStart(2, '0');
-                                      
                 const reg = log.reg_number || 'N/A';
                 csvContent += `"${log.student_name}","${reg}","${dateStr}","${timeStr}","${log.status}"\n`;
             });
@@ -892,6 +938,53 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // --- NEW: SYNC OFFLINE DATA ---
+        async function syncOfflineData(input) {
+            if (!input.files || input.files.length === 0) return;
+            
+            const file = input.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = async function(e) {
+                const text = e.target.result;
+                const lines = text.split('\n').filter(line => line.trim() !== '');
+                let records = [];
+                
+                lines.forEach(line => {
+                    const parts = line.split(',');
+                    if (parts.length >= 3) {
+                        records.push({
+                            fingerprint_id: parseInt(parts[0]),
+                            status: parts[1].trim(),
+                            timestamp: parts[2].trim()
+                        });
+                    }
+                });
+                
+                if (records.length === 0) { alert("No valid records found in CSV."); return; }
+                
+                if (!confirm(`Found ${records.length} records. Upload to cloud?`)) return;
+                
+                try {
+                    const res = await fetch('/api/sync-offline', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ tenant_id: currentTenant, records: records })
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        alert(`Successfully synced ${data.inserted} offline records!`);
+                        fetchLogs();
+                    } else {
+                        alert("Error syncing data.");
+                    }
+                } catch (err) { alert("Network error during sync."); }
+            };
+            
+            reader.readAsText(file);
+            input.value = ""; // Reset input
         }
 
         async function saveTimes() {
