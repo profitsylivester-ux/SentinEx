@@ -15,43 +15,50 @@
             --success: #059669; --danger: #dc2626; --warning: #d97706;
             --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
             --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
         h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; }
+        em { font-family: 'Playfair Display', serif; font-style: italic; }
 
-        /* LOGIN & LAYOUT (Same as before) */
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
+        .modal-card { background: var(--card-bg); padding: 30px; border-radius: 12px; width: 400px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
+        .modal-card h2 { margin-bottom: 20px; font-size: 1.5rem; }
+        .form-group { margin-bottom: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
+        .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
+        .form-group input:disabled { background: #e2e8f0; cursor: not-allowed; }
+        
+        .btn { padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 14px; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-secondary { background: #e2e8f0; color: var(--text-main); }
+        .btn-danger { background: #fee2e2; color: var(--danger); }
+        .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+        /* LOGIN & LAYOUT */
         #login-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.9); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; }
         .login-card { background: var(--card-bg); padding: 50px; border-radius: 16px; width: 420px; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; }
-        .login-card h1 { font-size: 2.5rem; margin-bottom: 10px; }
-        .login-card p { color: var(--text-muted); font-size: 15px; margin-bottom: 30px; }
-        .form-group { margin-bottom: 20px; text-align: left; }
-        .form-group label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
-        .form-group input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 15px; outline: none; }
-        .btn-primary { background: var(--primary); color: white; padding: 14px 24px; border-radius: 8px; font-size: 15px; font-weight: 500; cursor: pointer; border: none; width: 100%; }
-
-        #app-screen { display: none; width: 100%; height: 100vh; }
         
-        /* SIDEBAR */
+        #app-screen { display: none; width: 100%; height: 100vh; }
         .sidebar { width: 260px; background: #111111; color: white; display: flex; flex-direction: column; padding: 24px 16px; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; }
         .sidebar-logo svg { width: 28px; height: 28px; }
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: #888; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 15px; font-weight: 500; }
         .nav-item:hover, .nav-item.active { background: #222; color: white; }
         .nav-item.danger { color: #ef4444; margin-top: auto; }
-        .nav-item.danger:hover { background: rgba(239, 68, 68, 0.1); }
 
-        /* MAIN CONTENT */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 80px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--border); }
-        .topbar h2 { font-size: 1.8rem; margin: 0; }
-        .date-picker { padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Inter'; outline: none; cursor: pointer; background: #fafafa; }
+        .topbar h2 { font-size: 1.8rem; }
+        .date-picker { padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Inter'; outline: none; }
 
         .view-container { padding: 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
 
-        /* CARDS & TABLES */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border); }
         .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 12px; }
@@ -61,24 +68,15 @@
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
         th { background: #f8fafc; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        
         .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
 
-        /* ACTION BUTTONS */
-        .btn-danger { background: #fee2e2; color: #dc2626; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
-        .btn-danger:hover { background: #fca5a5; }
-        .btn-restore { background: #ecfdf5; color: #059669; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 12px; }
-        .btn-restore:hover { background: #a7f3d0; }
-
-        /* MANUAL / HELP STYLES */
         .manual-card { background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px; line-height: 1.8; }
         .manual-card h3 { margin-top: 30px; margin-bottom: 10px; font-family: 'Inter'; font-weight: 600; color: var(--primary); }
-        .manual-card h3:first-child { margin-top: 0; }
         .manual-card p, .manual-card li { color: var(--text-muted); font-size: 15px; }
-        .manual-card ul { padding-left: 20px; margin-bottom: 20px; }
-        .manual-card strong { color: var(--text-main); }
     </style>
 </head>
 <body>
@@ -87,16 +85,37 @@
     <div id="login-modal">
         <div class="login-card">
             <h1>SentinEx <em>Portal</em></h1>
-            <p>Enter your credentials to access the dashboard.</p>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Enter credentials to access dashboard.</p>
             <div class="form-group">
-                <label>Username</label>
-                <input type="text" id="username" value="SentinEx">
+                <input type="text" id="username" value="SentinEx" placeholder="Username">
             </div>
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" id="password" value="1234">
+                <input type="password" id="password" value="1234" placeholder="Password">
             </div>
-            <button class="btn-primary" onclick="login()">Secure Login</button>
+            <button class="btn btn-primary" style="width: 100%;" onclick="login()">Secure Login</button>
+        </div>
+    </div>
+
+    <!-- ADD/EDIT STUDENT MODAL -->
+    <div id="student-modal" class="modal-overlay">
+        <div class="modal-card">
+            <h2 id="modal-title">Add New Member</h2>
+            <div class="form-group">
+                <label>Fingerprint ID (Slot 1-150)</label>
+                <input type="number" id="modal-id" placeholder="e.g. 4">
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" id="modal-name" placeholder="e.g. John Doe">
+            </div>
+            <div class="form-group">
+                <label>Registration Number</label>
+                <input type="text" id="modal-reg" placeholder="e.g. 2024-04-001">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                <button class="btn btn-secondary" style="flex: 1;" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-success" style="flex: 1;" onclick="saveStudent()">Save Member</button>
+            </div>
         </div>
     </div>
 
@@ -117,7 +136,7 @@
         <main class="main-content">
             <header class="topbar">
                 <h2 id="page-title">Attendance Overview</h2>
-                <div id="date-container">
+                <div id="topbar-actions">
                     <input type="date" id="date-picker" class="date-picker" onchange="fetchLogs()">
                 </div>
             </header>
@@ -131,56 +150,33 @@
                 </div>
                 <div class="table-card">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Member Name</th>
-                                <th>Reg Number</th>
-                                <th>Time</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="log-body">
-                            <tr><td colspan="4" style="text-align:center; padding: 40px;">Fetching data...</td></tr>
-                        </tbody>
+                        <thead><tr><th>Member Name</th><th>Reg Number</th><th>Time</th><th>Status</th></tr></thead>
+                        <tbody id="log-body"><tr><td colspan="4" style="text-align:center; padding: 40px;">Fetching data...</td></tr></tbody>
                     </table>
                 </div>
             </div>
 
             <!-- VIEW: MEMBERS DIRECTORY -->
             <div id="view-members" class="view-container">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <p style="color: var(--text-muted);">Manage all registered students here.</p>
+                    <button class="btn btn-primary" onclick="openAddModal()">+ Add New Member</button>
+                </div>
                 <div class="table-card">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Reg Number</th>
-                                <th>Role</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="members-body">
-                            <tr><td colspan="4" style="text-align:center; padding: 40px;">Loading members...</td></tr>
-                        </tbody>
+                        <thead><tr><th>Name</th><th>Reg Number</th><th>Role</th><th>Actions</th></tr></thead>
+                        <tbody id="members-body"><tr><td colspan="4" style="text-align:center; padding: 40px;">Loading members...</td></tr></tbody>
                     </table>
                 </div>
             </div>
 
             <!-- VIEW: TRASH BIN -->
             <div id="view-trash" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Deleted members are stored here. You can restore them if they were deleted by mistake.</p>
+                <p style="color: var(--text-muted); margin-bottom: 20px;">Deleted members are stored here.</p>
                 <div class="table-card">
                     <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Reg Number</th>
-                                <th>Deleted On</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="trash-body">
-                            <tr><td colspan="4" style="text-align:center; padding: 40px;">Loading trash...</td></tr>
-                        </tbody>
+                        <thead><tr><th>Name</th><th>Reg Number</th><th>Deleted On</th><th>Actions</th></tr></thead>
+                        <tbody id="trash-body"><tr><td colspan="4" style="text-align:center; padding: 40px;">Loading trash...</td></tr></tbody>
                     </table>
                 </div>
             </div>
@@ -190,31 +186,25 @@
                 <div class="manual-card">
                     <h2 style="margin-bottom: 20px;">SentinEx System Manual</h2>
                     
-                    <h3>1. How the Hardware Works</h3>
+                    <h3>1. Hardware Overview</h3>
                     <ul>
-                        <li><strong>Normal Scan:</strong> A student places their finger on the sensor. The device beeps and the LCD shows "Welcome". The data is instantly sent to this dashboard.</li>
-                        <li><strong>Injured Finger (Manual Entry):</strong> If a student's finger cannot be read, they must press the <strong>* (star)</strong> key on the device keypad, type their Assigned ID Number (e.g., 3), and press <strong>#</strong> to submit.</li>
-                        <li><strong>Power Saving:</strong> To turn off the device, press and hold the physical power button for 1 second. To wake it up, press it once.</li>
+                        <li><strong>Normal Scan:</strong> Student places finger on the sensor. LCD shows "Welcome". Data is sent to the cloud.</li>
+                        <li><strong>Injured Finger:</strong> Manual entry via keypad has been disabled for security. Use the Dashboard to mark them present.</li>
+                        <li><strong>Power Saving:</strong> Hold the physical button for 1 second to sleep. Press to wake up.</li>
                     </ul>
 
-                    <h3>2. How the Dashboard Works</h3>
+                    <h3>2. Managing Members (Admin Only)</h3>
                     <ul>
-                        <li><strong>Date Filter:</strong> Use the calendar in the top right to view attendance for a specific day. It defaults to "Today".</li>
-                        <li><strong>Security Alerts:</strong> If an unknown finger tries to scan, it is flagged as "Denied" here.</li>
-                        <li><strong>Duplicate Scans:</strong> If a student scans more than once a day, a <strong>⚠️ warning icon</strong> will appear next to their name.</li>
+                        <li><strong>Add Member:</strong> Go to the Directory, click "Add New Member". Type their Name, Reg Number, and the Fingerprint Slot (ID) they will use.</li>
+                        <li><strong>Edit Member:</strong> Click the "Edit" button to correct spelling mistakes or update Reg Numbers.</li>
+                        <li><strong>Delete Member:</strong> Click "Delete" to remove them. They move safely to the Trash Bin.</li>
                     </ul>
 
-                    <h3>3. Managing Students (Members)</h3>
+                    <h3>3. Dashboard Features</h3>
                     <ul>
-                        <li>Go to the <strong>Members Directory</strong> tab to see everyone registered in the system.</li>
-                        <li>Click the <strong>Delete</strong> button to remove a student. They will be moved to the <strong>Trash Bin</strong>.</li>
-                        <li>If you deleted someone by mistake, go to the Trash Bin and click <strong>Restore</strong>.</li>
-                    </ul>
-
-                    <h3>4. Troubleshooting</h3>
-                    <ul>
-                        <li><strong>The dashboard says "Live Connection" but no data appears?</strong> Ensure the device is plugged in and the phone hotspot is turned on.</li>
-                        <li><strong>Device screen is blank?</strong> Press the power button once to wake it up. If it doesn't wake, ensure the USB power cable is connected.</li>
+                        <li><strong>Date Filter:</strong> Use the calendar to view historical attendance.</li>
+                        <li><strong>Duplicate Scans:</strong> A <strong>⚠️ warning icon</strong> appears next to a student who scans more than once a day.</li>
+                        <li><strong>Security Alerts:</strong> Unknown fingers are flagged as "Denied".</li>
                     </ul>
                 </div>
             </div>
@@ -224,19 +214,16 @@
 
     <script>
         let logsData = [];
+        let currentModalMode = 'add'; // 'add' or 'edit'
 
         function setDefaultDate() {
             const today = new Date();
-            const yyyy = today.getFullYear();
-            const mm = String(today.getMonth() + 1).padStart(2, '0');
-            const dd = String(today.getDate()).padStart(2, '0');
-            document.getElementById('date-picker').value = `${yyyy}-${mm}-${dd}`;
+            document.getElementById('date-picker').value = today.toISOString().split('T')[0];
         }
 
         function login() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            
             if (user === 'SentinEx' && pass === '1234') {
                 document.getElementById('login-modal').style.display = 'none';
                 document.getElementById('app-screen').style.display = 'flex';
@@ -257,8 +244,7 @@
             document.getElementById('view-' + tabId).classList.add('active');
             element.classList.add('active');
 
-            // Hide date picker unless on dashboard
-            document.getElementById('date-container').style.visibility = (tabId === 'dashboard') ? 'visible' : 'hidden';
+            document.getElementById('topbar-actions').style.display = (tabId === 'dashboard') ? 'block' : 'none';
 
             const titles = { 
                 'dashboard': 'Attendance Overview', 
@@ -268,13 +254,65 @@
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
-            // Load data based on tab
             if (tabId === 'dashboard') fetchLogs();
             if (tabId === 'members') fetchMembers();
             if (tabId === 'trash') fetchTrash();
         }
 
-        // Fetch Dashboard Logs
+        // --- MODAL LOGIC ---
+        function openAddModal() {
+            currentModalMode = 'add';
+            document.getElementById('modal-title').innerText = "Add New Member";
+            document.getElementById('modal-id').value = "";
+            document.getElementById('modal-id').disabled = false;
+            document.getElementById('modal-name').value = "";
+            document.getElementById('modal-reg').value = "";
+            document.getElementById('student-modal').style.display = 'flex';
+        }
+
+        function openEditModal(id, name, reg) {
+            currentModalMode = 'edit';
+            document.getElementById('modal-title').innerText = "Edit Member";
+            document.getElementById('modal-id').value = id;
+            document.getElementById('modal-id').disabled = true; // Cannot change fingerprint ID
+            document.getElementById('modal-name').value = name;
+            document.getElementById('modal-reg').value = reg;
+            document.getElementById('student-modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('student-modal').style.display = 'none';
+        }
+
+        async function saveStudent() {
+            const id = document.getElementById('modal-id').value;
+            const name = document.getElementById('modal-name').value;
+            const reg = document.getElementById('modal-reg').value;
+
+            if (!id || !name || !reg) { alert("Please fill all fields."); return; }
+
+            const payload = { fingerprint_id: id, name: name, reg_number: reg };
+
+            try {
+                if (currentModalMode === 'add') {
+                    await fetch('/api/students', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                } else {
+                    await fetch(`/api/students/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name, reg_number: reg })
+                    });
+                }
+                closeModal();
+                fetchMembers();
+            } catch (err) { alert("Error saving student."); }
+        }
+
+        // --- FETCH FUNCTIONS ---
         async function fetchLogs() {
             const selectedDate = document.getElementById('date-picker').value;
             const tbody = document.getElementById('log-body');
@@ -300,19 +338,16 @@
                     const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); cursor:help; margin-left: 5px;">⚠️</span>` : '';
                     const regNum = log.reg_number ? log.reg_number : `ID: ${log.fingerprint_id}`;
 
-                    return `
-                        <tr>
-                            <td><strong>${log.student_name}</strong> ${warning}</td>
-                            <td>${regNum}</td>
-                            <td>${timeStr}</td>
-                            <td><span class="badge ${badgeClass}">${log.status}</span></td>
-                        </tr>
-                    `;
+                    return `<tr>
+                        <td><strong>${log.student_name}</strong> ${warning}</td>
+                        <td>${regNum}</td>
+                        <td>${timeStr}</td>
+                        <td><span class="badge ${badgeClass}">${log.status}</span></td>
+                    </tr>`;
                 }).join('');
             } catch (err) { console.error(err); }
         }
 
-        // Fetch Members
         async function fetchMembers() {
             const tbody = document.getElementById('members-body');
             try {
@@ -329,22 +364,21 @@
                         <td><strong>${s.name}</strong></td>
                         <td>${s.reg_number}</td>
                         <td>${s.role}</td>
-                        <td><button class="btn-danger" onclick="deleteStudent(${s.fingerprint_id})">Delete</button></td>
+                        <td>
+                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})">Delete</button>
+                        </td>
                     </tr>
                 `).join('');
             } catch (err) { console.error(err); }
         }
 
-        // Delete Member (Move to Trash)
         async function deleteStudent(id) {
-            if(!confirm("Are you sure you want to move this student to the trash?")) return;
-            try {
-                await fetch(`/api/students/${id}`, { method: 'DELETE' });
-                fetchMembers(); // Refresh table
-            } catch (err) { console.error(err); }
+            if(!confirm("Move this student to trash?")) return;
+            await fetch(`/api/students/${id}`, { method: 'DELETE' });
+            fetchMembers();
         }
 
-        // Fetch Trash
         async function fetchTrash() {
             const tbody = document.getElementById('trash-body');
             try {
@@ -358,24 +392,19 @@
 
                 tbody.innerHTML = trash.map(s => {
                     const date = new Date(s.deleted_at).toLocaleDateString();
-                    return `
-                        <tr>
-                            <td><strong>${s.name}</strong></td>
-                            <td>${s.reg_number}</td>
-                            <td>${date}</td>
-                            <td><button class="btn-restore" onclick="restoreStudent(${s.fingerprint_id})">Restore</button></td>
-                        </tr>
-                    `;
+                    return `<tr>
+                        <td><strong>${s.name}</strong></td>
+                        <td>${s.reg_number}</td>
+                        <td>${date}</td>
+                        <td><button class="btn btn-sm btn-success" onclick="restoreStudent(${s.fingerprint_id})">Restore</button></td>
+                    </tr>`;
                 }).join('');
             } catch (err) { console.error(err); }
         }
 
-        // Restore Member
         async function restoreStudent(id) {
-            try {
-                await fetch(`/api/trash/${id}`, { method: 'PUT' });
-                fetchTrash(); // Refresh table
-            } catch (err) { console.error(err); }
+            await fetch(`/api/trash/${id}`, { method: 'PUT' });
+            fetchTrash();
         }
     </script>
 </body>

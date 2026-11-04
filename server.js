@@ -25,7 +25,6 @@ app.post('/api/scan', async (req, res) => {
   try {
     const { fingerprint_id, status } = req.body;
     
-    // Find student to get name
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [fingerprint_id]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
@@ -34,16 +33,13 @@ app.post('/api/scan', async (req, res) => {
       [fingerprint_id, studentName, status]
     );
 
-    console.log(`✅ Logged: ${studentName} (ID: ${fingerprint_id}) - ${status}`);
     res.status(200).json({ success: true });
-
   } catch (error) {
-    console.error("Database Error:", error);
     res.status(500).json({ success: false });
   }
 });
 
-// 2. Get Attendance Logs (with Reg Number mapping)
+// 2. Get Attendance Logs
 app.get('/api/logs', async (req, res) => {
   try {
     const { date } = req.query; 
@@ -61,7 +57,6 @@ app.get('/api/logs', async (req, res) => {
       query += ` WHERE DATE(a.scanned_at) = $1`;
       values.push(date);
     }
-
     query += ` ORDER BY a.scanned_at DESC LIMIT 100`;
     
     const result = await pool.query(query, values);
@@ -81,33 +76,61 @@ app.get('/api/students', async (req, res) => {
   }
 });
 
-// 4. Soft Delete a Student (Move to Trash)
+// 4. ADD NEW STUDENT (Web Enrollment)
+app.post('/api/students', async (req, res) => {
+  try {
+    const { fingerprint_id, name, reg_number } = req.body;
+    await pool.query(
+      'INSERT INTO students (fingerprint_id, name, reg_number, role) VALUES ($1, $2, $3, $4)',
+      [fingerprint_id, name, reg_number, 'student']
+    );
+    res.status(200).json({ success: true, message: "Student added successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "ID or Reg No already exists." });
+  }
+});
+
+// 5. EDIT STUDENT NAME/REG NO
+app.put('/api/students/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, reg_number } = req.body;
+    await pool.query(
+      'UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3',
+      [name, reg_number, id]
+    );
+    res.status(200).json({ success: true, message: "Student updated successfully" });
+  } catch (error) {
+    res.status(500).json({ success: false });
+  }
+});
+
+// 6. Soft Delete (Trash)
 app.delete('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await pool.query('UPDATE students SET deleted_at = NOW() WHERE fingerprint_id = $1', [id]);
-    res.status(200).json({ success: true, message: "Student moved to trash." });
+    res.status(200).json({ success: true });
   } catch (error) {
     res.status(500).json({ success: false });
   }
 });
 
-// 5. Get Trash Bin
-app.get('/api/trash', async (req, res) => {
-  try {
-    const result = await pool.query('SELECT * FROM students WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC');
-    res.status(200).json(result.rows);
-  } catch (error) {
-    res.status(500).json({ success: false });
-  }
-});
-
-// 6. Restore Student from Trash
+// 7. Restore from Trash
 app.put('/api/trash/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await pool.query('UPDATE students SET deleted_at = NULL WHERE fingerprint_id = $1', [id]);
-    res.status(200).json({ success: true, message: "Student restored." });
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false });
+  }
+});
+
+app.get('/api/trash', async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM students WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC');
+    res.status(200).json(result.rows);
   } catch (error) {
     res.status(500).json({ success: false });
   }
