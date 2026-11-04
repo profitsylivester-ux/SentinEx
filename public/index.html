@@ -861,23 +861,28 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
+        // --- FIXED CSV EXPORT (Split Date and Time) ---
         function exportCSV() {
             if (logsData.length === 0) { alert("No data to export for this date."); return; }
             
             let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Name,Registration Number,Time,Status\n";
+            csvContent += "Name,Registration Number,Date,Time,Status\n";
             
             logsData.forEach(log => {
                 const dateObj = new Date(log.scanned_at);
-                const formattedDate = dateObj.getFullYear() + '-' + 
-                                      String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
-                                      String(dateObj.getDate()).padStart(2, '0') + ' ' + 
-                                      String(dateObj.getHours()).padStart(2, '0') + ':' + 
-                                      String(dateObj.getMinutes()).padStart(2, '0') + ':' + 
-                                      String(dateObj.getSeconds()).padStart(2, '0');
+                
+                // Format Date: YYYY-MM-DD
+                const dateStr = dateObj.getFullYear() + '-' + 
+                                String(dateObj.getMonth() + 1).padStart(2, '0') + '-' + 
+                                String(dateObj.getDate()).padStart(2, '0');
+                                
+                // Format Time: HH:mm:ss (24h)
+                const timeStr = String(dateObj.getHours()).padStart(2, '0') + ':' + 
+                                String(dateObj.getMinutes()).padStart(2, '0') + ':' + 
+                                String(dateObj.getSeconds()).padStart(2, '0');
                                       
                 const reg = log.reg_number || 'N/A';
-                csvContent += `"${log.student_name}","${reg}","${formattedDate}","${log.status}"\n`;
+                csvContent += `"${log.student_name}","${reg}","${dateStr}","${timeStr}","${log.status}"\n`;
             });
             
             const encodedUri = encodeURI(csvContent);
@@ -1291,7 +1296,6 @@
                     if (log.status === 'Late') badgeClass = 'badge-late';
                     if (log.status === 'Pending') badgeClass = 'badge-pending';
                     
-                    // NEW: Purple Multiple Badge + Yellow Triangle
                     let warning = '';
                     if (log.scan_count > 1) {
                         warning = `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); cursor:help; margin-left: 5px;">⚠️</span>`;
