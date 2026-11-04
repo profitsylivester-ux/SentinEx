@@ -327,7 +327,7 @@
             </div>
             <div style="display: flex; gap: 16px; align-items: center;">
                 <div class="preferences-container">
-                    <button class="icon-btn" onclick="togglePrefs(event)">ðŸŒ</button>
+                    <button class="icon-btn" onclick="togglePrefs(event)">&#127758;</button>
                     <div class="preferences-popover" id="prefs-menu">
                         <div class="pref-group">
                             <h4>Language</h4>
@@ -580,7 +580,7 @@
                     <div id="topbar-actions" style="display: flex; gap: 12px; align-items: center;">
                         
                         <div class="preferences-container">
-                            <button class="icon-btn" onclick="togglePrefs(event)">ðŸŒ</button>
+                            <button class="icon-btn" onclick="togglePrefs(event)">&#127758;</button>
                             <div class="preferences-popover" id="prefs-menu-dash">
                                 <div class="pref-group">
                                     <h4>Language</h4>
@@ -1761,141 +1761,136 @@
     }
 }
 
-async function updateTenantStatus(tenantId, status) { {
-            try {
-                const res = await fetch(`/api/tenants/${tenantId}/status`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status })
-                });
-                const data = await res.json();
-                if (data.success) fetchSuperAdminStats();
-                else alert("Could not update status.");
-            } catch(e) { alert("Error updating status."); }
-        }
+async function updateTenantStatus(tenantId, status) {
+    try {
+        const res = await fetch(`/api/tenants/${tenantId}/status`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+        });
+        const data = await res.json();
+        if (data.success) fetchSuperAdminStats();
+        else alert("Could not update status.");
+    } catch(e) { alert("Error updating status."); }
+}
 
-        // ================================================================
-        //  TENANT ONBOARDING MODAL
-        // ================================================================
-        function openTenantModal() { document.getElementById('tenant-modal').style.display = 'flex'; }
-        function closeTenantModal() { document.getElementById('tenant-modal').style.display = 'none'; }
+function openTenantModal() { document.getElementById('tenant-modal').style.display = 'flex'; }
+function closeTenantModal() { document.getElementById('tenant-modal').style.display = 'none'; }
 
-        async function saveTenant() {
-            const tenant_id = document.getElementById('new-tenant-id').value.trim().toLowerCase();
-            const name = document.getElementById('new-tenant-name').value.trim();
-            const logoInput = document.getElementById('new-tenant-logo');
-            
-            if (!tenant_id || !name) { alert("Tenant ID and School Name are required."); return; }
-            
-            let logo_data = null;
-            if (logoInput.files.length > 0) {
-                const file = logoInput.files[0];
-                logo_data = await new Promise((resolve) => {
-                    const reader = new FileReader();
-                    reader.onload = e => resolve(e.target.result);
-                    reader.readAsDataURL(file);
-                });
-            }
-            
-            try {
-                const res = await fetch('/api/tenants', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id, name, logo_data })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert("Application submitted. Await HQ approval.");
-                    closeTenantModal();
-                    document.getElementById('new-tenant-id').value = '';
-                    document.getElementById('new-tenant-name').value = '';
-                    document.getElementById('new-tenant-logo').value = '';
-                    fetchSuperAdminStats();
-                } else {
-                    alert(data.error || "Could not submit application. Tenant ID may already exist.");
-                }
-            } catch(e) { alert("Error submitting application."); }
+async function saveTenant() {
+    const tenant_id = document.getElementById('new-tenant-id').value.trim().toLowerCase();
+    const name = document.getElementById('new-tenant-name').value.trim();
+    const logoInput = document.getElementById('new-tenant-logo');
+    
+    if (!tenant_id || !name) { alert("Tenant ID and School Name are required."); return; }
+    
+    let logo_data = null;
+    if (logoInput.files.length > 0) {
+        const file = logoInput.files[0];
+        logo_data = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = e => resolve(e.target.result);
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    try {
+        const res = await fetch('/api/tenants', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tenant_id, name, logo_data })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert("Application submitted. Await HQ approval.");
+            closeTenantModal();
+            document.getElementById('new-tenant-id').value = '';
+            document.getElementById('new-tenant-name').value = '';
+            document.getElementById('new-tenant-logo').value = '';
+            fetchSuperAdminStats();
+        } else {
+            alert(data.error || "Could not submit application. Tenant ID may already exist.");
         }
+    } catch(e) { alert("Error submitting application."); }
+}
 
-        // ================================================================
-        //  SETTINGS â€“ PASSWORD & TIMES
-        // ================================================================
-        async function changePassword() {
-            const oldP = document.getElementById('current-pass').value;
-            const newP = document.getElementById('new-pass').value;
-            const confirmP = document.getElementById('confirm-pass').value;
-            
-            if (!oldP || !newP) { alert("Fill all fields."); return; }
-            if (newP !== confirmP) { alert("New passwords do not match."); return; }
-            
-            try {
-                const res = await fetch('/api/settings/password', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: currentTenant, old_password: oldP, new_password: newP })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert("Password updated.");
-                    document.getElementById('current-pass').value = '';
-                    document.getElementById('new-pass').value = '';
-                    document.getElementById('confirm-pass').value = '';
-                } else {
-                    alert(data.error || "Could not update password.");
-                }
-            } catch(e) { alert("Error updating password."); }
+async function changePassword() {
+    const oldP = document.getElementById('current-pass').value;
+    const newP = document.getElementById('new-pass').value;
+    const confirmP = document.getElementById('confirm-pass').value;
+    
+    if (!oldP || !newP) { alert("Fill all fields."); return; }
+    if (newP !== confirmP) { alert("New passwords do not match."); return; }
+    
+    try {
+        const res = await fetch('/api/settings/password', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tenant_id: currentTenant, old_password: oldP, new_password: newP })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert("Password updated.");
+            document.getElementById('current-pass').value = '';
+            document.getElementById('new-pass').value = '';
+            document.getElementById('confirm-pass').value = '';
+        } else {
+            alert(data.error || "Could not update password.");
         }
+    } catch(e) { alert("Error updating password."); }
+}
 
-        async function saveTimes() {
-            const start_time = document.getElementById('start-time-input').value;
-            const late_time = document.getElementById('late-time-input').value;
-            const closing_time = document.getElementById('closing-time-input').value;
-            
-            if (!start_time || !late_time || !closing_time) { alert("Please set all times."); return; }
-            
-            try {
-                const res = await fetch('/api/settings/times', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: currentTenant, start_time, late_time, closing_time })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert("Timings saved.");
-                    currentStartTime = start_time;
-                    currentLateTime = late_time;
-                    currentClosingTime = closing_time;
-                } else {
-                    alert("Could not save timings.");
-                }
-            } catch(e) { alert("Error saving timings."); }
+async function saveTimes() {
+    const start_time = document.getElementById('start-time-input').value;
+    const late_time = document.getElementById('late-time-input').value;
+    const closing_time = document.getElementById('closing-time-input').value;
+    
+    if (!start_time || !late_time || !closing_time) { alert("Please set all times."); return; }
+    
+    try {
+        const res = await fetch('/api/settings/times', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tenant_id: currentTenant, start_time, late_time, closing_time })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert("Timings saved.");
+            currentStartTime = start_time;
+            currentLateTime = late_time;
+            currentClosingTime = closing_time;
+        } else {
+            alert("Could not save timings.");
         }
+    } catch(e) { alert("Error saving timings."); }
+}
 
-        async function changeSuperPassword() {
-            const oldP = document.getElementById('sa-current-pass').value;
-            const newP = document.getElementById('sa-new-pass').value;
-            const confirmP = document.getElementById('sa-confirm-pass').value;
-            
-            if (!oldP || !newP) { alert("Fill all fields."); return; }
-            if (newP !== confirmP) { alert("New passwords do not match."); return; }
-            
-            try {
-                const res = await fetch('/api/settings/password', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ tenant_id: 'superadmin', old_password: oldP, new_password: newP })
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert("Master password updated.");
-                    document.getElementById('sa-current-pass').value = '';
-                    document.getElementById('sa-new-pass').value = '';
-                    document.getElementById('sa-confirm-pass').value = '';
-                } else {
-                    alert(data.error || "Could not update master password.");
-                }
-            } catch(e) { alert("Error updating master password."); }
+async function changeSuperPassword() {
+    const oldP = document.getElementById('sa-current-pass').value;
+    const newP = document.getElementById('sa-new-pass').value;
+    const confirmP = document.getElementById('sa-confirm-pass').value;
+    
+    if (!oldP || !newP) { alert("Fill all fields."); return; }
+    if (newP !== confirmP) { alert("New passwords do not match."); return; }
+    
+    try {
+        const res = await fetch('/api/settings/password', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ tenant_id: 'superadmin', old_password: oldP, new_password: newP })
+        });
+        const data = await res.json();
+        if (data.success) {
+            alert("Master password updated.");
+            document.getElementById('sa-current-pass').value = '';
+            document.getElementById('sa-new-pass').value = '';
+            document.getElementById('sa-confirm-pass').value = '';
+        } else {
+            alert(data.error || "Could not update master password.");
         }
+    } catch(e) { alert("Error updating master password."); }
+}
     </script>
 </body>
 </html>
+
