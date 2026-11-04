@@ -20,143 +20,174 @@ const pool = new Pool({
   ssl: { rejectUnauthorized: false }
 });
 
-async function logAction(admin, action, target, details) {
+// Helper: Write Audit Log with Tenant ID
+async function logAction(tenant_id, admin, action, target, details) {
   try {
     await pool.query(
-      'INSERT INTO audit_logs (admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4)',
-      [admin, action, target, details]
+      'INSERT INTO audit_logs (tenant_id, admin_name, action_type, target_id, details) VALUES ($1, $2, $3, $4, $5)',
+      [tenant_id, admin, action, target, details]
     );
   } catch (err) { console.error("Audit Log Error:", err); }
 }
 
+// 1. ESP32 Endpoint (Save Attendance)
 app.post('/api/scan', async (req, res) => {
   try {
-    const { fingerprint_id, status } = req.body;
-    const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [fingerprint_id]);
+    const { fingerprint_id, status, tenant_id } = req.body;
+    
+    // If no tenant_id provided by hardware, default to sentinex
+    const tid = tenant_id || 'sentinex';
+
+    const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [fingerprint_id, tid]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
     await pool.query(
-      'INSERT INTO attendance (fingerprint_id, student_name, status) VALUES ($1, $2, $3)',
-      [fingerprint_id, studentName, status]
+      'INSERT INTO attendance (tenant_id, fingerprint_id, student_name, status) VALUES ($1, $2, $3, $4)',
+      [tid, fingerprint_id, studentName, status]
     );
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
-// NEW: Approve Pending Request
+// 2. Approve Pending Request
 app.put('/api/approve-pending', async (req, res) => {
   try {
-    const { fingerprint_id, admin_name } = req.body;
+    const { fingerprint_id, admin_name, tenant_id } = req.body;
     
-    // Find the latest Pending scan for this ID
     const result = await pool.query(
       `UPDATE attendance 
        SET status = 'Manual' 
-       WHERE fingerprint_id = $1 AND status = 'Pending' AND DATE(scanned_at) = CURRENT_DATE
+       WHERE fingerprint_id = $1 AND tenant_id = $2 AND status = 'Pending' AND DATE(scanned_at) = CURRENT_DATE
        RETURNING student_name`,
-      [fingerprint_id]
+      [fingerprint_id, tenant_id]
     );
 
     if (result.rowCount > 0) {
       const name = result.rows[0].student_name;
-      await logAction(admin_name, 'APPROVE_PENDING', fingerprint_id, `Approved manual request for ${name}.`);
+      await logAction(tenant_id, admin_name, 'APPROVE_PENDING', fingerprint_id, `Approved manual request for ${name}.`);
       res.status(200).json({ success: true });
     } else {
-      res.status(404).json({ success: false, message: "No pending request found today." });
+      res.status(404).json({ success: false, message: "No pending request found." });
     }
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 3. Admin Login Audit
 app.post('/api/login-audit', async (req, res) => {
-  await logAction(req.body.admin_name, 'LOGIN', 'System', 'Admin logged into the dashboard.');
+  const { admin_name, tenant_id } = req.body;
+  await logAction(tenant_id || 'sentinex', admin_name, 'LOGIN', 'System', 'Admin logged into the dashboard.');
   res.status(200).json({ success: true });
 });
 
+// 4. Get Audit Logs (Tenant Specific)
 app.get('/api/audit-logs', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT 100');
+    const { tenant_id } = req.query;
+    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
+
+    const result = await pool.query('SELECT * FROM audit_logs WHERE tenant_id = $1 ORDER BY timestamp DESC LIMIT 100', [tenant_id]);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 5. Get Attendance Logs (Tenant Specific)
 app.get('/api/logs', async (req, res) => {
   try {
-    const { date } = req.query; 
+    const { date, tenant_id } = req.query; 
+    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
+
     let query = `
       SELECT a.*, s.reg_number,
-      (SELECT COUNT(*) FROM attendance a2 WHERE a2.fingerprint_id = a.fingerprint_id AND DATE(a2.scanned_at) = DATE(a.scanned_at)) as scan_count
-      FROM attendance a LEFT JOIN students s ON a.fingerprint_id = s.fingerprint_id
+      (SELECT COUNT(*) FROM attendance a2 WHERE a2.fingerprint_id = a.fingerprint_id AND a2.tenant_id = a.tenant_id AND DATE(a2.scanned_at) = DATE(a.scanned_at)) as scan_count
+      FROM attendance a LEFT JOIN students s ON a.fingerprint_id = s.fingerprint_id AND a.tenant_id = s.tenant_id
+      WHERE a.tenant_id = $1
     `;
-    let values = [];
+    let values = [tenant_id];
+    
     if (date) {
-      query += ` WHERE DATE(a.scanned_at) = $1`;
+      query += ` AND DATE(a.scanned_at) = $2`;
       values.push(date);
     }
     query += ` ORDER BY a.scanned_at DESC LIMIT 100`;
+    
     const result = await pool.query(query, values);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 6. Get All Active Students (Tenant Specific)
 app.get('/api/students', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM students WHERE deleted_at IS NULL ORDER BY name ASC');
+    const { tenant_id } = req.query;
+    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
+
+    const result = await pool.query('SELECT * FROM students WHERE tenant_id = $1 AND deleted_at IS NULL ORDER BY name ASC', [tenant_id]);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 7. ADD NEW STUDENT
 app.post('/api/students', async (req, res) => {
   try {
-    const { fingerprint_id, name, reg_number, admin_name } = req.body;
+    const { fingerprint_id, name, reg_number, admin_name, tenant_id } = req.body;
     await pool.query(
-      'INSERT INTO students (fingerprint_id, name, reg_number, role) VALUES ($1, $2, $3, $4)',
-      [fingerprint_id, name, reg_number, 'student']
+      'INSERT INTO students (tenant_id, fingerprint_id, name, reg_number, role) VALUES ($1, $2, $3, $4, $5)',
+      [tenant_id, fingerprint_id, name, reg_number, 'student']
     );
-    await logAction(admin_name || 'Admin', 'ADD_STUDENT', reg_number, `Added student: ${name}`);
+    await logAction(tenant_id, admin_name, 'ADD_STUDENT', reg_number, `Added student: ${name}`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false, error: "ID or Reg No exists." }); }
 });
 
+// 8. EDIT STUDENT
 app.put('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, reg_number, admin_name } = req.body;
+    const { name, reg_number, admin_name, tenant_id } = req.body;
     await pool.query(
-      'UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3',
-      [name, reg_number, id]
+      'UPDATE students SET name = $1, reg_number = $2 WHERE fingerprint_id = $3 AND tenant_id = $4',
+      [name, reg_number, id, tenant_id]
     );
-    await logAction(admin_name || 'Admin', 'EDIT_STUDENT', reg_number, `Updated details to Name: ${name}, Reg: ${reg_number}`);
+    await logAction(tenant_id, admin_name, 'EDIT_STUDENT', reg_number, `Updated details to Name: ${name}, Reg: ${reg_number}`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 9. SOFT DELETE
 app.delete('/api/students/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { admin_name } = req.body;
-    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [id]);
+    const { admin_name, tenant_id } = req.body;
+    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
     const name = student.rows.length > 0 ? student.rows[0].name : `Slot ${id}`;
-    await pool.query('UPDATE students SET deleted_at = NOW() WHERE fingerprint_id = $1', [id]);
-    await logAction(admin_name || 'Admin', 'DELETE_STUDENT', id, `Moved student ${name} to Trash.`);
+    
+    await pool.query('UPDATE students SET deleted_at = NOW() WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
+    await logAction(tenant_id, admin_name, 'DELETE_STUDENT', id, `Moved student ${name} to Trash.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 10. RESTORE FROM TRASH
 app.put('/api/trash/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const { admin_name } = req.body;
-    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [id]);
+    const { admin_name, tenant_id } = req.body;
+    const student = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
     const name = student.rows.length > 0 ? student.rows[0].name : `Slot ${id}`;
-    await pool.query('UPDATE students SET deleted_at = NULL WHERE fingerprint_id = $1', [id]);
-    await logAction(admin_name || 'Admin', 'RESTORE_STUDENT', id, `Restored student ${name}.`);
+
+    await pool.query('UPDATE students SET deleted_at = NULL WHERE fingerprint_id = $1 AND tenant_id = $2', [id, tenant_id]);
+    await logAction(tenant_id, admin_name, 'RESTORE_STUDENT', id, `Restored student ${name}.`);
     res.status(200).json({ success: true });
   } catch (error) { res.status(500).json({ success: false }); }
 });
 
+// 11. Get Trash (Tenant Specific)
 app.get('/api/trash', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM students WHERE deleted_at IS NOT NULL ORDER BY deleted_at DESC');
+    const { tenant_id } = req.query;
+    if (!tenant_id) return res.status(400).json({ error: "Tenant ID required" });
+
+    const result = await pool.query('SELECT * FROM students WHERE tenant_id = $1 AND deleted_at IS NOT NULL ORDER BY deleted_at DESC', [tenant_id]);
     res.status(200).json(result.rows);
   } catch (error) { res.status(500).json({ success: false }); }
 });
