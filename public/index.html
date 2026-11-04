@@ -6,7 +6,11 @@
     <title>SentinEx | Admin Dashboard</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
     
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for professional icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts: Inter & Playfair for Landing Page, Poppins for Dashboard -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -20,18 +24,26 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        
+        /* --- LANDING PAGE TYPOGRAPHY (Untouched) --- */
         h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; }
         em { font-family: 'Playfair Display', serif; font-style: italic; }
+
+        /* --- DASHBOARD TYPOGRAPHY (Poppins - The requested font) --- */
+        #app-screen, #app-screen * {
+            font-family: 'Poppins', sans-serif !important;
+        }
+        #app-screen h1, #app-screen h2, #app-screen h3 { font-family: 'Poppins', sans-serif !important; font-weight: 600 !important; letter-spacing: -0.5px; }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 30px; border-radius: 12px; width: 400px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
         .modal-card h2 { margin-bottom: 20px; font-size: 1.5rem; }
         .form-group { margin-bottom: 15px; text-align: left; }
-        .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
+        .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 5px; text-transform: uppercase; }
         .form-group input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
         .form-group input:disabled { background: #e2e8f0; cursor: not-allowed; }
         
-        .btn { padding: 10px 16px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 14px; }
+        .btn { padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; }
         .btn-primary { background: var(--primary); color: white; }
         .btn-success { background: var(--success); color: white; }
         .btn-secondary { background: #e2e8f0; color: var(--text-main); }
@@ -42,50 +54,54 @@
         .login-card { background: var(--card-bg); padding: 50px; border-radius: 16px; width: 420px; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; }
         
         #app-screen { display: none; width: 100%; height: 100vh; }
+        
+        /* Sidebar Styling */
         .sidebar { width: 260px; background: #111111; color: white; display: flex; flex-direction: column; padding: 24px 16px; }
-        .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; }
-        .sidebar-logo svg { width: 28px; height: 28px; }
-        .nav-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; color: #888; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 15px; font-weight: 500; }
+        .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 22px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: white; }
+        .sidebar-logo svg { width: 30px; height: 30px; }
+        
+        .nav-item { display: flex; align-items: center; gap: 14px; padding: 12px 16px; color: #9ca3af; border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 6px; font-size: 15px; font-weight: 400; }
+        .nav-item i { font-size: 18px; width: 24px; text-align: center; }
         .nav-item:hover, .nav-item.active { background: #222; color: white; }
         .nav-item.danger { color: #ef4444; margin-top: auto; }
 
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 80px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--border); }
-        .topbar h2 { font-size: 1.8rem; }
-        .date-picker { padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Inter'; outline: none; }
+        .topbar h2 { font-size: 1.6rem; }
+        .date-picker { padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
 
         .view-container { padding: 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
 
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border); }
-        .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 12px; }
-        .stat-value { font-size: 36px; font-family: 'Playfair Display', serif; }
+        .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 500; text-transform: uppercase; margin-bottom: 12px; }
+        .stat-value { font-size: 38px; font-weight: 600; line-height: 1; }
 
         .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
-        th { background: #f8fafc; color: var(--text-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; }
+        th { background: #f8fafc; color: var(--text-muted); font-size: 12px; font-weight: 500; text-transform: uppercase; }
         
-        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
 
         .manual-card { background: white; padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px; line-height: 1.8; }
-        .manual-card h3 { margin-top: 30px; margin-bottom: 10px; font-family: 'Inter'; font-weight: 600; color: var(--primary); }
-        .manual-card p, .manual-card li { color: var(--text-muted); font-size: 15px; }
+        .manual-card h3 { margin-top: 30px; margin-bottom: 10px; font-weight: 600; color: var(--primary); }
+        .manual-card p, .manual-card li { color: var(--text-muted); font-size: 14px; }
     </style>
 </head>
 <body>
 
     <div id="login-modal">
         <div class="login-card">
-            <h1>SentinEx <em>Portal</em></h1>
-            <p style="color: var(--text-muted); margin-bottom: 20px;">Enter credentials to access dashboard.</p>
-            <div class="form-group"><input type="text" id="username" value="SentinEx" placeholder="Username"></div>
-            <div class="form-group"><input type="password" id="password" value="1234" placeholder="Password"></div>
-            <button class="btn btn-primary" style="width: 100%;" onclick="login()">Secure Login</button>
+            <h1 style="font-family: 'Poppins', sans-serif; font-weight: 600;">SentinEx <em>Portal</em></h1>
+            <p style="color: var(--text-muted); margin-bottom: 20px; font-family: 'Poppins', sans-serif; font-size: 14px;">Enter credentials to access dashboard.</p>
+            <div class="form-group"><input type="text" id="username" value="SentinEx" placeholder="Username" style="font-family: 'Poppins', sans-serif;"></div>
+            <div class="form-group"><input type="password" id="password" value="1234" placeholder="Password" style="font-family: 'Poppins', sans-serif;"></div>
+            <button class="btn btn-primary" style="width: 100%; font-family: 'Poppins', sans-serif;" onclick="login()">Secure Login</button>
         </div>
     </div>
 
@@ -108,12 +124,13 @@
                 <svg viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg>
                 <span>SentinEx</span>
             </div>
-            <div class="nav-item active" onclick="switchTab('dashboard', this)">📊 <span>Dashboard</span></div>
-            <div class="nav-item" onclick="switchTab('members', this)">👥 <span>Members Directory</span></div>
-            <div class="nav-item" onclick="switchTab('trash', this)">🗑️ <span>Trash Bin</span></div>
-            <div class="nav-item" onclick="switchTab('audit', this)">🛡️ <span>Audit Logs</span></div>
-            <div class="nav-item" onclick="switchTab('help', this)">📖 <span>User Manual</span></div>
-            <div class="nav-item danger" onclick="logout()">🚪 <span>Logout</span></div>
+            <!-- New professional icons -->
+            <div class="nav-item active" onclick="switchTab('dashboard', this)"><i class="fa-solid fa-chart-pie"></i> <span>Dashboard</span></div>
+            <div class="nav-item" onclick="switchTab('members', this)"><i class="fa-solid fa-users"></i> <span>Members Directory</span></div>
+            <div class="nav-item" onclick="switchTab('trash', this)"><i class="fa-solid fa-trash-can"></i> <span>Trash Bin</span></div>
+            <div class="nav-item" onclick="switchTab('audit', this)"><i class="fa-solid fa-shield-halved"></i> <span>Audit Logs</span></div>
+            <div class="nav-item" onclick="switchTab('help', this)"><i class="fa-solid fa-book-open"></i> <span>User Manual</span></div>
+            <div class="nav-item danger" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> <span>Logout</span></div>
         </aside>
 
         <main class="main-content">
@@ -142,7 +159,7 @@
             <!-- VIEW: MEMBERS DIRECTORY -->
             <div id="view-members" class="view-container">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-                    <p style="color: var(--text-muted);">Manage all registered students here.</p>
+                    <p style="color: var(--text-muted); font-size: 14px;">Manage all registered students here.</p>
                     <button class="btn btn-primary" onclick="openAddModal()">+ Add New Member</button>
                 </div>
                 <div class="table-card">
@@ -155,7 +172,7 @@
 
             <!-- VIEW: TRASH BIN -->
             <div id="view-trash" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 20px;">Deleted members are stored here.</p>
+                <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">Deleted members are stored here.</p>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Name</th><th>Reg Number</th><th>Deleted On</th><th>Actions</th></tr></thead>
@@ -166,7 +183,7 @@
 
             <!-- VIEW: AUDIT LOGS -->
             <div id="view-audit" class="view-container">
-                <p style="color: var(--text-muted); margin-bottom: 20px;">These logs are immutable and cannot be deleted for legal and security evidence.</p>
+                <p style="color: var(--text-muted); margin-bottom: 20px; font-size: 14px;">These logs are immutable and cannot be deleted for legal and security evidence.</p>
                 <div class="table-card">
                     <table>
                         <thead><tr><th>Timestamp</th><th>Admin</th><th>Action</th><th>Details</th></tr></thead>
@@ -207,7 +224,6 @@
                 document.getElementById('app-screen').style.display = 'flex';
                 setDefaultDate();
                 fetchLogs();
-                // Silently log the login to the audit trail
                 fetch('/api/login-audit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -268,7 +284,7 @@
             const id = document.getElementById('modal-id').value;
             const name = document.getElementById('modal-name').value;
             const reg = document.getElementById('modal-reg').value;
-            const admin = "SentinEx"; // In the future, this will be dynamic
+            const admin = "SentinEx"; 
 
             if (!id || !name || !reg) { alert("Please fill all fields."); return; }
 
@@ -307,7 +323,7 @@
                 tbody.innerHTML = logsData.map(log => {
                     const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                     let badgeClass = log.status === 'Denied' ? 'badge-denied' : (log.status === 'Manual' ? 'badge-manual' : 'badge-granted');
-                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); cursor:help; margin-left: 5px;">⚠️</span>` : '';
+                    const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); cursor:help; margin-left: 5px;"><i class="fa-solid fa-triangle-exclamation"></i></span>` : '';
                     const regNum = log.reg_number ? log.reg_number : `ID: ${log.fingerprint_id}`;
                     return `<tr><td><strong>${log.student_name}</strong> ${warning}</td><td>${regNum}</td><td>${timeStr}</td><td><span class="badge ${badgeClass}">${log.status}</span></td></tr>`;
                 }).join('');
@@ -327,8 +343,8 @@
                     <tr>
                         <td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${s.role}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">Edit</button>
-                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})">Delete</button>
+                            <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')"><i class="fa-solid fa-pen"></i> Edit</button>
+                            <button class="btn btn-sm btn-danger" onclick="deleteStudent(${s.fingerprint_id})"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
                 `).join('');
@@ -356,7 +372,7 @@
                 }
                 tbody.innerHTML = trash.map(s => {
                     const date = new Date(s.deleted_at).toLocaleDateString();
-                    return `<tr><td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${date}</td><td><button class="btn btn-sm btn-success" onclick="restoreStudent(${s.fingerprint_id})">Restore</button></td></tr>`;
+                    return `<tr><td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${date}</td><td><button class="btn btn-sm btn-success" onclick="restoreStudent(${s.fingerprint_id})"><i class="fa-solid fa-rotate-left"></i> Restore</button></td></tr>`;
                 }).join('');
             } catch (err) { console.error(err); }
         }
