@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// FIX: Force the server to read HTML files in UTF-8 so emojis work
+// Force UTF-8 for Emojis
 app.use(express.static('public', {
   setHeaders: (res, path) => {
     if (path.endsWith('.html')) {
@@ -16,7 +16,6 @@ app.use(express.static('public', {
   }
 }));
 
-// Connect to Neon Database
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: { rejectUnauthorized: false }
@@ -27,11 +26,9 @@ app.post('/api/scan', async (req, res) => {
   try {
     const { fingerprint_id, status } = req.body;
     
-    // 1. Find the student in the database
     const studentResult = await pool.query('SELECT name FROM students WHERE fingerprint_id = $1', [fingerprint_id]);
     const studentName = studentResult.rows.length > 0 ? studentResult.rows[0].name : 'Unknown';
 
-    // 2. Save to attendance logs
     await pool.query(
       'INSERT INTO attendance (fingerprint_id, student_name, status) VALUES ($1, $2, $3)',
       [fingerprint_id, studentName, status]
@@ -46,20 +43,28 @@ app.post('/api/scan', async (req, res) => {
   }
 });
 
-// Endpoint for the Frontend to fetch logs
+// UPDATED: Endpoint for Frontend to fetch logs (with Date Filtering)
 app.get('/api/logs', async (req, res) => {
   try {
-    // This query counts how many times a student scanned TODAY for the warning icon
-    const query = `
+    const { date } = req.query; 
+    let query = `
       SELECT a.*, 
       (SELECT COUNT(*) FROM attendance a2 
        WHERE a2.fingerprint_id = a.fingerprint_id 
        AND DATE(a2.scanned_at) = DATE(a.scanned_at)) as scan_count
       FROM attendance a 
-      ORDER BY a.scanned_at DESC 
-      LIMIT 50
     `;
-    const result = await pool.query(query);
+    let values = [];
+
+    // If a date was provided (e.g., ?date=2026-11-04), filter by it
+    if (date) {
+      query += ` WHERE DATE(a.scanned_at) = $1`;
+      values.push(date);
+    }
+
+    query += ` ORDER BY a.scanned_at DESC LIMIT 100`;
+    
+    const result = await pool.query(query, values);
     res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
