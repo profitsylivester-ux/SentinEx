@@ -34,48 +34,35 @@
         h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 500; }
         em { font-family: 'Playfair Display', serif; font-style: italic; }
 
-        #app-screen, #app-screen * {
-            font-family: 'Poppins', sans-serif;
-        }
+        #app-screen, #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
 
-        /* SVGs */
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .badge-count { background: var(--danger); color: white; font-size: 11px; border-radius: 10px; padding: 2px 6px; margin-left: auto; font-weight: 600; display: none; }
 
-        /* Modals */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow-lg); border: 1px solid var(--border); }
         .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; }
         .form-group { margin-bottom: 16px; text-align: left; }
-        .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .form-group input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; transition: border 0.2s; }
-        .form-group input:focus { border-color: var(--primary); }
+        .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-muted); margin-bottom: 6px; text-transform: uppercase; }
+        .form-group input { width: 100%; padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; outline: none; }
         .form-group input:disabled { background: #f1f5f9; cursor: not-allowed; color: var(--text-muted); }
         
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
         .btn-primary { background: var(--primary); color: white; }
-        .btn-primary:hover { background: #1e293b; }
         .btn-success { background: var(--success); color: white; }
-        .btn-success:hover { background: #047857; }
         .btn-secondary { background: #e2e8f0; color: var(--text-main); }
-        .btn-secondary:hover { background: #cbd5e1; }
         .btn-danger { background: #fee2e2; color: var(--danger); }
-        .btn-danger:hover { background: #fca5a5; }
         .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
-        .btn-outline:hover { background: #f8fafc; border-color: var(--text-main); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
         .btn-sm svg { width: 14px; height: 14px; }
 
-        /* Login */
         #login-modal { display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 1000; justify-content: center; align-items: center; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow-md); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         
-        /* App Layout */
         #app-screen { display: none; width: 100%; height: 100vh; }
-        
-        /* Dark Professional Sidebar */
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
         .sidebar-logo svg { width: 28px; height: 28px; }
@@ -88,7 +75,6 @@
         .nav-item.danger:hover { background: rgba(248, 113, 113, 0.1); }
         .nav-item.danger .nav-icon { stroke: #f87171; }
 
-        /* Main Content */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--border); }
         .topbar h2 { font-size: 1.25rem; font-weight: 600; }
@@ -97,13 +83,11 @@
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
 
-        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
         .stat-title { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
         .stat-value { font-size: 32px; font-weight: 600; line-height: 1; }
 
-        /* Tables */
         .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 14px; }
@@ -115,6 +99,7 @@
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
+        .badge-pending { background: #e0f2fe; color: #0284c7; }
 
         .manual-card { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--border); max-width: 800px; line-height: 1.7; box-shadow: var(--shadow-sm); }
         .manual-card h3 { margin-top: 24px; margin-bottom: 12px; font-weight: 600; }
@@ -158,6 +143,11 @@
                 <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
                 <span>Dashboard</span>
             </div>
+            <div class="nav-item" onclick="switchTab('pending', this)">
+                <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                <span>Pending Approvals</span>
+                <span class="badge-count" id="pending-badge">0</span>
+            </div>
             <div class="nav-item" onclick="switchTab('members', this)">
                 <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                 <span>Members Directory</span>
@@ -188,6 +178,7 @@
                 </div>
             </header>
 
+            <!-- DASHBOARD -->
             <div id="view-dashboard" class="view-container active">
                 <div class="stats-grid">
                     <div class="stat-card"><div class="stat-title">Total Scans</div><div class="stat-value" id="total-scans">0</div></div>
@@ -202,9 +193,21 @@
                 </div>
             </div>
 
+            <!-- PENDING APPROVALS -->
+            <div id="view-pending" class="view-container">
+                <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Students who pressed '*' on the device due to an injured finger. Review and approve them here.</p>
+                <div class="table-card">
+                    <table>
+                        <thead><tr><th>Member Name</th><th>Reg Number</th><th>Request Time</th><th>Actions</th></tr></thead>
+                        <tbody id="pending-body"><tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">No pending requests.</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- MEMBERS -->
             <div id="view-members" class="view-container">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
-                    <p style="color: var(--text-muted); font-size: 14px; align-self: center;">Manage registered students. Injured? Use "Mark Present".</p>
+                    <p style="color: var(--text-muted); font-size: 14px; align-self: center;">Manage registered students.</p>
                     <button class="btn btn-primary" onclick="openAddModal()">+ Add New Member</button>
                 </div>
                 <div class="table-card">
@@ -215,6 +218,7 @@
                 </div>
             </div>
 
+            <!-- TRASH -->
             <div id="view-trash" class="view-container">
                 <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Deleted members are stored here.</p>
                 <div class="table-card">
@@ -225,6 +229,7 @@
                 </div>
             </div>
 
+            <!-- AUDIT LOGS -->
             <div id="view-audit" class="view-container">
                 <p style="color: var(--text-muted); margin-bottom: 24px; font-size: 14px;">Immutable security evidence. Cannot be deleted.</p>
                 <div class="table-card">
@@ -235,19 +240,16 @@
                 </div>
             </div>
 
+            <!-- MANUAL -->
             <div id="view-help" class="view-container">
                 <div class="manual-card">
                     <h2 style="margin-bottom: 24px; font-weight: 600;">SentinEx System Manual</h2>
                     <h3>1. Injured Student Workflow</h3>
                     <ul>
-                        <li>If a student cannot scan their finger, go to the <strong>Members Directory</strong>.</li>
-                        <li>Find the student's name and click the <strong>"Mark Present"</strong> button.</li>
-                        <li>The system will log them as "Manual" for today's date.</li>
-                    </ul>
-                    <h3>2. Managing Members</h3>
-                    <ul>
-                        <li><strong>Add:</strong> Click "+ Add New Member" to assign a Fingerprint ID and Reg No.</li>
-                        <li><strong>Edit/Delete:</strong> Update details or move students to the Trash Bin safely.</li>
+                        <li>The student presses <strong>*</strong> on the device keypad.</li>
+                        <li>They type their <strong>ID Number</strong> and press <strong>#</strong>.</li>
+                        <li>Check the <strong>Pending Approvals</strong> tab on this dashboard.</li>
+                        <li>Click <strong>Approve</strong> to mark them present for today.</li>
                     </ul>
                 </div>
             </div>
@@ -271,6 +273,7 @@
                 document.getElementById('app-screen').style.display = 'flex';
                 setDefaultDate();
                 fetchLogs();
+                checkPendingCount(); // Start checking for pending requests
                 fetch('/api/login-audit', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -294,12 +297,14 @@
             document.getElementById('topbar-actions').style.display = (tabId === 'dashboard') ? 'block' : 'none';
 
             const titles = { 
-                'dashboard': 'Attendance Overview', 'members': 'Members Directory', 
-                'trash': 'Trash Bin', 'audit': 'System Audit Logs', 'help': 'User Manual'
+                'dashboard': 'Attendance Overview', 'pending': 'Pending Approvals',
+                'members': 'Members Directory', 'trash': 'Trash Bin', 
+                'audit': 'System Audit Logs', 'help': 'User Manual'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
             if (tabId === 'dashboard') fetchLogs();
+            if (tabId === 'pending') fetchPending();
             if (tabId === 'members') fetchMembers();
             if (tabId === 'trash') fetchTrash();
             if (tabId === 'audit') fetchAuditLogs();
@@ -348,18 +353,63 @@
             } catch (err) { alert("Error saving student."); }
         }
 
-        // NEW: Mark Present Manually (Injured Finger)
-        async function markPresent(id, name) {
-            if(!confirm(`Mark ${name} as present for today? (Manual Entry)`)) return;
+        // --- PENDING APPROVALS LOGIC ---
+        async function checkPendingCount() {
             try {
-                await fetch('/api/manual-scan', {
-                    method: 'POST',
+                const response = await fetch(`/api/logs?date=${new Date().toISOString().split('T')[0]}`);
+                const logs = await response.json();
+                const pendingCount = logs.filter(l => l.status === 'Pending').length;
+                
+                const badge = document.getElementById('pending-badge');
+                if (pendingCount > 0) {
+                    badge.innerText = pendingCount;
+                    badge.style.display = 'inline-block';
+                } else {
+                    badge.style.display = 'none';
+                }
+            } catch (err) {}
+        }
+
+        async function fetchPending() {
+            const tbody = document.getElementById('pending-body');
+            try {
+                const today = new Date().toISOString().split('T')[0];
+                const response = await fetch(`/api/logs?date=${today}`);
+                const logs = await response.json();
+                const pending = logs.filter(l => l.status === 'Pending');
+
+                if (pending.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center; padding: 40px; color: var(--text-muted);">No pending requests right now.</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = pending.map(log => {
+                    const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                    return `<tr>
+                        <td><strong>${log.student_name}</strong></td>
+                        <td>${log.reg_number || log.fingerprint_id}</td>
+                        <td>${timeStr}</td>
+                        <td>
+                            <button class="btn btn-sm btn-success" onclick="approvePending(${log.fingerprint_id})">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Approve
+                            </button>
+                        </td>
+                    </tr>`;
+                }).join('');
+            } catch (err) { console.error(err); }
+        }
+
+        async function approvePending(id) {
+            if(!confirm("Approve this student's manual attendance request?")) return;
+            try {
+                await fetch('/api/approve-pending', {
+                    method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ fingerprint_id: id, admin_name: "SentinEx" })
                 });
-                alert(`${name} has been marked present.`);
-                fetchMembers(); // Refresh view if needed
-            } catch (err) { alert("Error marking present."); }
+                fetchPending();
+                checkPendingCount();
+            } catch (err) { alert("Error approving request."); }
         }
 
         async function fetchLogs() {
@@ -371,8 +421,8 @@
                 const response = await fetch(`/api/logs?date=${selectedDate}`);
                 logsData = await response.json();
                 
-                document.getElementById('total-scans').innerText = logsData.length;
-                const uniqueIds = new Set(logsData.map(log => log.fingerprint_id));
+                document.getElementById('total-scans').innerText = logsData.filter(l => l.status !== 'Pending').length; // Exclude pending from total
+                const uniqueIds = new Set(logsData.filter(l => l.status !== 'Pending').map(log => log.fingerprint_id));
                 document.getElementById('unique-members').innerText = uniqueIds.size;
                 document.getElementById('security-alerts').innerText = logsData.filter(l => l.status === 'Denied').length;
 
@@ -383,7 +433,11 @@
 
                 tbody.innerHTML = logsData.map(log => {
                     const timeStr = new Date(log.scanned_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    let badgeClass = log.status === 'Denied' ? 'badge-denied' : (log.status === 'Manual' ? 'badge-manual' : 'badge-granted');
+                    let badgeClass = 'badge-granted';
+                    if (log.status === 'Denied') badgeClass = 'badge-denied';
+                    if (log.status === 'Manual') badgeClass = 'badge-manual';
+                    if (log.status === 'Pending') badgeClass = 'badge-pending';
+                    
                     const warning = (log.scan_count > 1) ? `<span title="Scanned ${log.scan_count} times!" style="color:var(--warning); margin-left: 6px; cursor:help;">⚠️</span>` : '';
                     const regNum = log.reg_number ? log.reg_number : `ID: ${log.fingerprint_id}`;
                     return `<tr><td><strong>${log.student_name}</strong> ${warning}</td><td>${regNum}</td><td>${timeStr}</td><td><span class="badge ${badgeClass}">${log.status}</span></td></tr>`;
@@ -404,9 +458,6 @@
                     <tr>
                         <td><strong>${s.name}</strong></td><td>${s.reg_number}</td><td>${s.role}</td>
                         <td style="display: flex; gap: 8px;">
-                            <button class="btn btn-sm btn-success" onclick="markPresent(${s.fingerprint_id}, '${s.name}')" title="Injured? Mark Present">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Present
-                            </button>
                             <button class="btn btn-sm btn-primary" onclick="openEditModal(${s.fingerprint_id}, '${s.name}', '${s.reg_number}')">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg> Edit
                             </button>
@@ -466,6 +517,13 @@
                 }).join('');
             } catch (err) { console.error(err); }
         }
+
+        // Check for pending requests every 10 seconds
+        setInterval(() => {
+            if (document.getElementById('app-screen').style.display === 'flex') {
+                checkPendingCount();
+            }
+        }, 10000);
     </script>
 </body>
 </html>
