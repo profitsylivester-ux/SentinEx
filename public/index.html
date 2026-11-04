@@ -3,63 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SentinEx | Biometric & IoT Systems</title>
-    
+    <title>SentinEx | Portal</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111111'/><text x='50' y='75' font-family='Arial' font-size='75' font-weight='bold' fill='white' text-anchor='middle'>S</text></svg>">
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#111111">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <style>
-        /* =========================================
-           GLOBAL VARIABLES & RESET
-           ========================================= */
+        /* CSS remains exactly the same as the previous message */
         :root {
-            /* Landing Page Variables */
             --bg-color: #f6f5f2; --text-main: #111111; --text-muted: #555555;
             --card-bg: #ffffff; --border: #e5e5e5; --primary: #111111;
             --success: #059669; --danger: #dc2626; --warning: #d97706;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-            
-            /* Dashboard Variables */
             --dash-bg: #f1f5f9; --sidebar-bg: #1e293b; --sidebar-hover: #334155;
             --sidebar-text: #94a3b8; --sidebar-active: #ffffff;
             --dash-text: #0f172a; --dash-muted: #64748b; --dash-border: #e2e8f0;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
-        
-        /* Typography */
         h1, h2, h3, h4, h5, h6, th { font-family: 'Playfair Display', serif; font-weight: 500; letter-spacing: -0.5px; }
         em { font-family: 'Playfair Display', serif; font-style: italic; font-weight: 500; }
         p, a, div, span, td, button, input, textarea, select, label { font-family: 'Inter', sans-serif; }
-
-        /* =========================================
-           LANDING PAGE STYLES
-           ========================================= */
         .logo-container { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 20px; letter-spacing: -0.5px; cursor: pointer; }
         .logo-svg { width: 32px; height: 32px; border-radius: 6px; }
-
         #landing-page { display: block; }
-
         nav { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(10px); z-index: 100; }
         .nav-links { display: flex; gap: 32px; font-size: 15px; font-weight: 400; color: var(--text-muted); }
         .nav-links a { text-decoration: none; color: inherit; transition: color 0.2s; cursor: pointer; }
         .nav-links a:hover { color: var(--text-main); }
-        
         .nav-actions { display: flex; gap: 12px; align-items: center; }
         .btn-primary { background: var(--primary); color: white; padding: 12px 24px; border-radius: 30px; text-decoration: none; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: transform 0.2s; border: none; }
         .btn-primary:hover { transform: translateY(-2px); }
-
         .hero { display: grid; grid-template-columns: 1fr 1fr; padding: 80px 5%; gap: 40px; align-items: center; min-height: 80vh; }
         .hero-text h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
         .hero-text h1 { font-size: 4.5rem; line-height: 1.1; margin-bottom: 30px; }
         .hero-text p { font-size: 18px; color: var(--text-muted); max-width: 480px; margin-bottom: 40px; font-weight: 300; }
-        
         .hero-images { position: relative; height: 500px; }
         .hero-img { position: absolute; border-radius: 12px; box-shadow: var(--shadow); object-fit: cover; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1; }
         .hero-img:hover { transform: scale(1.08) translateY(-10px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); z-index: 10; }
@@ -67,7 +45,6 @@
         .img-2 { width: 45%; top: 20px; right: 0; height: 220px; }
         .img-3 { width: 40%; bottom: 0; right: 5%; height: 250px; }
         .img-4 { width: 35%; bottom: 40px; left: 10%; height: 180px; }
-
         .section { padding: 80px 5%; border-top: 1px solid var(--border); }
         .section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 20px; font-weight: 600; }
         .section h2 { font-size: 3rem; margin-bottom: 40px; }
@@ -75,8 +52,6 @@
         .card { background: var(--card-bg); padding: 30px; border-radius: 16px; border: 1px solid var(--border); box-shadow: var(--shadow); }
         .card h3 { font-size: 20px; margin-bottom: 10px; }
         .card p { color: var(--text-muted); font-size: 15px; }
-
-        /* FAQ */
         .faq-section { padding: 80px 5%; background: var(--bg-color); border-top: 1px solid var(--border); }
         .faq-container { max-width: 800px; margin: 0 auto; }
         .faq-container h2 { text-align: center; margin-bottom: 40px; font-size: 2.5rem; }
@@ -86,8 +61,6 @@
         .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease, padding 0.3s ease; color: var(--text-muted); font-size: 14px; }
         .faq-answer.open { max-height: 200px; padding-top: 12px; }
         .faq-item.active .faq-icon { transform: rotate(180deg); }
-
-        /* TEAM ACCORDION */
         .team-section { padding: 80px 5%; background: #111111; border-top: 1px solid #222; }
         .team-section h5 { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 20px; font-weight: 600; }
         .team-section h2 { font-size: 3rem; margin-bottom: 40px; color: white; }
@@ -106,8 +79,6 @@
         .expanded-text p.bio { color: #ccc; font-size: 15px; line-height: 1.5; max-width: 350px; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
         .expanded-text a { color: white; font-weight: 500; font-size: 14px; text-decoration: none; border-bottom: 1px solid white; padding-bottom: 2px; transition: color 0.2s; display: inline-block; }
         .expanded-text a:hover { color: #60a5fa; border-color: #60a5fa; }
-
-        /* CONTACT & MAP */
         .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; }
         .contact-info p { font-size: 16px; color: var(--text-muted); margin-bottom: 40px; max-width: 400px; }
         .info-item { display: flex; gap: 16px; margin-bottom: 24px; align-items: flex-start; }
@@ -123,8 +94,6 @@
         .map-container { margin-top: 40px; border-radius: 12px; overflow: hidden; height: 250px; position: relative; box-shadow: var(--shadow); border: 1px solid var(--border); }
         .map-container iframe { width: 100%; height: 100%; border: 0; }
         .map-toggle { position: absolute; top: 10px; right: 10px; background: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 600; font-size: 12px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 10; }
-
-        /* FOOTER */
         footer { background: #111111; color: #ffffff; padding: 80px 5% 40px; border-top: 1px solid #222; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 60px; }
         .footer-brand .logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 500; color: white; margin-bottom: 20px; }
@@ -140,21 +109,14 @@
         .footer-col ul li a { color: #ddd; text-decoration: none; font-size: 15px; transition: color 0.2s; cursor: pointer; }
         .footer-col ul li a:hover { color: #fff; }
         .footer-bottom { border-top: 1px solid #222; padding-top: 30px; display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 14px; }
-
-        /* =========================================
-           DASHBOARD & MODAL STYLES
-           ========================================= */
         #app-screen { display: none; width: 100%; height: 100vh; background: var(--dash-bg); color: var(--dash-text); }
         #app-screen * { font-family: 'Poppins', sans-serif; }
         #app-screen h1, #app-screen h2, #app-screen h3 { font-weight: 600; letter-spacing: -0.5px; }
-
         .nav-icon { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
         .badge-count { background: var(--danger); color: white; font-size: 11px; border-radius: 10px; padding: 2px 6px; margin-left: auto; font-weight: 600; display: none; }
-
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: var(--card-bg); padding: 32px; border-radius: 16px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--dash-border); }
         .modal-card h2 { margin-bottom: 24px; font-size: 1.5rem; color: var(--text-main); }
-        
         .btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 8px; font-weight: 500; cursor: pointer; border: none; font-size: 14px; transition: all 0.2s; }
         .btn-success { background: var(--success); color: white; }
         .btn-secondary { background: #e2e8f0; color: var(--dash-text); }
@@ -162,20 +124,15 @@
         .btn-warning { background: #fef3c7; color: var(--warning); }
         .btn-outline { background: transparent; border: 1px solid var(--dash-border); color: var(--dash-text); }
         .btn-sm { padding: 6px 12px; font-size: 12px; }
-
-        /* LOGIN MODAL */
         #login-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(246, 245, 242, 0.95); backdrop-filter: blur(8px); z-index: 1000; justify-content: center; align-items: center; flex-direction: column; }
         .login-card { background: var(--card-bg); padding: 48px; border-radius: 20px; width: 420px; box-shadow: var(--shadow); border: 1px solid var(--border); text-align: center; }
         .login-card h1 { font-size: 2rem; margin-bottom: 8px; color: var(--text-main); }
         .login-card p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
         .login-card .form-group input { font-family: 'Inter', sans-serif; }
-
-        /* DASHBOARD LAYOUT */
         .dashboard-layout { display: flex; height: 100vh; }
         .sidebar { width: 260px; background: var(--sidebar-bg); display: flex; flex-direction: column; padding: 24px 16px; z-index: 10; }
         .sidebar-logo { display: flex; align-items: center; gap: 12px; font-size: 20px; font-weight: 600; margin-bottom: 40px; padding: 0 12px; color: #ffffff; }
         .sidebar-logo img { width: 32px; height: 32px; border-radius: 6px; background: white; object-fit: contain; }
-        
         .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 16px; color: var(--sidebar-text); border-radius: 8px; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; font-size: 14px; font-weight: 500; }
         .nav-item:hover { background: var(--sidebar-hover); color: #ffffff; }
         .nav-item.active { background: var(--sidebar-hover); color: var(--sidebar-active); font-weight: 600; }
@@ -183,27 +140,22 @@
         .nav-item.danger { color: #f87171; margin-top: auto; }
         .nav-item.danger:hover { background: rgba(248, 113, 113, 0.1); }
         .nav-item.danger .nav-icon { stroke: #f87171; }
-
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .topbar { background: var(--card-bg); height: 72px; display: flex; justify-content: space-between; align-items: center; padding: 0 40px; border-bottom: 1px solid var(--dash-border); }
         .topbar h2 { font-size: 1.25rem; font-weight: 600; }
         .date-picker { padding: 8px 16px; border: 1px solid var(--dash-border); border-radius: 8px; font-size: 14px; outline: none; font-weight: 500; font-family: 'Inter', sans-serif; }
-
         .view-container { padding: 32px 40px; overflow-y: auto; flex: 1; display: none; }
         .view-container.active { display: block; }
-
         .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 32px; }
         .stat-card { background: var(--card-bg); padding: 24px; border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); }
         .stat-title { font-size: 13px; color: var(--dash-muted); font-weight: 500; margin-bottom: 8px; }
         .stat-value { font-size: 32px; font-weight: 600; line-height: 1; }
-
         .table-card { background: var(--card-bg); border-radius: 12px; border: 1px solid var(--dash-border); box-shadow: 0 1px 2px 0 rgba(0,0,0,0.05); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--dash-border); font-size: 14px; }
         th { background: #f8fafc; color: var(--dash-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
         tr:last-child td { border-bottom: none; }
         tr:hover td { background: #f8fafc; }
-        
         .badge { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; display: inline-block; }
         .badge-active { background: #ecfdf5; color: var(--success); }
         .badge-pending { background: #fffbeb; color: var(--warning); }
@@ -211,8 +163,6 @@
         .badge-denied { background: #fef2f2; color: var(--danger); }
         .badge-granted { background: #ecfdf5; color: var(--success); }
         .badge-manual { background: #fffbeb; color: var(--warning); }
-
-        /* RESPONSIVE */
         @media (max-width: 900px) {
             nav { flex-direction: column; gap: 15px; padding: 15px; }
             .nav-links { flex-wrap: wrap; justify-content: center; gap: 15px; font-size: 14px; }
@@ -245,9 +195,6 @@
 </head>
 <body>
 
-    <!-- =========================================
-         1. LANDING PAGE
-         ========================================= -->
     <div id="landing-page">
         <nav>
             <div class="logo-container" onclick="window.scrollTo(0,0)">
@@ -267,7 +214,6 @@
             </div>
         </nav>
 
-        <!-- HERO -->
         <section class="hero" id="about">
             <div class="hero-text">
                 <h5>ABOUT SENTINEX</h5>
@@ -276,56 +222,38 @@
                 <button class="btn-primary" style="width: fit-content;" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'})">Work with us &rarr;</button>
             </div>
             <div class="hero-images">
-                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team working">
-                <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=600" class="hero-img img-2" alt="Presentation">
-                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=600" class="hero-img img-3" alt="Meeting">
-                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="hero-img img-4" alt="Working">
+                <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" class="hero-img img-1" alt="Team">
+                <img src="https://images.unsplash.com/photo-1558403194-611308249627?auto=format&fit=crop&q=80&w=600" class="hero-img img-2" alt="Pres">
+                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=600" class="hero-img img-3" alt="Meet">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=500" class="hero-img img-4" alt="Work">
             </div>
         </section>
 
-        <!-- SERVICES -->
         <section class="section" id="services" style="background: #eae8e1;">
             <h5>OUR SERVICES</h5>
             <h2>What we <em>deliver</em></h2>
             <div class="section-grid">
-                <div class="card">
-                    <h3>Biometric Hardware</h3>
-                    <p>Custom fingerprint and facial recognition terminals built for high-traffic environments.</p>
-                </div>
-                <div class="card">
-                    <h3>Cloud Dashboards</h3>
-                    <p>Real-time multi-tenant web applications to monitor security and attendance logs.</p>
-                </div>
-                <div class="card">
-                    <h3>System Integration</h3>
-                    <p>Connecting legacy institutional software with modern IoT edge devices.</p>
-                </div>
+                <div class="card"><h3>Biometric Hardware</h3><p>Custom fingerprint terminals built for high-traffic environments.</p></div>
+                <div class="card"><h3>Cloud Dashboards</h3><p>Real-time multi-tenant web applications to monitor security and attendance.</p></div>
+                <div class="card"><h3>System Integration</h3><p>Connecting legacy software with modern IoT edge devices.</p></div>
             </div>
         </section>
 
-        <!-- WORK -->
         <section class="section" id="work">
             <h5>OUR WORK</h5>
             <h2>Recent <em>deployments</em></h2>
             <div class="section-grid" style="grid-template-columns: 1fr 1fr;">
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <img src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Campus">
-                    <div style="padding: 20px;">
-                        <h3>Ohio University</h3>
-                        <p>Deployed 12 biometric terminals across 4 faculties for automated attendance.</p>
-                    </div>
+                    <div style="padding: 20px;"><h3>Ohio University</h3><p>Deployed 12 biometric terminals across 4 faculties.</p></div>
                 </div>
                 <div class="card" style="padding: 0; overflow: hidden;">
                     <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800" style="width: 100%; height: 250px; object-fit: cover;" alt="Office">
-                    <div style="padding: 20px;">
-                        <h3>TechHub Dar</h3>
-                        <p>Access control system for 500+ members using fingerprint and RFID.</p>
-                    </div>
+                    <div style="padding: 20px;"><h3>TechHub Dar</h3><p>Access control system for 500+ members.</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- FAQ -->
         <section class="faq-section" id="faq">
             <div class="faq-container">
                 <h2>Frequently asked</h2>
@@ -334,77 +262,49 @@
                         <span>How does the offline mode work?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down. Once restored, it syncs to the cloud.</div>
+                    <div class="faq-answer">Our ESP32 hardware caches all fingerprint scans locally on an SD card if the internet goes down.</div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         <span>Can it integrate with our existing database?</span>
                         <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </div>
-                    <div class="faq-answer">Yes. Because our backend uses PostgreSQL (Neon) and a REST API, we can easily export your logs to CSV.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>Is the hardware included?</span>
-                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="faq-answer">Yes. When you partner with SentinEx, we provide the full package: the terminal, power supply, enclosure, and cloud setup.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>How long does installation take?</span>
-                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="faq-answer">A standard deployment for a single office or classroom takes less than 2 hours. A full campus takes 2 days.</div>
-                </div>
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        <span>How secure is the biometric data?</span>
-                        <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                    </div>
-                    <div class="faq-answer">Extremely secure. The AS608 sensor does not store images. It converts your fingerprint into a mathematical template (hash).</div>
+                    <div class="faq-answer">Yes. Because our backend uses PostgreSQL and a REST API, we can easily export logs to CSV.</div>
                 </div>
             </div>
         </section>
 
-        <!-- TEAM ACCORDION -->
         <section class="team-section" id="team">
             <h5>THE TEAM</h5>
             <h2 style="color:white;">The minds <em>behind it</em></h2>
-            
             <div class="team-gallery">
                 <div class="team-card active" onclick="setActiveCard(this)">
                     <img src="https://files.oaiusercontent.com/file-K1yX6t4Z9h3Q2w7V5s8N1?se=2024-10-29T12%3A00%3A00Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3Dfaida.jpg&sig=xyz" alt="Faida">
                     <div class="team-overlay">
                         <div class="collapsed-text">FAIDA</div>
                         <div class="expanded-text">
-                            <h3>Faida</h3>
-                            <p class="role">CEO & Founder</p>
+                            <h3>Faida</h3><p class="role">CEO & Founder</p>
                             <p class="bio">Leading SentinEx with a vision to bring world-class biometric security to local institutions in Tanzania.</p>
                             <a href="https://faida-sylivester.vercel.app/" target="_blank">View Profile &rarr;</a>
                         </div>
                     </div>
                 </div>
-
                 <div class="team-card" onclick="setActiveCard(this)">
                     <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600" alt="Lameck">
                     <div class="team-overlay">
                         <div class="collapsed-text">LAMECK</div>
                         <div class="expanded-text">
-                            <h3>Lameck</h3>
-                            <p class="role">Hardware Architect</p>
+                            <h3>Lameck</h3><p class="role">Hardware Architect</p>
                             <p class="bio">Designing the physical circuits and enclosures that make our devices durable and reliable.</p>
                         </div>
                     </div>
                 </div>
-
                 <div class="team-card" onclick="setActiveCard(this)">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600" alt="Fedelika">
                     <div class="team-overlay">
                         <div class="collapsed-text">FEDELIKA</div>
                         <div class="expanded-text">
-                            <h3>Fedelika</h3>
-                            <p class="role">Software Developer</p>
+                            <h3>Fedelika</h3><p class="role">Software Developer</p>
                             <p class="bio">Building the cloud backend and the interfaces that connect our hardware to the internet.</p>
                         </div>
                     </div>
@@ -412,170 +312,96 @@
             </div>
         </section>
 
-        <!-- CONTACT & MAP -->
         <section class="section contact" id="contact">
             <div class="contact-info">
                 <h5>GET IN TOUCH</h5>
                 <h2>Back African <em>engineering</em></h2>
-                <p>Write to us about partnerships, deployment, or custom hardware requests for your institution.</p>
-                
-                <div class="info-item">
-                    <div class="info-icon">📍</div>
-                    <div class="info-text">
-                        <h6>LOCATION</h6>
-                        <p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon">📞</div>
-                    <div class="info-text">
-                        <h6>PHONE</h6>
-                        <p>0748743673</p>
-                    </div>
-                </div>
-                <div class="info-item">
-                    <div class="info-icon">✉️</div>
-                    <div class="info-text">
-                        <h6>EMAIL</h6>
-                        <p>SentinExappliances@gmail.com</p>
-                    </div>
-                </div>
-
+                <p>Write to us about partnerships, deployment, or custom hardware requests.</p>
+                <div class="info-item"><div class="info-icon">📍</div><div class="info-text"><h6>LOCATION</h6><p>Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</p></div></div>
+                <div class="info-item"><div class="info-icon">📞</div><div class="info-text"><h6>PHONE</h6><p>0748743673</p></div></div>
+                <div class="info-item"><div class="info-icon">✉️</div><div class="info-text"><h6>EMAIL</h6><p>SentinExappliances@gmail.com</p></div></div>
                 <div class="map-container">
                     <button class="map-toggle" onclick="toggleMap()" id="map-btn">Switch to Plain</button>
                     <iframe id="google-map" src="https://maps.google.com/maps?q=Kigamboni,Kiswani,Dar%20es%20Salaam&t=k&z=14&ie=UTF8&iwloc=&output=embed" allowfullscreen></iframe>
                 </div>
             </div>
-
             <div class="contact-card">
                 <form onsubmit="event.preventDefault(); alert('Message sent!');">
                     <div class="form-group"><label>NAME</label><input type="text" placeholder="Your full name" required></div>
                     <div class="form-group"><label>EMAIL</label><input type="email" placeholder="you@institution.org" required></div>
-                    <div class="form-group">
-                        <label>INTEREST</label>
-                        <select>
-                            <option>Partnership</option>
-                            <option>Device Deployment</option>
-                        </select>
-                    </div>
+                    <div class="form-group"><label>INTEREST</label><select><option>Partnership</option><option>Device Deployment</option></select></div>
                     <div class="form-group"><label>MESSAGE</label><textarea placeholder="What would you like to work on?"></textarea></div>
                     <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">Send message &rarr;</button>
                 </form>
             </div>
         </section>
 
-        <!-- FOOTER -->
         <footer>
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="logo">
-                        <svg class="logo-svg" viewBox="0 0 100 100" style="width: 28px; height: 28px;"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg>
-                        SentinEx Appliances
-                    </div>
+                    <div class="logo"><svg class="logo-svg" viewBox="0 0 100 100" style="width: 28px; height: 28px;"><rect width="100" height="100" rx="20" fill="#ffffff"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="#111111" text-anchor="middle">S</text></svg> SentinEx Appliances</div>
                     <p>A local IoT engineering lab building secure biometric systems for African institutions.</p>
                     <div class="address">Kigamboni, Kiswani<br>Dar es Salaam, Tanzania</div>
                     <a href="mailto:SentinExappliances@gmail.com" class="email">SentinExappliances@gmail.com</a>
-                    <div class="footer-socials">
-                        <a href="#">💻</a>
-                        <a href="#">💼</a>
-                        <a href="#">📸</a>
-                    </div>
+                    <div class="footer-socials"><a href="#">💻</a><a href="#">💼</a><a href="#">📸</a></div>
                 </div>
-
-                <div class="footer-col">
-                    <h4>THE PLATFORM</h4>
-                    <ul>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#work">Work</a></li>
-                        <li><a href="#team">Team</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>SYSTEM</h4>
-                    <ul>
-                        <li><a onclick="openLogin()" style="cursor:pointer;">Dashboard</a></li>
-                        <li><a href="#">Hardware</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-col">
-                    <h4>SUPPORT</h4>
-                    <ul>
-                        <li><a href="#contact">Contact</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                </div>
+                <div class="footer-col"><h4>THE PLATFORM</h4><ul><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#work">Work</a></li><li><a href="#team">Team</a></li></ul></div>
+                <div class="footer-col"><h4>SYSTEM</h4><ul><li><a onclick="openLogin()" style="cursor:pointer;">Dashboard</a></li><li><a href="#">Hardware</a></li></ul></div>
+                <div class="footer-col"><h4>SUPPORT</h4><ul><li><a href="#contact">Contact</a></li><li><a href="#faq">FAQ</a></li></ul></div>
             </div>
-
-            <div class="footer-bottom">
-                <div>&copy; 2026 SentinEx Appliances. All rights reserved.</div>
-            </div>
+            <div class="footer-bottom"><div>&copy; 2026 SentinEx Appliances. All rights reserved.</div></div>
         </footer>
     </div>
 
-    <!-- =========================================
-         2. LOGIN MODAL
-         ========================================= -->
     <div id="login-modal">
         <div class="login-card">
             <h1 style="font-weight: 600;">SentinEx <em>Portal</em></h1>
             <p>Enter your credentials to access the dashboard.</p>
             
-            <div class="form-group"><input type="text" id="tenant-id" placeholder="Organization ID" value="sentinex"></div>
-            <div class="form-group"><input type="text" id="username" value="SentinEx" placeholder="Username"></div>
-            <div class="form-group"><input type="password" id="password" value="1234" placeholder="Password"></div>
+            <div class="form-group"><input type="text" id="username" placeholder="Organization ID / Username" value="sentinex"></div>
+            <div class="form-group"><input type="password" id="password" placeholder="Password" value="1234"></div>
             <button class="btn btn-primary" style="width: 100%; margin-top: 8px; border-radius: 8px;" onclick="login()">Secure Login</button>
             <button onclick="closeLogin()" style="background:none; border:none; margin-top:20px; color:var(--text-muted); cursor:pointer; font-size: 14px;">Cancel</button>
         </div>
     </div>
 
-    <!-- =========================================
-         3. DASHBOARD
-         ========================================= -->
     <div id="app-screen">
         <div class="dashboard-layout">
             <aside class="sidebar">
-                <div class="sidebar-logo" id="sidebar-brand">
-                    <img id="tenant-logo" src="" alt="Logo">
-                    <span id="tenant-name">SentinEx</span>
-                </div>
+                <div class="sidebar-logo" id="sidebar-brand"><img id="tenant-logo" src="" alt="Logo"><span id="tenant-name">SentinEx</span></div>
                 
                 <div id="tenant-menu">
                     <div class="nav-item active" onclick="switchTab('dashboard', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                        <span>Dashboard</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg><span>Dashboard</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('pending', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                        <span>Pending Approvals</span>
-                        <span class="badge-count" id="pending-badge">0</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><span>Pending Approvals</span><span class="badge-count" id="pending-badge">0</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('members', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <span>Members Directory</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg><span>Members Directory</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('trash', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                        <span>Trash Bin</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg><span>Trash Bin</span>
                     </div>
                     <div class="nav-item" onclick="switchTab('audit', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                        <span>Audit Logs</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Audit Logs</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('settings', this)">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span>
                     </div>
                 </div>
 
                 <div id="super-admin-menu" style="display: none;">
                     <div class="nav-item active" onclick="switchTab('super-dashboard', this)">
-                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                        <span>Master Control</span>
+                        <svg class="nav-icon" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg><span>Master Control</span>
+                    </div>
+                    <div class="nav-item" onclick="switchTab('super-settings', this)">
+                        <svg class="nav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg><span>Settings</span>
                     </div>
                 </div>
 
                 <div class="nav-item danger" onclick="logout()">
-                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                    <span>Logout</span>
+                    <svg class="nav-icon" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg><span>Logout</span>
                 </div>
             </aside>
 
@@ -644,6 +470,17 @@
                     </div>
                 </div>
 
+                <div id="view-settings" class="view-container">
+                    <h2 style="margin-bottom: 24px; font-weight: 600;">Account Settings</h2>
+                    <div class="table-card" style="padding: 32px; max-width: 500px;">
+                        <h3 style="margin-bottom: 16px; font-size: 18px;">Change Password</h3>
+                        <div class="form-group"><label>Current Password</label><input type="password" id="current-pass" placeholder="Enter current password"></div>
+                        <div class="form-group"><label>New Password</label><input type="password" id="new-pass" placeholder="Enter new password"></div>
+                        <div class="form-group"><label>Confirm New Password</label><input type="password" id="confirm-pass" placeholder="Confirm new password"></div>
+                        <button class="btn btn-primary" onclick="changePassword()">Update Password</button>
+                    </div>
+                </div>
+
                 <div id="view-super-dashboard" class="view-container">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
                         <div class="stats-grid" style="flex: 1; margin-bottom: 0;">
@@ -651,7 +488,6 @@
                             <div class="stat-card"><div class="stat-title">Pending Approvals</div><div class="stat-value" id="pending-tenants" style="color: var(--warning);">0</div></div>
                         </div>
                     </div>
-                    
                     <div class="table-card" style="margin-top: 24px;">
                         <table>
                             <thead><tr><th>Logo</th><th>School Name</th><th>Tenant ID</th><th>Status</th><th>Actions</th></tr></thead>
@@ -661,11 +497,21 @@
                         </table>
                     </div>
                 </div>
+
+                <div id="view-super-settings" class="view-container">
+                    <h2 style="margin-bottom: 24px; font-weight: 600;">Super Admin Settings</h2>
+                    <div class="table-card" style="padding: 32px; max-width: 500px;">
+                        <h3 style="margin-bottom: 16px; font-size: 18px;">Change Master Password</h3>
+                        <div class="form-group"><label>Current Password</label><input type="password" id="sa-current-pass" placeholder="Enter current password"></div>
+                        <div class="form-group"><label>New Password</label><input type="password" id="sa-new-pass" placeholder="Enter new password"></div>
+                        <div class="form-group"><label>Confirm New Password</label><input type="password" id="sa-confirm-pass" placeholder="Confirm new password"></div>
+                        <button class="btn btn-primary" onclick="changeSuperPassword()">Update Master Password</button>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
 
-    <!-- MODALS -->
     <div id="student-modal" class="modal-overlay">
         <div class="modal-card">
             <h2 id="modal-title">Add New Member</h2>
@@ -685,10 +531,7 @@
             <p style="font-size: 13px; color: var(--dash-muted); margin-bottom: 20px;">Your application will be reviewed by SentinEx HQ.</p>
             <div class="form-group"><label>Tenant ID (e.g. harvard)</label><input type="text" id="new-tenant-id" placeholder="No spaces"></div>
             <div class="form-group"><label>School Name</label><input type="text" id="new-tenant-name" placeholder="e.g. Harvard University"></div>
-            <div class="form-group">
-                <label>School Logo (Upload Image)</label>
-                <input type="file" id="new-tenant-logo" accept="image/*">
-            </div>
+            <div class="form-group"><label>School Logo (Upload Image)</label><input type="file" id="new-tenant-logo" accept="image/*"></div>
             <div style="display: flex; gap: 12px; margin-top: 32px;">
                 <button class="btn btn-secondary" style="flex: 1;" onclick="closeTenantModal()">Cancel</button>
                 <button class="btn btn-success" style="flex: 1;" onclick="saveTenant()">Submit Application</button>
@@ -697,7 +540,6 @@
     </div>
 
     <script>
-        // --- LANDING PAGE JS ---
         function toggleFaq(element) {
             const item = element.parentElement;
             const answer = item.querySelector('.faq-answer');
@@ -731,7 +573,6 @@
             }
         }
 
-        // --- AUTH & DASHBOARD JS ---
         let logsData = [];
         let currentModalMode = 'add';
         let currentTenant = 'sentinex'; 
@@ -745,70 +586,60 @@
         }
 
         async function login() {
-            const tenantInput = document.getElementById('tenant-id').value.trim().toLowerCase();
-            const user = document.getElementById('username').value;
-            const pass = document.getElementById('password').value;
+            const username = document.getElementById('username').value.trim().toLowerCase();
+            const password = document.getElementById('password').value;
 
-            if (!tenantInput) { alert("Organization ID is required."); return; }
+            if (!username || !password) { alert("Username and Password required."); return; }
 
-            const isSuperAdmin = (tenantInput === 'superadmin' && user === 'superadmin' && pass === '1234');
-            const isRegularTenant = (user === 'SentinEx' && pass === '1234');
-
-            if (isSuperAdmin || isRegularTenant) {
-                currentTenant = tenantInput;
-                
-                if (!isSuperAdmin) {
-                    try {
-                        const res = await fetch(`/api/tenants/${currentTenant}`);
-                        if (!res.ok) { alert("Organization ID not found."); return; }
-                        const tenantData = await res.json();
-                        
-                        if (tenantData.status === 'pending') { alert("Your account is pending approval."); return; }
-                        if (tenantData.status === 'suspended' || tenantData.status === 'rejected') { alert("Your account is suspended."); return; }
-                    } catch (err) { alert("Error verifying account."); return; }
-                }
-
-                document.getElementById('login-modal').style.display = 'none';
-                document.getElementById('landing-page').style.display = 'none';
-                document.getElementById('app-screen').style.display = 'block';
-                
-                document.querySelector('.dashboard-layout').style.display = 'flex'; 
-                setDefaultDate();
-
-                if (currentTenant === 'superadmin') {
-                    document.getElementById('tenant-menu').style.display = 'none';
-                    document.getElementById('super-admin-menu').style.display = 'block';
-                    document.getElementById('topbar-actions').style.display = 'none';
-                    
-                    document.getElementById('tenant-logo').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23dc2626"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="white" text-anchor="middle">M</text></svg>';
-                    document.getElementById('tenant-name').innerText = "Master Admin";
-                    
-                    switchTab('super-dashboard', document.querySelector('#super-admin-menu .nav-item'));
-                    fetchTenants();
-                } else {
-                    document.getElementById('tenant-menu').style.display = 'block';
-                    document.getElementById('super-admin-menu').style.display = 'none';
-                    document.getElementById('topbar-actions').style.display = 'block';
-                    
-                    fetch(`/api/tenants/${currentTenant}`)
-                        .then(res => res.json())
-                        .then(data => {
-                            if(data.logo_data) document.getElementById('tenant-logo').src = data.logo_data;
-                            if(data.name) document.getElementById('tenant-name').innerText = data.name;
-                        });
-
-                    fetchLogs();
-                    checkPendingCount();
-                }
-
-                fetch('/api/login-audit', {
+            try {
+                const res = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ admin_name: user, tenant_id: currentTenant })
+                    body: JSON.stringify({ username, password })
                 });
-            } else { 
-                alert("Invalid credentials."); 
-            }
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    currentTenant = data.tenant_id;
+                    
+                    document.getElementById('login-modal').style.display = 'none';
+                    document.getElementById('landing-page').style.display = 'none';
+                    document.getElementById('app-screen').style.display = 'block';
+                    document.querySelector('.dashboard-layout').style.display = 'flex'; 
+                    setDefaultDate();
+
+                    if (currentTenant === 'superadmin') {
+                        document.getElementById('tenant-menu').style.display = 'none';
+                        document.getElementById('super-admin-menu').style.display = 'block';
+                        document.getElementById('topbar-actions').style.display = 'none';
+                        
+                        document.getElementById('tenant-logo').src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%23dc2626"/><text x="50" y="75" font-family="Arial" font-size="75" font-weight="bold" fill="white" text-anchor="middle">M</text></svg>';
+                        document.getElementById('tenant-name').innerText = "Master Admin";
+                        
+                        switchTab('super-dashboard', document.querySelector('#super-admin-menu .nav-item'));
+                        fetchTenants();
+                    } else {
+                        document.getElementById('tenant-menu').style.display = 'block';
+                        document.getElementById('super-admin-menu').style.display = 'none';
+                        document.getElementById('topbar-actions').style.display = 'block';
+                        
+                        if(data.logo) document.getElementById('tenant-logo').src = data.logo;
+                        document.getElementById('tenant-name').innerText = data.name;
+
+                        fetchLogs();
+                        checkPendingCount();
+                    }
+
+                    fetch('/api/login-audit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ admin_name: username, tenant_id: currentTenant })
+                    });
+                } else {
+                    alert(data.error || "Invalid credentials.");
+                }
+            } catch (err) { alert("Error connecting to server."); }
         }
 
         function logout() {
@@ -829,8 +660,8 @@
             const titles = { 
                 'dashboard': 'Attendance Overview', 'pending': 'Pending Approvals',
                 'members': 'Members Directory', 'trash': 'Trash Bin', 
-                'audit': 'System Audit Logs',
-                'super-dashboard': 'Master Control Panel'
+                'audit': 'System Audit Logs', 'settings': 'Account Settings',
+                'super-dashboard': 'Master Control Panel', 'super-settings': 'Super Admin Settings'
             };
             document.getElementById('page-title').innerText = titles[tabId];
 
@@ -842,14 +673,64 @@
             if (tabId === 'super-dashboard') fetchTenants();
         }
 
-        // --- TENANT REGISTRATION & APPROVAL ---
+        async function changePassword() {
+            const oldPass = document.getElementById('current-pass').value;
+            const newPass = document.getElementById('new-pass').value;
+            const confirmPass = document.getElementById('confirm-pass').value;
+
+            if(!oldPass || !newPass || !confirmPass) { alert("Fill all fields"); return; }
+            if(newPass !== confirmPass) { alert("New passwords do not match"); return; }
+
+            try {
+                const res = await fetch('/api/settings/password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id: currentTenant, old_password: oldPass, new_password: newPass })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert("Password updated successfully!");
+                    document.getElementById('current-pass').value = '';
+                    document.getElementById('new-pass').value = '';
+                    document.getElementById('confirm-pass').value = '';
+                } else {
+                    alert(data.error || "Error updating password");
+                }
+            } catch (err) { alert("Error updating password"); }
+        }
+
+        async function changeSuperPassword() {
+            const oldPass = document.getElementById('sa-current-pass').value;
+            const newPass = document.getElementById('sa-new-pass').value;
+            const confirmPass = document.getElementById('sa-confirm-pass').value;
+
+            if(!oldPass || !newPass || !confirmPass) { alert("Fill all fields"); return; }
+            if(newPass !== confirmPass) { alert("New passwords do not match"); return; }
+
+            try {
+                const res = await fetch('/api/settings/password', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ tenant_id: 'superadmin', old_password: oldPass, new_password: newPass })
+                });
+                const data = await res.json();
+                if(data.success) {
+                    alert("Master password updated successfully!");
+                    document.getElementById('sa-current-pass').value = '';
+                    document.getElementById('sa-new-pass').value = '';
+                    document.getElementById('sa-confirm-pass').value = '';
+                } else {
+                    alert(data.error || "Error updating password");
+                }
+            } catch (err) { alert("Error updating password"); }
+        }
+
         function openTenantModal() {
             document.getElementById('new-tenant-id').value = "";
             document.getElementById('new-tenant-name').value = "";
             document.getElementById('new-tenant-logo').value = "";
             document.getElementById('tenant-modal').style.display = 'flex';
         }
-
         function closeTenantModal() { document.getElementById('tenant-modal').style.display = 'none'; }
 
         function getBase64(file) {
@@ -944,7 +825,6 @@
             } catch (err) { alert("Error updating status."); }
         }
 
-        // --- STUDENT MANAGEMENT ---
         function openAddModal() {
             currentModalMode = 'add';
             document.getElementById('modal-title').innerText = "Add New Member";
@@ -971,7 +851,7 @@
             const id = document.getElementById('modal-id').value;
             const name = document.getElementById('modal-name').value;
             const reg = document.getElementById('modal-reg').value;
-            const admin = "SentinEx"; 
+            const admin = document.getElementById('username').value; 
 
             if (!id || !name || !reg) { alert("Please fill all fields."); return; }
 
@@ -1036,11 +916,12 @@
 
         async function approvePending(id) {
             if(!confirm("Approve this student's manual attendance request?")) return;
+            const admin = document.getElementById('username').value;
             try {
                 await fetch('/api/approve-pending', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ fingerprint_id: id, admin_name: "SentinEx", tenant_id: currentTenant })
+                    body: JSON.stringify({ fingerprint_id: id, admin_name: admin, tenant_id: currentTenant })
                 });
                 fetchPending();
                 checkPendingCount();
@@ -1103,10 +984,11 @@
 
         async function deleteStudent(id) {
             if(!confirm("Move this student to trash?")) return;
+            const admin = document.getElementById('username').value;
             await fetch(`/api/students/${id}`, { 
                 method: 'DELETE', 
                 headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ admin_name: "SentinEx", tenant_id: currentTenant }) 
+                body: JSON.stringify({ admin_name: admin, tenant_id: currentTenant }) 
             });
             fetchMembers();
         }
@@ -1128,10 +1010,11 @@
         }
 
         async function restoreStudent(id) {
+            const admin = document.getElementById('username').value;
             await fetch(`/api/trash/${id}`, { 
                 method: 'PUT', 
                 headers: { 'Content-Type': 'application/json' }, 
-                body: JSON.stringify({ admin_name: "SentinEx", tenant_id: currentTenant }) 
+                body: JSON.stringify({ admin_name: admin, tenant_id: currentTenant }) 
             });
             fetchTrash();
         }
